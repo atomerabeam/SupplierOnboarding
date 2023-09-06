@@ -99,8 +99,8 @@
       },
       "routes": [
         {
-          "name": "RouteLandingPage",
-          "pattern": ":?query:",
+          "name": "Supplier",
+          "pattern": "Supplier/{GUID}",
           "target": [
             "TargetLandingPage"
           ]

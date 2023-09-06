@@ -1,0 +1,12 @@
+
+@server = http://localhost:4004 
+
+POST {{server}}/odata/v4/supplier/getSupplier
+headers: 
+      Content-Type: application/json
+
+{
+        "pID" : "X000990123"
+}
+
+####################################################

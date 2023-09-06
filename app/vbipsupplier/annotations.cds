@@ -1,1 +1,1 @@
-using Sample as service from '../../srv/sample-srv';
+using Supplier as service from '../../srv/supplier-srv';

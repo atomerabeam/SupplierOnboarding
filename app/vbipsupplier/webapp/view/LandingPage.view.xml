@@ -4,15 +4,13 @@
     xmlns="sap.m">
     <Page id="id.Page" class="sapUiContentPadding">
         <customHeader>
-            <core:Fragment fragmentName="vbipsupplier.view.fragment.HeaderContent" type="XML" />
+            <core:Fragment fragmentName="vbipsupplier.view.fragment.HeaderContent" type="XML"/>
         </customHeader>
         <content>
-            <VBox id="id.VBox">
-                <core:Fragment class="sapUiTinyMarginTop" fragmentName="vbipsupplier.view.fragment.LandingPage" type="XML" />
-            </VBox>
+            <core:Fragment fragmentName="vbipsupplier.view.fragment.OneTimePassword" type="XML"/>
         </content>
         <footer>
-            <core:Fragment fragmentName="vbipsupplier.view.fragment.FooterContent" type="XML" />
+            <core:Fragment fragmentName="vbipsupplier.view.fragment.FooterContent" type="XML"/>
         </footer>
     </Page>
 </mvc:View>
