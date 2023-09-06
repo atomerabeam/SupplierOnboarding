@@ -1,0 +1,31 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+
+    <Bar id="idTop.Bar">
+        <!-- Logo on the left side -->
+        <contentLeft>
+            <Image id="idLogo.Image" src="././images/VISA.png" width="35px" />
+            <Text id="idBBIntegratedPayment.Text" class="addColor" text="{i18n>b2BIntegratedPayment}" />
+        </contentLeft>
+
+        <!-- Buttons on the right side -->
+        <contentRight>
+            <OverflowToolbar id="idRight.OverflowToolbar">
+                <!-- <Button text="{i18n>home}" press=".onClickNavigate('home')" visible="{= ${paymentStatusModel>/onboardingCompleted} === true}"></Button>
+                <Button text="{i18n>suppliers}" press=".onClickNavigate('supplier')" visible="{= ${paymentStatusModel>/onboardingCompleted} === true}"></Button>
+                <Button text="{i18n>paymentStatus}" press=".onClickNavigate('paymentStatus')" visible="{= ${paymentStatusModel>/onboardingCompleted} === true}"></Button>
+                <MenuButton icon="sap-icon://person-placeholder" visible="{= ${paymentStatusModel>/onboardingCompleted} === true}">
+                    <menu>
+                        <Menu>
+                            <MenuItem id="save" text="{i18n>save}" icon="sap-icon://save" press="onPress" />
+                            <MenuItem id="open" text="{i18n>open}" icon="sap-icon://open-folder" press="onPress" />
+                            <MenuItem id="edit" icon="sap-icon://edit" text="{i18n>editBuyerInformation}" press="onPress" visible="{= ${paymentStatusModel>/onboardingCompleted} === true}"/>
+                        </Menu>
+                    </menu>
+                </MenuButton> -->
+                <!-- <Button text="Login"  press="onClickLogin" visible="{= ${paymentStatusModel>/onboardingCompleted} === true}"/> -->
+            </OverflowToolbar>
+        </contentRight>
+    </Bar>
+
+</core:FragmentDefinition>

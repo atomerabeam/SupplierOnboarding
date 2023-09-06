@@ -1,0 +1,1 @@
+using Sample as service from '../../srv/sample-srv';

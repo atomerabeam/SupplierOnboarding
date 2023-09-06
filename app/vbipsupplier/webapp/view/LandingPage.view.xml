@@ -1,0 +1,18 @@
+<mvc:View controllerName="vbipsupplier.controller.LandingPage"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core" displayBlock="true"
+    xmlns="sap.m">
+    <Page id="id.Page" class="sapUiContentPadding">
+        <customHeader>
+            <core:Fragment fragmentName="vbipsupplier.view.fragment.HeaderContent" type="XML" />
+        </customHeader>
+        <content>
+            <VBox id="id.VBox">
+                <core:Fragment class="sapUiTinyMarginTop" fragmentName="vbipsupplier.view.fragment.LandingPage" type="XML" />
+            </VBox>
+        </content>
+        <footer>
+            <core:Fragment fragmentName="vbipsupplier.view.fragment.FooterContent" type="XML" />
+        </footer>
+    </Page>
+</mvc:View>

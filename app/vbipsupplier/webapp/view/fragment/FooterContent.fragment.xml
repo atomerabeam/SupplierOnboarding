@@ -1,0 +1,12 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+
+    <OverflowToolbar id="id.OverflowToolbar">
+        <Image id="idFooterLogo.Image" src="././images/VISA.png" width="35px" />
+        <Label id="idCopyright.Label" text="{i18n>copyrightContent}"/>
+        <ToolbarSpacer id="id.ToolbarSpacer"/>
+        <Link id="idContactUs.Link" text="{i18n>contactUs}" />
+        <Link id="idPrivacy.Link" text="{i18n>privacy}" />
+        <Link id="idTermsOfUse.Link" text="{i18n>termsOfUse}" />
+    </OverflowToolbar>
+</core:FragmentDefinition>

@@ -1,0 +1,28 @@
+
+<core:FragmentDefinition 
+	xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    <VBox id="idMain.VBox" class="sapUiSmallMargin">
+		<VBox id="idItem.VBox" width="80%" >
+
+			<VBox id="idPanelContent.VBox" class="customBoxContent">
+				<Text id="idTitle.Text" text="Please enter your OTP sent to your email" class="mainTitle"/>
+				
+				<Text id="idCompanyCode.Text" text="Your OTP has been sent to your email. If you encounter any problems, please reach out to [Buyer]" class="subTitle"/>
+				
+				<Text id="idLine2.Text" class="spaceLine"/>
+				<Label id="idOTP.Label" text="One-time password"></Label>
+				
+				<Input id="idOTP.Input" value="" width="150px"
+						maxLength="6"/>
+			
+				<Text id="idLine3.Text" class="spaceLine"/>
+				<HBox id="idButton.HBox">
+					<Button id="idContinue.Button" class="classButtonRow" type="Emphasized" 
+							text="Continue" press="onContinueButtonPress"/>
+				</HBox>
+			</VBox>
+		</VBox>
+        
+    </VBox>
+</core:FragmentDefinition>
