@@ -1,6 +1,7 @@
 const cds = require("@sap/cds");
 const vbipService = require("./lib/vbipService");
 const mailService = require("./lib/mailService");
+const mailService = require("./lib/webCrypto");
 
 module.exports = cds.service.impl(async (service) => {
     service.on("getSupplier", async (req) => {
