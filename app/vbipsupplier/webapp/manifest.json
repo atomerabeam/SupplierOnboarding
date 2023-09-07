@@ -104,6 +104,13 @@
           "target": [
             "TargetLandingPage"
           ]
+        },
+        {
+          "name": "SupplierInfo",
+          "pattern": "SupplierInfo",
+          "target": [
+            "TargetSupplierInfo"
+          ]
         }
       ],
       "targets": {
@@ -113,6 +120,14 @@
           "clearControlAggregation": false,
           "viewId": "LandingPage",
           "viewName": "LandingPage"
+        },
+        
+        "TargetSupplierInfo": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "SupplierInfo",
+          "viewName": "SupplierInfo"
         }
       }
     },

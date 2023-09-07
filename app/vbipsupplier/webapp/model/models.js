@@ -41,7 +41,7 @@ sap.ui.define([
             sendMailOTP: async function (oParameter) {
                 let oResult = { "response": {}, "catchError": {} }
                 try {
-                    const response = await fetch("/odata/v4/supplier/sendMail", {
+                    const response = await fetch("/odata/v4/supplier/sendMailOTP", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json"
@@ -50,6 +50,24 @@ sap.ui.define([
                     });
 
                     oResult.response = response;
+                } catch (error) {
+                    oResult.catchError = error;
+                }
+                return oResult;
+            },
+            
+            checkOTP: async function (oParameter) {
+                let oResult = { "response": {}, "catchError": {} }
+                try {
+                    const response = await fetch("/odata/v4/supplier/checkOTP", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(oParameter),
+                    });
+
+                    oResult.response = await response.json();;
                 } catch (error) {
                     oResult.catchError = error;
                 }

@@ -1,9 +1,11 @@
 const cds = require("@sap/cds");
 const vbipService = require("./lib/vbipService");
 const mailService = require("./lib/mailService");
-const mailService = require("./lib/webCrypto");
+const cryptoService = require("./lib/webCrypto");
 
 module.exports = cds.service.impl(async (service) => {
+    // cryptoService.generateOTP();
+    
     service.on("getSupplier", async (req) => {
         let oAuthToken = await vbipService.getToken();
         let pID = req.data.pID;
@@ -16,7 +18,7 @@ module.exports = cds.service.impl(async (service) => {
                     "Authorization": oAuthToken.token
                 }
             });
-
+            
             oResult.supplier = await response.json();
         } catch (error) {
             oResult.catchError = error;
@@ -30,5 +32,23 @@ module.exports = cds.service.impl(async (service) => {
         let mailSubject = req.data.mailSubject;
         let mailContent = req.data.mailContent;
         mailService.sendEmail(smtpDestination, mailTo, mailSubject, mailContent);
+    }),
+
+    service.on("sendMailOTP", async (req) => {
+        // send mail
+        let pID = req.data.pID;
+        let smtpDestination = req.data.smtpDestination;
+        let mailTo = req.data.mailTo;
+        let mailSubject = req.data.mailSubject;
+        let mailContent = req.data.mailContent;
+        mailService.sendEmailOTP(pID, smtpDestination, mailTo, mailSubject, mailContent);
+    }),
+
+    service.on("checkOTP", async (req) => {
+        // send mail
+        let pID = req.data.pID;
+        let pOTP = req.data.pOTP;
+        let result = mailService.checkOTP(pID, pOTP);
+        return result;
     })
 })

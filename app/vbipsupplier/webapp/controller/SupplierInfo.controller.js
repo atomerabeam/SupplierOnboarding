@@ -9,7 +9,7 @@ sap.ui.define([
     function (Controller, Models, MessageToast) {
         "use strict";
 
-        return Controller.extend("vbipsupplier.controller.LandingPage", {
+        return Controller.extend("vbipsupplier.controller.SupplierInfo", {
             onInit: function () {
                 let oRouter = sap.ui.core.UIComponent.getRouterFor(this);
                 oRouter.getRoute("Supplier").attachPatternMatched(this._onObjectMatched, this);
@@ -74,10 +74,8 @@ sap.ui.define([
                             vMessage = "Your OTP is expired";
                             MessageToast.show(vMessage);
                         } else if (vResult === "OK") {
-                            // vMessage = "Correct OTP !!!";
-                            // MessageToast.show(vMessage);
-                            let oRouter = this.getOwnerComponent().getRouter();
-                            oRouter.navTo("SupplierInfo");
+                            vMessage = "Correct OTP !!!";
+                            MessageToast.show(vMessage);
                         }
                     }
                 } else {

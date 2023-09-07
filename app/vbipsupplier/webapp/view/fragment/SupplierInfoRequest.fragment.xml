@@ -6,17 +6,18 @@
 		<VBox id="idItem.VBox" alignItems="Center">
 
 			<VBox id="idPanelContent.VBox" class="customBoxContent" width="50%" >
-				<Text id="idTitle.Text" text="Please enter your OTP sent to your email" class="mainTitle"/>
+				<Text id="idTitle.Text" text="Request for information" class="mainTitle"/>
 				
-				<Text id="idCompanyCode.Text" text="Your OTP has been sent to your email. If you encounter any problems, please reach out to [Buyer]" class="customText"/>
+				<Text id="idCompanyCode.Text" text="Your customer, [Buyer], is requesting the following information to streamline invoice payments to your company by using Visa B2B integrated Payments to start making payments with Visa credit cards." class="customText"/>
 				
-				<Text id="idLine2.Text" class="spaceLine"/>
-				
-				<Label id="idOTP.Label" text="One-time password"></Label>
-				<Input id="idOTP.Input" width="150px" maxLength="6"/>
-			
-				<Link id="idResendOTP.Link" text="Resend OTP" press="onResendOTPLinkPress"/>
+				<Text id="idLine1.Text" class="spaceLine"/>
+				<Text id="idLegalEntity.Text" text="Legal entity" class="subTitle"/>
 
+				<Text id="idLine2.Text" class="spaceLine"/>
+				<Label id="idLegalEntityName.Label" text="Legal entity name"></Label>
+				
+				<Input id="idlegal.Input" width="50%" editable="false"/>
+			
 				<Text id="idLine3.Text" class="spaceLine"/>
 				<HBox id="idButton.HBox">
 					<Button id="idContinue.Button" class="classButtonRow" type="Emphasized" 
