@@ -1,4 +1,3 @@
-
 const mailClient = require("@sap-cloud-sdk/mail-client");
 const oConnect = require('@sap-cloud-sdk/connectivity');
 let aOTP = [];
@@ -27,26 +26,34 @@ async function sendEmailOTP(pID, destinationName, mailTo, subject, htmlBody) {
         html: vContentOTP
     };
 
-    mailClient.sendMail({ destinationName: destinationName }, [mailConfig]);
+    // mailClient.sendMail({ destinationName: destinationName }, [mailConfig]);
 
 }
 
 async function genOTP(pID) {
-    let vDigits = '0123456789';
-    let vOTP = '';
+    const expireIn = 30000; // miliseconds
+    let vDigits = "0123456789";
+    let vOTP = "";
     for (let i = 0; i < 6; i++) {
         vOTP += vDigits[Math.floor(Math.random() * 10)];
     }
-    let vTime = Date.now() + 30000;
+    let vExpiredTime = Date.now() + expireIn;
 
+    console.log("pID: " + pID);
+    let index = aOTP.findIndex(item => item.uID === pID);
+    console.log("index " + index);
+    console.log(aOTP);
     // remove current OTP by supplier ID
-    aOTP.splice(aOTP.findIndex(item => item.supplierID === pID), 1);
+    if (index >= 0) {
+        console.log("slice " + pID);
+        aOTP.splice(index);
+    }
     console.log(aOTP);
 
     aOTP.push({
-        "supplierID": pID,
+        "uID": pID,
         "OTP": vOTP,
-        "expiredTime": vTime
+        "expiredTime": vExpiredTime
     });
     console.log(aOTP);
 
@@ -54,12 +61,14 @@ async function genOTP(pID) {
 }
 
 async function checkOTP(pID, inputOTP) {
-    let oValidOTP = aOTP.find(item => item.supplierID === pID && item.OTP === inputOTP );
+    let oValidOTP = aOTP.find(item => item.uID === pID && item.OTP === inputOTP);
     console.log(oValidOTP);
     if (oValidOTP === undefined) {
         return "Invalid";
     } else {
         if (Date.now() < oValidOTP.expiredTime) {
+            let index = aOTP.findIndex(item => item.uID === pID && item.OTP === inputOTP);
+            aOTP.splice(index);
             return "OK";
         } else {
             return "Expired";

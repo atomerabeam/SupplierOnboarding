@@ -47,6 +47,7 @@ sap.ui.define([
                                     <p>Your OTP code is [OTP]</p><br/><p>Thanks</p>`
                 };
                 await Models.sendMailOTP(oMail);
+                MessageToast.show("Sent OTP");
             },
             onContinueButtonPress: async function () {
                 let inputOTP = this.getView().byId("idOTP.Input").getValue();

@@ -1,6 +1,6 @@
 const cds = require("@sap/cds");
 const vbipService = require("./lib/vbipService");
-const mailService = require("./lib/mailService");
+const OTPService = require("./lib/OTPService");
 const cryptoService = require("./lib/webCrypto");
 
 module.exports = cds.service.impl(async (service) => {
@@ -25,13 +25,14 @@ module.exports = cds.service.impl(async (service) => {
         }
         return oResult;
     }),
+
     service.on("sendMail", async (req) => {
         // send mail
         let smtpDestination = req.data.smtpDestination;
         let mailTo = req.data.mailTo;
         let mailSubject = req.data.mailSubject;
         let mailContent = req.data.mailContent;
-        mailService.sendEmail(smtpDestination, mailTo, mailSubject, mailContent);
+        // OTPService.sendEmail(smtpDestination, mailTo, mailSubject, mailContent);
     }),
 
     service.on("sendMailOTP", async (req) => {
@@ -41,14 +42,14 @@ module.exports = cds.service.impl(async (service) => {
         let mailTo = req.data.mailTo;
         let mailSubject = req.data.mailSubject;
         let mailContent = req.data.mailContent;
-        mailService.sendEmailOTP(pID, smtpDestination, mailTo, mailSubject, mailContent);
+        OTPService.sendEmailOTP(pID, smtpDestination, mailTo, mailSubject, mailContent);
     }),
 
     service.on("checkOTP", async (req) => {
         // send mail
         let pID = req.data.pID;
         let pOTP = req.data.pOTP;
-        let result = mailService.checkOTP(pID, pOTP);
+        let result = OTPService.checkOTP(pID, pOTP);
         return result;
     })
 })
