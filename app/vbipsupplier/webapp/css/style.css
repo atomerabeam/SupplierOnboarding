@@ -24,7 +24,7 @@
     border-style: dashed;
 }
 
-.classInputSolid .sapMInputBaseInner[readonly]{
+.customInputSolid .sapMInputBaseInner[readonly]{
     border-style: solid;
 }
 
@@ -52,6 +52,18 @@
     border-bottom: none;
 }
 
+/* Custom */
+.customRoundCheckbox .sapMCbBg,
+.customRoundCheckbox .sapMCbMark {
+  border-radius: 50%; /* Make the checkbox round */
+}
+
+/* Optional: Adjust the size of the round checkbox */
+.customRoundCheckbox .sapMCbBg {
+  width: 20px; /* Adjust as needed */
+  height: 20px; /* Adjust as needed */
+}
+
 .subTitle {
     /* margin: 1% 0; */
     /* font-family: "Visa Dialect UI"; */
@@ -70,10 +82,6 @@
     font-style: normal;
     font-weight: 400;
     line-height: 24px; 
-}
-
-.spaceLine {
-    margin-top: 16px;
 }
 
 .classBoxLabel {
@@ -98,6 +106,39 @@
     margin-top: 20px;
 }
 
+.classUploadBox {
+    border-color: #1434CB !important;
+    border-style: dashed !important;
+    border-width: 2px;
+    border-radius: 5px;
+    margin: 20px;
+    margin-left: 0px;
+    padding: 20px;
+}
+
+.classFileNameBox {
+    /* border-color: #1434CB !important; */
+    /* border-style: dashed !important; */
+    border-width: 2px !important;
+    border-style: groove !important;
+    margin: 20px;
+    margin-left: 0px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.classUploadItem {
+    margin-right: 16px;
+    align-content: center;
+    flex-wrap: wrap;
+    align-self: center;
+}
+
+.classTextBold {
+    font-weight: bold;
+}
+
+/* Layout */
 .customBoxContent {
     background: #ffffff;
     width: 60%; 
@@ -109,7 +150,6 @@
     box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.05);
 }
 
-/* Layout */
 .customDialog {
     padding-top: 20px;
     padding-bottom: 0px;
@@ -160,4 +200,12 @@
     font-style: normal;
     font-weight: 400;
     line-height: 16px; /* 133.333% */
+}
+.customText {
+    /* font-family: "Visa Dialect UI"; */
+    color: #000000;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 22px; 
 }

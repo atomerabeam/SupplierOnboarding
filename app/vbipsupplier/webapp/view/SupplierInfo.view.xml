@@ -8,6 +8,8 @@
         </customHeader>
         <content>
             <core:Fragment fragmentName="vbipsupplier.view.fragment.SupplierInfoRequest" type="XML"/>
+            <core:Fragment fragmentName="vbipsupplier.view.fragment.SupplierInfoConfirm" type="XML"/>
+            <core:Fragment fragmentName="vbipsupplier.view.fragment.SupplierCorporate" type="XML"/>
         </content>
         <footer>
             <core:Fragment fragmentName="vbipsupplier.view.fragment.FooterContent" type="XML"/>

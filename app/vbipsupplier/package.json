@@ -23,9 +23,6 @@
             "@sap/ui5-builder-webide-extension",
             "ui5-task-zipper",
             "mbt"
-        ],
-        "ui5linter": {
-			"xmlClassExceptions": ["App.view.xml"]
-		}
+        ]
     }
 }

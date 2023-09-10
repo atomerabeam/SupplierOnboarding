@@ -5,7 +5,8 @@
         <!-- Logo on the left side -->
         <contentLeft>
             <Image id="idLogo.Image" src="././images/VISA.png" width="35px" />
-            <Text id="idBBIntegratedPayment.Text" class="addColor" text="{i18n>b2BIntegratedPayment}" />
+            <!-- @ui5ignore-patterns -->
+            <Text id="idAppTitle.Text" class="addColor" text="{i18n>b2BIntegratedPayment}" />
         </contentLeft>
 
         <!-- Buttons on the right side -->

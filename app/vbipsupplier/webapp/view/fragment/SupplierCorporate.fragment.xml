@@ -1,0 +1,223 @@
+
+<core:FragmentDefinition 
+	xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+	xmlns:form="sap.ui.layout.form">
+    <VBox id="idMainPage3.VBox" class="sapUiSmallMargin" alignItems="Center" visible="{PageModel>/pageFlow/corporate}">
+		<VBox id="idContentPage3.VBox" class="customBoxContent" width="65%">
+			<form:SimpleForm editable="true" singleContainerFullSize="false">
+                <form:content>
+                    <VBox>
+						<HBox>
+                            <VBox width="30%">
+								<!-- @ui5ignore-patterns -->
+                                <Text id="idBankInfo.Text" text="{i18n>bankInfo}" class="customSubtitle1"/>
+                                <!-- @ui5ignore-patterns -->
+								<Text id="idReview1.Text" text="{i18n>reviewDetails}" class="customText"/>
+                            </VBox>
+                            <VBox width="70%">
+								<Label id="idAccountNumberP3.Label" class="customLabel" text="{i18n>accountNumber}"></Label>
+								<Input id="idAccountNumberP3.Input"  editable="false" value="FDNB 0000 1235 1221"/>
+								<VBox id="idSpaceP3S11.VBox" height="12px"/>
+								<Label id="idBankCodeP3.Label" class="customLabel" text="{i18n>bankCode}"></Label>
+								<Input id="idBankCodeP3.Input"  editable="false" value="ABC12345"/>
+                            </VBox>
+                        </HBox>
+						<HBox id="idSpaceP3S1.HBox" height="40px"/>
+
+                        <HBox>
+                            <VBox width="30%">
+                                <Text id="idCorporationDetails.Text" text="{i18n>corporationDetails}" class="customSubtitle1"/>
+                                <!-- @ui5ignore-patterns -->
+								<Text id="idReview2.Text" text="{i18n>reviewDetails}" class="customText"/>
+                            </VBox>
+                            <VBox width="70%">
+                                
+								<Label id="idSupplierIDP3.Label" class="customLabel" text="{i18n>supplierID}"></Label>
+								<Input id="idSupplierIDP3.Input" editable="false" value="SUPA123"/>
+								<VBox id="idSpaceP3S21.VBox" height="12px"/>
+								<Label id="idLegalEntityNameP3.Label" class="customLabel" text="{i18n>legalName}"></Label>
+								<Input id="idLegalP3.Input" editable="false" value="Company Supplier"/>
+								<VBox id="idSpaceP3S22.VBox" height="12px"/>
+								
+								<Label id="idBusinessRegNumP3.Label" class="customLabel" text="{i18n>businessRegNum}"></Label>
+								<Input id="idBusinessRegNumP3.Input" class="customInputSolid" editable="false" value="Singapore"/>
+								<VBox id="idSpaceP3S23.VBox" height="12px"/>
+								<Label id="idCountryP3.Label" class="customLabel" text="{i18n>country}"></Label>
+								<Input id="idCountryP3.Input"  editable="false" value="Singapore"/>
+								<VBox id="idSpaceP3S5.VBox" height="12px"/>
+								<Label id="idCityP3.Label" class="customLabel" text="{i18n>city}"></Label>
+								<Input id="idCityP3.Input"  editable="false" value="Singapore"/>
+								<VBox id="idSpaceP3S6.VBox" height="12px"/>
+								<Label id="idStateP3.Label" class="customLabel" text="{i18n>state}"></Label>
+								<Input id="idStateP3.Input"  editable="false" value="Singapore"/>
+								<VBox id="idSpaceP3S7.VBox" height="12px"/>
+								<Label id="idCompanyAddressP3.Label" class="customLabel" text="{i18n>companyAddress}"></Label>
+								<Input id="idCompanyAddressP3.Input"  editable="false" value="123 Orchard Road"/>
+								<VBox id="idSpaceP3S8.VBox" height="12px"/>
+								<Label id="idPostalCodeP3.Label" class="customLabel" text="{i18n>postalCode}"></Label>
+								<Input id="idPostalCodeP3.Input"  editable="false" value="546080"/>
+								<VBox id="idSpaceP3S9.VBox" height="12px"/>
+								<Label id="idBusinessNature.Label" text="{i18n>businessNature}"></Label>
+                                <Select id="idBusinessNature.Select" items="{path: 'F4>/businessNature'}">
+                                    <core:Item id="idBusinessNature.Item" key="{F4>ID}" text="{F4>BusinessNature}"/>
+                                </Select>
+                                <Label id="idShareholderCount.Label" text="{i18n>shareholderCount}"></Label>
+                                <HBox >
+                                    <Select id="idShareHolderCount.Select" forceSelection="false" change="onChangeShareCount" selectedKey="{oModelData>/entityDetail/shareHolderCount}">
+                                        <core:Item key="0" text="1" />
+                                        <core:Item key="1" text="2" />
+                                        <core:Item key="2" text="3" />
+                                        <core:Item key="3" text="4" />
+                                        <core:Item key="4" text="5" />
+                                        <core:Item key="5" text="6" />
+                                        <core:Item key="6" text="7" />
+                                        <core:Item key="7" text="8" />
+                                        <core:Item key="8" text="9" />
+                                        <core:Item key="9" text="10" />
+                                        <core:Item key="9" text="11" />
+                                    </Select>
+                                    <core:Icon src="sap-icon://hint" class="sapUiTinyMarginTop iconSize" color="#1434CB" press="onInfoIconPress"></core:Icon>
+                                </HBox>
+                            </VBox>
+                        </HBox>
+						<HBox id="idSpaceP3S2.HBox" height="40px"/>
+
+                        <!-- Document upload -->
+                        <HBox>
+                            <VBox width="30%">
+                                <Text class="classTitle1" text="{i18n>documentUpload}"/>
+								<!-- @ui5ignore-patterns -->
+                                <Text id="idReview3.Text" text="{i18n>reviewDetails}" class="customText"/>
+								<CheckBox text="{i18n>copyOfBusinessReg}" class="customRoundCheckbox" wrapping="true"/>
+                                <CheckBox text="{i18n>certOfIncorporation}" class="customRoundCheckbox" wrapping="true" />
+                                <CheckBox text="{i18n>memorandum}" class="customRoundCheckbox" wrapping="true" />
+                                <CheckBox text="{i18n>boardResolution}" class="customRoundCheckbox" wrapping="true" />
+                                <CheckBox text="{i18n>identificationDocument}" class="customRoundCheckbox"  wrapping="true" />
+
+                            </VBox>
+                            <VBox width="70%">
+                                <Text text="{i18n>copyOfBusinessReg}" class="classsubheading1"></Text>
+                                <Label text="{i18n>documentNumber}" class="sapUiTinyMarginTop"></Label>
+                                <Input id="idDoc1.Input"></Input>
+                                <Label text="{i18n>nameOnDocument}"></Label>
+                                <Input id="idNameDoc1.Input"></Input>
+
+                                <!-- Upload Box -->
+                                <HBox class="classUploadBox" width="75%" visible="{FileModel>/file1/boxVisible1}">
+                                    <VBox class="classUploadItem" width="10%">
+                                        <core:Icon src="sap-icon://upload-to-cloud" size="30px" color="#1434CB">
+                                        </core:Icon>
+                                    </VBox>
+                                    <VBox width="60%">
+                                        <Text class="classTextBold" text="Click to upload or drag and drop"/>
+                                        <Text text="PNG, PDF, JPG or GIF"/>
+                                    </VBox>
+                                    <VBox class="classUploadItem" width="30%">
+                                        <Button id="idUploadFile1.Button" type="Transparent" text="Select file" press="onUploadFileButton"></Button>
+                                    </VBox>
+                                </HBox>
+
+
+                                <HBox class="classFileNameBox" width="75%" visible="false">
+                                    <VBox class="classUploadItem" width="10%">
+                                        <core:Icon src="sap-icon://attachment-photo" size="20px" color="#1434CB" press="onDownloadFileButton">
+                                        </core:Icon>
+                                    </VBox>
+                                    <VBox width="70%">
+                                        <Text text="{FileModel>/file1/fileName1}"/>
+                                    </VBox>
+                                    <VBox class="classUploadItem" width="20%">
+                                        <core:Icon src="sap-icon://decline" size="20px" color="#1434CB" press="onDeleteFileButton">
+                                        </core:Icon>
+                                    </VBox>
+                                </HBox>
+
+                                <Text text="{i18n>certOfIncorporation}" class="classsubheading1 sapUiTinyMarginTop" wrapping="true"></Text>
+                                <Label text="{i18n>documentNumber}" class="sapUiTinyMarginTop"></Label>
+                                <Input id="idDoc2.Input"></Input>
+                                <Label text="{i18n>nameOnDocument}"></Label>
+                                <Input id="idNameDoc2.Input"></Input>
+                                <HBox class="classUploadBox" width="75%" visible="{FileModel>/file1/boxVisible1}">
+                                    <VBox class="classUploadItem" width="10%">
+                                        <core:Icon src="sap-icon://upload-to-cloud" size="30px" color="#1434CB">
+                                        </core:Icon>
+                                    </VBox>
+                                    <VBox width="60%">
+                                        <Text class="classTextBold" text="Click to upload or drag and drop"/>
+                                        <Text text="PNG, PDF, JPG or GIF"/>
+                                    </VBox>
+                                    <VBox class="classUploadItem" width="30%">
+                                        <Button id="idUploadFile2.Button" type="Transparent" text="Select file" press="onUploadFileButton"></Button>
+                                    </VBox>
+                                </HBox>
+
+                                <Text text="{i18n>memorandum}" class=" classsubheading1 sapUiTinyMarginTop"></Text>
+                                <Label text="{i18n>documentNumber}" class="sapUiTinyMarginTop"></Label>
+                                <Input id="idDoc3.Input"></Input>
+                                <Label text="{i18n>nameOnDocument}"></Label>
+                                <Input id="idNameDoc3.Input"></Input>
+                                <HBox class="classUploadBox" width="75%" visible="{FileModel>/file1/boxVisible1}">
+                                    <VBox class="classUploadItem">
+                                        <core:Icon src="sap-icon://upload-to-cloud" size="24px" color="#1434CB">
+                                        </core:Icon>
+                                    </VBox>
+                                    <VBox class="classUploadItem">
+                                        <Text class="classTextBold" text="Click to upload or drag and drop"/>
+                                        <Text text="PNG, PDF, JPG or GIF"/>
+                                    </VBox>
+                                    <VBox class="classUploadItem">
+                                        <Button id="idUploadFile3.Button" type="Transparent" text="Select file" press="onUploadFileButton"></Button>
+                                    </VBox>
+                                </HBox>
+
+                                <Text text="{i18n>boardResolution}" class="classsubheading1 sapUiTinyMarginTop"></Text>
+                                <Label text="{i18n>documentNumber}" class="sapUiTinyMarginTop"></Label>
+                                <Input id="idDoc4.Input"></Input>
+                                <Label text="{i18n>nameOnDocument}"></Label>
+                                <Input id="idNameDoc4.Input"></Input>
+                                <HBox class="classUploadBox" width="75%" visible="{FileModel>/file1/boxVisible1}">
+                                    <VBox class="classUploadItem" width="10%">
+                                        <core:Icon src="sap-icon://upload-to-cloud" size="30px" color="#1434CB">
+                                        </core:Icon>
+                                    </VBox>
+                                    <VBox width="60%">
+                                        <Text class="classTextBold" text="Click to upload or drag and drop"/>
+                                        <Text text="PNG, PDF, JPG or GIF"/>
+                                    </VBox>
+                                    <VBox class="classUploadItem" width="30%">
+                                        <Button id="idUploadFile4.Button" type="Transparent" text="Select file" press="onUploadFileButton"></Button>
+                                    </VBox>
+                                </HBox>
+
+                                <Text text="{i18n>identificationDocument}" class="sapUiTinyMarginTop classsubheading1"></Text>
+                                <Label text="{i18n>documentNumber}" class="sapUiTinyMarginTop"></Label>
+                                <Input id="idDoc5.Input"></Input>
+                                <Label text="{i18n>nameOnDocument}"></Label>
+                                <Input id="idNameDoc5.Input"></Input>
+                                <HBox class="classUploadBox" width="75%" visible="{FileModel>/file1/boxVisible1}">
+                                    <VBox class="classUploadItem" width="10%">
+                                        <core:Icon src="sap-icon://upload-to-cloud" size="30px" color="#1434CB">
+                                        </core:Icon>
+                                    </VBox>
+                                    <VBox width="60%">
+                                        <Text class="classTextBold" text="Click to upload or drag and drop"/>
+                                        <Text text="PNG, PDF, JPG or GIF"/>
+                                    </VBox>
+                                    <VBox class="classUploadItem" width="30%">
+                                        <Button id="idUploadFile5.Button" type="Transparent" text="Select file" press="onUploadFileButton"></Button>
+                                    </VBox>
+                                </HBox>
+                            </VBox>
+                        </HBox>
+
+                        <HBox id="idStep1.HBox" width="100%">
+                            <Button id="idStep1.Button" text="{i18n>nextStep}" class="sapUiSmallMarginEnd" type="Emphasized" press="onContinueStep1" />
+                            <Label text="{i18n>lastAutoSaved}" class="sapUiTinyMarginTop"/>
+                        </HBox>
+                    </VBox>
+                </form:content>
+            </form:SimpleForm>
+		</VBox>
+    </VBox>
+</core:FragmentDefinition>

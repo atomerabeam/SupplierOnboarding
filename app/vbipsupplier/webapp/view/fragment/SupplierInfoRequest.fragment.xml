@@ -2,50 +2,51 @@
 <core:FragmentDefinition 
 	xmlns="sap.m"
     xmlns:core="sap.ui.core">
-    <VBox id="idMain.VBox" class="sapUiSmallMargin">
-		<VBox id="idItem.VBox" alignItems="Center">
+    <VBox id="idMainPage1.VBox" class="sapUiSmallMargin" alignItems="Center" visible="{PageModel>/pageFlow/infoRequest}">
+		<VBox id="idContentPage1.VBox" class="customBoxContent" width="50%">
+			<!-- @ui5ignore-patterns -->
+			<Text id="idRequestInfo.Text" text="{i18n>requestInfo}" class="mainTitle"/>
+			<!-- @ui5ignore-patterns -->
+			<Text id="idCompanyCode.Text" text="{i18n>yourCustomer}" class="customText"/>
+			<VBox id="idSpaceP1S1.VBox" height="32px"/>
 
-			<VBox id="idPanelContent.VBox" class="customBoxContent" width="50%">
-				<Text id="idTitle.Text" text="{i18n>requestInfo}" class="mainTitle"/>
-				
-				<Text id="idCompanyCode.Text" text="{i18n>yourCustomer}" class="customText"/>
-				
-				<VBox id="idSpace1.VBox" height="32px"/>
-				<Text id="idLegalEntity.Text" text="{i18n>legalEntity}" class="subTitle"/>
+			<Text id="idLegalEntity.Text" text="{i18n>legalEntity}" class="subTitle"/>
+			<VBox id="idSpaceP1S2.VBox" height="16px"/>
 
-				<VBox id="idSpace2.VBox" height="16px"/>
-				<Label id="idLegalEntityName.Label" class="customLabel" text="{i18n>legalName}"></Label>
-				
-				<Input id="idlegal.Input" width="60%" editable="false"/>
-				<VBox id="idSpace3.VBox" height="16px"/>
-			
-				<Label id="idSAPCustomer.Label" class="customLabel" text="{i18n>SAPCustomer}"></Label>
-				<Select id="idSAPCustomer.Select" forceSelection="false" selectedKey="Yes" width="60%">
-					<core:Item key="Yes" text="Yes" />
-					<core:Item key="No" text="No" />
-				</Select>
-				<VBox id="idSpace4.VBox" height="16px"/>
-				<Label id="idAcceptCard.Label" class="customLabel" text="{i18n>acceptCard}"></Label>
-				<Select id="idAcceptCard.Select" forceSelection="false" selectedKey="true" width="60%">
-					<core:Item key="true" text="Yes" />
-					<core:Item key="false" text="No" />
-				</Select>
+			<Label id="idLegalEntityNameP1.Label" class="customLabel" text="{i18n>legalName}"></Label>
+			<Input id="idLegalP1.Input" width="60%" editable="false" value="Company Supplier"/>
+			<VBox id="idSpaceP1S3.VBox" height="16px"/>
 
-				<VBox id="idSpace5.VBox" height="16px"/>
-				<HBox id="idInformation.HBox" width="60%">
-					<core:Icon src="sap-icon://hint" size="22px" color="#1434CB">
-					</core:Icon>
-					<VBox id="idSpace6.VBox" height="16px"/>
-					<Text id="idRequestOnboard.Text" text="{i18n>requestOnboard}" class="customText"/>
-				</HBox>
+			<!-- @ui5ignore-patterns -->
+			<Label id="idSAPCustomer.Label" class="customLabel" text="{i18n>SAPCustomer}"></Label>
+			<Select id="idSAPCustomer.Select" forceSelection="false" selectedKey="Yes" width="60%">
+				<core:Item key="Yes" text="Yes" />
+				<core:Item key="No" text="No" />
+			</Select>
+			<VBox id="idSpaceP1S4.VBox" height="16px"/>
 
-				<Text id="idLine6.Text" class="spaceLine"/>
-				<HBox id="idButton.HBox">
-					<Button id="idContinue.Button" class="classButtonRow" type="Emphasized" 
-							text="Continue" press="onContinueButtonPress"/>
-				</HBox>
-			</VBox>
+			<!-- @ui5ignore-patterns -->
+			<Label id="idAcceptCard.Label" class="customLabel" text="{i18n>acceptCard}"></Label>
+			<Select id="idAcceptCard.Select" forceSelection="false" selectedKey="true" width="60%">
+				<core:Item key="true" text="Yes" />
+				<core:Item key="false" text="No" />
+			</Select>
+			<VBox id="idSpaceP1S5.VBox" height="16px"/>
+
+			<HBox id="idInformation.HBox" width="60%">
+				<core:Icon src="sap-icon://hint" size="22px" color="#1434CB">
+				</core:Icon>
+				<VBox id="idSpaceP1S6.VBox" width="12px"/>
+				<!-- @ui5ignore-patterns -->
+				<Text id="idRequestOnboard.Text" text="{i18n>requestOnboard}" class="customText"/>
+			</HBox>
+			<VBox id="idSpaceP1S7.VBox" height="32px"/>
+
+			<HBox id="idButtonP1.HBox">
+				<!-- @ui5ignore-patterns -->
+				<Button id="idContinue.Button" class="classButtonRow" type="Emphasized" 
+						text="Continue" press="onContinue"/>
+			</HBox>
 		</VBox>
-        
     </VBox>
 </core:FragmentDefinition>
