@@ -5,20 +5,41 @@
     <VBox id="idMain.VBox" class="sapUiSmallMargin">
 		<VBox id="idItem.VBox" alignItems="Center">
 
-			<VBox id="idPanelContent.VBox" class="customBoxContent" width="50%" >
-				<Text id="idTitle.Text" text="Request for information" class="mainTitle"/>
+			<VBox id="idPanelContent.VBox" class="customBoxContent" width="50%">
+				<Text id="idTitle.Text" text="{i18n>requestInfo}" class="mainTitle"/>
 				
-				<Text id="idCompanyCode.Text" text="Your customer, [Buyer], is requesting the following information to streamline invoice payments to your company by using Visa B2B integrated Payments to start making payments with Visa credit cards." class="customText"/>
+				<Text id="idCompanyCode.Text" text="{i18n>yourCustomer}" class="customText"/>
 				
-				<Text id="idLine1.Text" class="spaceLine"/>
-				<Text id="idLegalEntity.Text" text="Legal entity" class="subTitle"/>
+				<VBox id="idSpace1.VBox" height="32px"/>
+				<Text id="idLegalEntity.Text" text="{i18n>legalEntity}" class="subTitle"/>
 
-				<Text id="idLine2.Text" class="spaceLine"/>
-				<Label id="idLegalEntityName.Label" text="Legal entity name"></Label>
+				<VBox id="idSpace2.VBox" height="16px"/>
+				<Label id="idLegalEntityName.Label" class="customLabel" text="{i18n>legalName}"></Label>
 				
-				<Input id="idlegal.Input" width="50%" editable="false"/>
+				<Input id="idlegal.Input" width="60%" editable="false"/>
+				<VBox id="idSpace3.VBox" height="16px"/>
 			
-				<Text id="idLine3.Text" class="spaceLine"/>
+				<Label id="idSAPCustomer.Label" class="customLabel" text="{i18n>SAPCustomer}"></Label>
+				<Select id="idSAPCustomer.Select" forceSelection="false" selectedKey="Yes" width="60%">
+					<core:Item key="Yes" text="Yes" />
+					<core:Item key="No" text="No" />
+				</Select>
+				<VBox id="idSpace4.VBox" height="16px"/>
+				<Label id="idAcceptCard.Label" class="customLabel" text="{i18n>acceptCard}"></Label>
+				<Select id="idAcceptCard.Select" forceSelection="false" selectedKey="true" width="60%">
+					<core:Item key="true" text="Yes" />
+					<core:Item key="false" text="No" />
+				</Select>
+
+				<VBox id="idSpace5.VBox" height="16px"/>
+				<HBox id="idInformation.HBox" width="60%">
+					<core:Icon src="sap-icon://hint" size="22px" color="#1434CB">
+					</core:Icon>
+					<VBox id="idSpace6.VBox" height="16px"/>
+					<Text id="idRequestOnboard.Text" text="{i18n>requestOnboard}" class="customText"/>
+				</HBox>
+
+				<Text id="idLine6.Text" class="spaceLine"/>
 				<HBox id="idButton.HBox">
 					<Button id="idContinue.Button" class="classButtonRow" type="Emphasized" 
 							text="Continue" press="onContinueButtonPress"/>

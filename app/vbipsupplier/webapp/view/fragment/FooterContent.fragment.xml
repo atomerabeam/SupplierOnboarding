@@ -3,6 +3,7 @@
 
     <OverflowToolbar id="id.OverflowToolbar">
         <Image id="idFooterLogo.Image" src="././images/VISA.png" width="35px" />
+        <!-- @ui5ignore-patterns -->
         <Label id="idCopyright.Label" text="{i18n>copyrightContent}"/>
         <ToolbarSpacer id="id.ToolbarSpacer"/>
         <Link id="idContactUs.Link" text="{i18n>contactUs}" />

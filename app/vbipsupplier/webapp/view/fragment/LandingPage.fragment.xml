@@ -4,14 +4,14 @@
     xmlns:core="sap.ui.core">
     <VBox id="idMain.VBox" class="sapUiSmallMargin">
 		<VBox id="idItem.VBox" alignItems="Center">
-
 			<VBox id="idPanelContent.VBox" class="customBoxContent" width="50%" >
+				<!-- @ui5ignore-patterns -->
 				<Text id="idTitle.Text" text="Please enter your OTP sent to your email" class="mainTitle"/>
-				
+				<!-- @ui5ignore-patterns -->
 				<Text id="idCompanyCode.Text" text="Your OTP has been sent to your email. If you encounter any problems, please reach out to [Buyer]" class="subTitle"/>
 				
 				<Text id="idLine2.Text" class="spaceLine"/>
-				<Label id="idOTP.Label" text="One-time password"></Label>
+				<Label id="idOnetimePassword.Label" text="One-time password"></Label>
 				
 				<Input id="idOTP.Input" value="" width="150px"
 						maxLength="6"/>

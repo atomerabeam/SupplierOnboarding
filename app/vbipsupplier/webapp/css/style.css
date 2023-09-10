@@ -73,7 +73,7 @@
 }
 
 .spaceLine {
-    margin-top: 32px;
+    margin-top: 16px;
 }
 
 .classBoxLabel {
@@ -107,4 +107,57 @@
     border-radius: 10px;
     border: 1px solid rgba(0, 0, 0, 0.10);
     box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.05);
+}
+
+/* Layout */
+.customDialog {
+    padding-top: 20px;
+    padding-bottom: 0px;
+    padding-left: 24px;
+    padding-right: 24px;
+}
+
+/* Space */
+.customSpaceLine {
+    margin-top: 8px;
+}
+
+/* Text */
+.customHeadline1 {
+    color: #000000;
+    /* font-family: "Visa Dialect UI"; */
+    font-size: 25px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 33px; /* 132% */
+    margin-bottom: 12px;
+}
+
+.customSubtitle1 {
+    color: #000000;
+    /* font-family: "Visa Dialect UI"; */
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 21px; /* 131.25% */
+    margin-bottom: 8px;
+}
+
+.customSubtitle2 {
+    color: #000000;
+    /* font-family: "Visa Dialect UI"; */
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 21px; /* 131.25% */
+    margin-bottom: 8px;
+}
+
+.customLabel {
+    color: #4A4A4A;
+    /* font-family: "Visa Dialect UI"; */
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px; /* 133.333% */
 }
