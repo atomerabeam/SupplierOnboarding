@@ -25,8 +25,11 @@ async function sendEmailOTP(pID, destinationName, mailTo, subject, htmlBody) {
         subject: subject,
         html: vContentOTP
     };
+    const mailClientOptions = {
+        requireTLS: true
+    };
 
-    // mailClient.sendMail({ destinationName: destinationName }, [mailConfig]);
+    // mailClient.sendMail({ destinationName: destinationName }, [mailConfig], [mailClientOptions]);
 
 }
 
@@ -45,8 +48,8 @@ async function genOTP(pID) {
     console.log(aOTP);
     // remove current OTP by supplier ID
     if (index >= 0) {
-        console.log("slice " + pID);
-        aOTP.splice(index);
+        console.log("splice " + pID);
+        aOTP.splice(index, 1);
     }
     console.log(aOTP);
 
@@ -68,7 +71,7 @@ async function checkOTP(pID, inputOTP) {
     } else {
         if (Date.now() < oValidOTP.expiredTime) {
             let index = aOTP.findIndex(item => item.uID === pID && item.OTP === inputOTP);
-            aOTP.splice(index);
+            aOTP.splice(index, 1);
             return "OK";
         } else {
             return "Expired";

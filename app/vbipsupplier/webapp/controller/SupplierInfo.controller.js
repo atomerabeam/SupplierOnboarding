@@ -24,6 +24,14 @@ sap.ui.define([
                 this.getView().getModel("PageModel").setProperty("/pageFlow/infoConfirm", false);
                 this.getView().getModel("PageModel").setProperty("/pageFlow/corporate", true);
             },
+            onContinueStep1: function () {
+                this.getView().getModel("PageModel").setProperty("/pageFlow/corporate", false);
+                this.getView().getModel("PageModel").setProperty("/pageFlow/shareholder", true);
+            },
+            onContinueStep2: function () {
+                this.getView().getModel("PageModel").setProperty("/pageFlow/shareholder", false);
+                this.getView().getModel("PageModel").setProperty("/pageFlow/complete", true);
+            },
             onReportInfo: function () {
             
             },
@@ -36,7 +44,8 @@ sap.ui.define([
                     "infoRequest": true,
                     "infoConfirm": false,
                     "corporate": false,
-                    "shareHolder": false,
+                    "shareholder": false,
+                    "complete": false
                 };
                 oPageModel.setProperty("/pageFlow", OpageFlow);
                 // Set model

@@ -1,0 +1,17 @@
+<core:FragmentDefinition 
+	xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    <VBox id="idMainPage5.VBox" class="sapUiLargeMargin" alignItems="Center" visible="{PageModel>/pageFlow/complete}">
+		<VBox id="idContentPage5.VBox" class="customBoxContent2" width="40%">
+			<VBox id="idSuccess.VBox" alignItems="Center">
+				<core:Icon id="idSuccess.Icon" src="sap-icon://sys-enter" size="40px" color="#173BE8"/>
+				<!-- @ui5ignore-patterns -->
+				<Text id="idUploadComplete.Text" class="customHeadline3" text="{i18n>uploadComplete}"/>
+				<!-- @ui5ignore-patterns -->
+				<Text id="idApplicationSent.Text" class="customText" text="{i18n>applicationSent}"/>
+				<!-- @ui5ignore-patterns -->
+				<Text id="idCloseBrowser.Text" class="customText" text="{i18n>closeBrowser}"/>
+			</VBox>
+		</VBox>
+    </VBox>
+</core:FragmentDefinition>

@@ -1,4 +1,3 @@
-
 <core:FragmentDefinition 
 	xmlns="sap.m"
     xmlns:core="sap.ui.core"
@@ -15,6 +14,9 @@
                                 <!-- @ui5ignore-patterns -->
 								<Text id="idReview1.Text" text="{i18n>reviewDetails}" class="customText"/>
                             </VBox>
+
+                            <VBox width="24px"/>
+                            
                             <VBox width="70%">
 								<Label id="idAccountNumberP3.Label" class="customLabel" text="{i18n>accountNumber}"></Label>
 								<Input id="idAccountNumberP3.Input"  editable="false" value="FDNB 0000 1235 1221"/>
@@ -31,8 +33,8 @@
                                 <!-- @ui5ignore-patterns -->
 								<Text id="idReview2.Text" text="{i18n>reviewDetails}" class="customText"/>
                             </VBox>
+                            <VBox width="24px"/>
                             <VBox width="70%">
-                                
 								<Label id="idSupplierIDP3.Label" class="customLabel" text="{i18n>supplierID}"></Label>
 								<Input id="idSupplierIDP3.Input" editable="false" value="SUPA123"/>
 								<VBox id="idSpaceP3S21.VBox" height="12px"/>
@@ -94,8 +96,9 @@
                                 <CheckBox text="{i18n>memorandum}" class="customRoundCheckbox" wrapping="true" />
                                 <CheckBox text="{i18n>boardResolution}" class="customRoundCheckbox" wrapping="true" />
                                 <CheckBox text="{i18n>identificationDocument}" class="customRoundCheckbox"  wrapping="true" />
-
                             </VBox>
+                            <VBox width="24px"/>
+                            
                             <VBox width="70%">
                                 <Text text="{i18n>copyOfBusinessReg}" class="classsubheading1"></Text>
                                 <Label text="{i18n>documentNumber}" class="sapUiTinyMarginTop"></Label>
@@ -105,29 +108,29 @@
 
                                 <!-- Upload Box -->
                                 <HBox class="classUploadBox" width="75%" visible="{FileModel>/file1/boxVisible1}">
-                                    <VBox class="classUploadItem" width="10%">
+                                    <VBox class="classUploadItem">
                                         <core:Icon src="sap-icon://upload-to-cloud" size="30px" color="#1434CB">
                                         </core:Icon>
                                     </VBox>
-                                    <VBox width="60%">
+                                    <VBox class="classUploadItem">
                                         <Text class="classTextBold" text="Click to upload or drag and drop"/>
                                         <Text text="PNG, PDF, JPG or GIF"/>
                                     </VBox>
-                                    <VBox class="classUploadItem" width="30%">
+                                    <VBox class="classUploadItem">
                                         <Button id="idUploadFile1.Button" type="Transparent" text="Select file" press="onUploadFileButton"></Button>
                                     </VBox>
                                 </HBox>
 
 
                                 <HBox class="classFileNameBox" width="75%" visible="false">
-                                    <VBox class="classUploadItem" width="10%">
+                                    <VBox class="classUploadItem">
                                         <core:Icon src="sap-icon://attachment-photo" size="20px" color="#1434CB" press="onDownloadFileButton">
                                         </core:Icon>
                                     </VBox>
-                                    <VBox width="70%">
+                                    <VBox class="classUploadItem">
                                         <Text text="{FileModel>/file1/fileName1}"/>
                                     </VBox>
-                                    <VBox class="classUploadItem" width="20%">
+                                    <VBox class="classUploadItem">
                                         <core:Icon src="sap-icon://decline" size="20px" color="#1434CB" press="onDeleteFileButton">
                                         </core:Icon>
                                     </VBox>
@@ -139,15 +142,15 @@
                                 <Label text="{i18n>nameOnDocument}"></Label>
                                 <Input id="idNameDoc2.Input"></Input>
                                 <HBox class="classUploadBox" width="75%" visible="{FileModel>/file1/boxVisible1}">
-                                    <VBox class="classUploadItem" width="10%">
+                                    <VBox class="classUploadItem">
                                         <core:Icon src="sap-icon://upload-to-cloud" size="30px" color="#1434CB">
                                         </core:Icon>
                                     </VBox>
-                                    <VBox width="60%">
+                                    <VBox class="classUploadItem">
                                         <Text class="classTextBold" text="Click to upload or drag and drop"/>
                                         <Text text="PNG, PDF, JPG or GIF"/>
                                     </VBox>
-                                    <VBox class="classUploadItem" width="30%">
+                                    <VBox class="classUploadItem">
                                         <Button id="idUploadFile2.Button" type="Transparent" text="Select file" press="onUploadFileButton"></Button>
                                     </VBox>
                                 </HBox>
@@ -177,15 +180,15 @@
                                 <Label text="{i18n>nameOnDocument}"></Label>
                                 <Input id="idNameDoc4.Input"></Input>
                                 <HBox class="classUploadBox" width="75%" visible="{FileModel>/file1/boxVisible1}">
-                                    <VBox class="classUploadItem" width="10%">
+                                    <VBox class="classUploadItem">
                                         <core:Icon src="sap-icon://upload-to-cloud" size="30px" color="#1434CB">
                                         </core:Icon>
                                     </VBox>
-                                    <VBox width="60%">
+                                    <VBox class="classUploadItem">
                                         <Text class="classTextBold" text="Click to upload or drag and drop"/>
                                         <Text text="PNG, PDF, JPG or GIF"/>
                                     </VBox>
-                                    <VBox class="classUploadItem" width="30%">
+                                    <VBox class="classUploadItem">
                                         <Button id="idUploadFile4.Button" type="Transparent" text="Select file" press="onUploadFileButton"></Button>
                                     </VBox>
                                 </HBox>
@@ -196,15 +199,15 @@
                                 <Label text="{i18n>nameOnDocument}"></Label>
                                 <Input id="idNameDoc5.Input"></Input>
                                 <HBox class="classUploadBox" width="75%" visible="{FileModel>/file1/boxVisible1}">
-                                    <VBox class="classUploadItem" width="10%">
+                                    <VBox class="classUploadItem">
                                         <core:Icon src="sap-icon://upload-to-cloud" size="30px" color="#1434CB">
                                         </core:Icon>
                                     </VBox>
-                                    <VBox width="60%">
+                                    <VBox class="classUploadItem">
                                         <Text class="classTextBold" text="Click to upload or drag and drop"/>
                                         <Text text="PNG, PDF, JPG or GIF"/>
                                     </VBox>
-                                    <VBox class="classUploadItem" width="30%">
+                                    <VBox class="classUploadItem">
                                         <Button id="idUploadFile5.Button" type="Transparent" text="Select file" press="onUploadFileButton"></Button>
                                     </VBox>
                                 </HBox>
@@ -212,7 +215,9 @@
                         </HBox>
 
                         <HBox id="idStep1.HBox" width="100%">
-                            <Button id="idStep1.Button" text="{i18n>nextStep}" class="sapUiSmallMarginEnd" type="Emphasized" press="onContinueStep1" />
+                            <!-- @ui5ignore-patterns -->
+                            <Button id="idStep1.Button" text="{i18n>continue}" class="sapUiSmallMarginEnd" 
+                                    type="Emphasized" press="onContinueStep1" />
                             <Label text="{i18n>lastAutoSaved}" class="sapUiTinyMarginTop"/>
                         </HBox>
                     </VBox>
