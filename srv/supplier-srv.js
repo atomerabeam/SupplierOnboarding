@@ -11,7 +11,7 @@ module.exports = cds.service.impl(async (service) => {
         let pID = req.data.pID;
         let oResult = { "supplier": {}, "catchError": {} }
         try {
-            const response = await fetch(`${oAuthToken.url}/odata/v4/catalog/BuyerInfo(buyerID='${pID}')`, {
+            const response = await fetch(`${oAuthToken.url}/odata/v4/supplier-onboarding/SupplierInfo(${pID})`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -24,6 +24,90 @@ module.exports = cds.service.impl(async (service) => {
             oResult.catchError = error;
         }
         return oResult;
+    }),
+
+    
+    service.on("getBuyer", async (req) => {
+        let oAuthToken = await vbipService.getToken();
+        let pID = req.data.pID;
+        let oResult = { "buyer": {}, "catchError": {} }
+        try {
+            const response = await fetch(`${oAuthToken.url}/odata/v4/catalog/BuyerInfo(buyerID='${pID}')`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": oAuthToken.token
+                }
+            });
+            
+            oResult.buyer = await response.json();
+        } catch (error) {
+            oResult.catchError = error;
+        }
+        return oResult;
+    }),
+    
+    service.on("getBuyerOnboarding", async (req) => {
+        let oAuthToken = await vbipService.getToken();
+        let pID = req.data.pID;
+        let oResult = { "buyerOnboarding": {}, "catchError": {} };
+        try {
+            const response = await fetch(`${oAuthToken.url}/odata/v4/catalog/BuyerOnboarding?$filter=buyerID eq '${pID}'`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": oAuthToken.token
+                }
+            });
+            
+            oResult.buyerOnboarding = await response.json();
+        } catch (error) {
+            oResult.catchError = error;
+        }
+        return oResult;
+    }),
+
+    service.on("getVBIP", async (req) => {
+        let oAuthToken = await vbipService.getToken();
+        let pID = req.data.pID;
+        let oResult = { "vbip": {}, "catchError": {} };
+        try {
+            const response = await fetch(`${oAuthToken.url}/odata/v4/btponboarding/BTPOnboarding(vbipID='${pID}')`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": oAuthToken.token
+                }
+            });
+            
+            oResult.vbip = await response.json();
+        } catch (error) {
+            oResult.catchError = error;
+        }
+        return oResult;
+    }),
+
+    service.on("getBusinessNature", async () => {
+        let oAuthToken = await vbipService.getToken();
+        let oResult = { "businessNature": {}, "catchError": {} };
+        try {
+            const response = await fetch(`${oAuthToken.url}/odata/v4/catalog/BusinessNature`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": oAuthToken.token
+                }
+            });
+            
+            oResult.businessNature = await response.json();
+        } catch (error) {
+            oResult.catchError = error;
+        }
+        return oResult;
+    }),
+
+    service.on("getNothing", async () => {
+        // Nothing
     }),
 
     service.on("sendMail", async (req) => {
@@ -42,7 +126,8 @@ module.exports = cds.service.impl(async (service) => {
         let mailTo = req.data.mailTo;
         let mailSubject = req.data.mailSubject;
         let mailContent = req.data.mailContent;
-        OTPService.sendEmailOTP(pID, smtpDestination, mailTo, mailSubject, mailContent);
+        let oResult = OTPService.sendEmailOTP(pID, smtpDestination, mailTo, mailSubject, mailContent);
+        return oResult;
     }),
 
     service.on("checkOTP", async (req) => {

@@ -12,7 +12,7 @@
                                 <Text text="{i18n>shareholderInfo}" class="customSubtitle1"/>
                                 <Text text="{i18n>shareholderContent}" class="customText"/>
                             </VBox>
-                            <VBox width="85%" items="">
+                            <VBox width="85%" items="{ShareModel>/info}">
                                 <items>
                                     <Panel expandable="true" width="auto" class="classShareHolderBorder sapUiResponsiveMargin">
                                         <headerToolbar>

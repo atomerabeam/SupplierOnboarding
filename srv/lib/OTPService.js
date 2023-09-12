@@ -1,6 +1,7 @@
 const mailClient = require("@sap-cloud-sdk/mail-client");
 const oConnect = require('@sap-cloud-sdk/connectivity');
 let aOTP = [];
+let aVerified = [];
 
 async function sendEmail(destinationName, mailTo, subject, htmlBody) {
 
@@ -29,8 +30,8 @@ async function sendEmailOTP(pID, destinationName, mailTo, subject, htmlBody) {
         requireTLS: true
     };
 
-    // mailClient.sendMail({ destinationName: destinationName }, [mailConfig], [mailClientOptions]);
-
+    let oResult = await mailClient.sendMail({ destinationName: destinationName }, [mailConfig], [mailClientOptions]);
+    return oResult;
 }
 
 async function genOTP(pID) {
@@ -72,12 +73,16 @@ async function checkOTP(pID, inputOTP) {
         if (Date.now() < oValidOTP.expiredTime) {
             let index = aOTP.findIndex(item => item.uID === pID && item.OTP === inputOTP);
             aOTP.splice(index, 1);
+            aVerified.push({
+                "uID": pID,
+            });
             return "OK";
         } else {
             return "Expired";
         }
     }
 }
+
 module.exports = { sendEmail, sendEmailOTP, checkOTP };
 
 

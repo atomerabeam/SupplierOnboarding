@@ -9,35 +9,45 @@
 			<Text id="idConfirmFollowing.Text" text="{i18n>confirmFollowing}" class="customText"/>
 			<VBox id="idSpaceP2S1.VBox" height="32px"/>
 
-			<Label id="idSupplierIDP2.Label" class="customLabel" text="{i18n>supplierID}"></Label>
-			<Input id="idSupplierIDP2.Input" editable="false" value="SUPA123"/>
+			<Label id="idSupplierIDP2.Label" class="customLabel" text="{i18n>supplierID}"/>
+			<Input id="idSupplierIDP2.Input" editable="false" value="{SupplierInfo>/supplier/supplierID}"/>
 			<VBox id="idSpaceP2S2.VBox" height="12px"/>
-			<Label id="idLegalEntityNameP2.Label" class="customLabel" text="{i18n>legalName}"></Label>
-			<Input id="idLegalP2.Input" editable="false" value="Company Supplier"/>
+			<Label id="idLegalEntityNameP2.Label" class="customLabel" text="{i18n>legalName}"/>
+			<!-- @ui5ignore-patterns -->
+			<Input id="idLegalP2.Input" editable="true" value="{SupplierInfo>/supplier/supplierName}"/>
 			<VBox id="idSpaceP2S3.VBox" height="12px"/>
-			<Label id="idCountryP2.Label" class="customLabel" text="{i18n>country}"></Label>
-			<Input id="idCountryP2.Input"  editable="false" value="Singapore"/>
+			<Label id="idCountryP2.Label" class="customLabel" text="{i18n>country}"/>
+			<Input id="idCountryP2.Input"  editable="false" value="{SupplierInfo>/supplier/country}"/>
 			<VBox id="idSpaceP2S4.VBox" height="12px"/>
-			<Label id="idCityP2.Label" class="customLabel" text="{i18n>city}"></Label>
-			<Input id="idCityP2.Input"  editable="false" value="Singapore"/>
+			<Label id="idCityP2.Label" class="customLabel" text="{i18n>city}"/>
+			<Input id="idCityP2.Input"  editable="false" value="{SupplierInfo>/supplier/city}"/>
 			<VBox id="idSpaceP2S5.VBox" height="12px"/>
-			<Label id="idStateP2.Label" class="customLabel" text="{i18n>state}"></Label>
-			<Input id="idStateP2.Input"  editable="false" value="Singapore"/>
+			<Label id="idStateP2.Label" class="customLabel" text="{i18n>state}"/>
+			<Input id="idStateP2.Input"  editable="false" value="{SupplierInfo>/supplier/state}"/>
 			<VBox id="idSpaceP2S6.VBox" height="12px"/>
-			<Label id="idCompanyAddressP2.Label" class="customLabel" text="{i18n>companyAddress}"></Label>
-			<Input id="idCompanyAddressP2.Input"  editable="false" value="123 Orchard Road"/>
+			<Label id="idCompanyAddressP2.Label" class="customLabel" text="{i18n>companyAddress}"/>
+			<!-- @ui5ignore-patterns -->
+			<Input id="idCompanyAddressP2.Input" editable="false" 
+				   value="{SupplierInfo>/supplier/completeAddress}"/>
 			<VBox id="idSpaceP2S7.VBox" height="12px"/>
-			<Label id="idPostalCodeP2.Label" class="customLabel" text="{i18n>postalCode}"></Label>
-			<Input id="idPostalCodeP2.Input"  editable="false" value="546080"/>
+			<!-- @ui5ignore-patterns -->
+			<Label id="idPostalCodeP2.Label" class="customLabel" text="{i18n>postalCode}"/>
+			<!-- @ui5ignore-patterns -->
+			<Input id="idPostalCodeP2.Input"  editable="false" value="{SupplierInfo>/supplier/zipCode}"/>
 			<VBox id="idSpaceP2S8.VBox" height="12px"/>
-			<Label id="idAccountNumberP2.Label" class="customLabel" text="{i18n>accountNumber}"></Label>
-			<Input id="idAccountNumberP2.Input"  editable="false" value="FDNB 0000 1235 1221"/>
+			<Label id="idAccountNumberP2.Label" class="customLabel" text="{i18n>accountNumber}"/>
+			<!-- @ui5ignore-patterns -->
+			<Input id="idAccountNumberP2.Input"  editable="false" 
+				   value="{SupplierInfo>/supplier/accountNumber}"/>
 			<VBox id="idSpaceP2S9.VBox" height="12px"/>
-			<Label id="idBankCodeP2.Label" class="customLabel" text="{i18n>bankCode}"></Label>
-			<Input id="idBankCodeP2.Input"  editable="false" value="ABC12345"/>
+			<Label id="idBankCodeP2.Label" class="customLabel" text="{i18n>bankCode}"/>
+			<Input id="idBankCodeP2.Input"  editable="false" value="{SupplierInfo>/supplier/bankCode}"/>
 			<VBox id="idSpaceP2S10.VBox" height="12px"/>
-			<Label id="idBusinessRegNumP2.Label" class="customLabel" text="{i18n>businessRegNum}"></Label>
-			<Input id="idBusinessRegNumP2.Input" class="customInputSolid" editable="false" value="Singapore"/>
+			<!-- @ui5ignore-patterns -->
+			<Label id="idBusinessRegNumP2.Label" class="customLabel" text="{i18n>businessRegNum}"/>
+			<!-- @ui5ignore-patterns -->
+			<Input id="idBusinessRegNumP2.Input" class="customInputSolid" 
+				   editable="false" value="{SupplierInfo>/supplier/businessRegNum}"/>
 			<VBox id="idSpaceP2S11.VBox" height="32px"/>
 
 			<HBox id="idButtonP2.HBox">
@@ -49,8 +59,7 @@
 						text="{i18n>reportInfo}" press="onReportInfo"/>
 				<VBox id="idSpaceP2S12.VBox" width="50%"/>
 				<VBox id="idImage.VBox" class="sapUiSmallMarginEnd">
-					<Image src="/vbipsupplier/webapp/images/Global.png" width="200px" />
-
+					<Image id="idGlobal.Image" src="/vbipsupplier/webapp/images/Global.png" width="200px" />
 				</VBox>
 			</HBox>
 		</VBox>

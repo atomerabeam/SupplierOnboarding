@@ -7,6 +7,7 @@
             <core:Fragment fragmentName="vbipsupplier.view.fragment.HeaderContent" type="XML"/>
         </customHeader>
         <content>
+            <core:Fragment fragmentName="vbipsupplier.view.fragment.LandingPage" type="XML"/>
             <core:Fragment fragmentName="vbipsupplier.view.fragment.OneTimePassword" type="XML"/>
         </content>
         <footer>

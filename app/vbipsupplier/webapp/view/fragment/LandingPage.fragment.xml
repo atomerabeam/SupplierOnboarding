@@ -1,26 +1,12 @@
 <core:FragmentDefinition 
 	xmlns="sap.m"
     xmlns:core="sap.ui.core">
-    <VBox id="idMain.VBox" class="sapUiSmallMargin">
-		<VBox id="idItem.VBox" alignItems="Center">
-			<VBox id="idPanelContent.VBox" class="customBoxContent" width="50%" >
-				<!-- @ui5ignore-patterns -->
-				<Text id="idTitle.Text" text="Please enter your OTP sent to your email" class="mainTitle"/>
-				<!-- @ui5ignore-patterns -->
-				<Text id="idCompanyCode.Text" text="Your OTP has been sent to your email. If you encounter any problems, please reach out to [Buyer]" class="subTitle"/>
-				
-				<Text id="idLine2.Text" class="spaceLine"/>
-				<Label id="idOnetimePassword.Label" text="One-time password"></Label>
-				
-				<Input id="idOTP.Input" value="" width="150px"
-						maxLength="6"/>
-			
-				<Text id="idLine3.Text" class="spaceLine"/>
-				<HBox id="idButton.HBox">
-					<Button id="idContinue.Button" class="classButtonRow" type="Emphasized" 
-							text="Continue" press="onContinueButtonPress"/>
-				</HBox>
-			</VBox>
+    <VBox id="idMainP1.VBox" class="sapUiSmallMargin" alignItems="Center" 
+		  visible="{PageModel>/pageFlow/landing}">
+		<VBox id="idItemP1.VBox" class="customBoxContent" width="65%">
+			<!-- @ui5ignore-patterns -->
+			<Text id="idTitleP1.Text" text="Invalid URL, please access correct URL from your email" 
+				  class="customSubtitle1"/>
 		</VBox>
         
     </VBox>

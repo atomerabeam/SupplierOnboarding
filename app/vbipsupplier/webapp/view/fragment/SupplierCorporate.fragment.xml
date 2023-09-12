@@ -4,82 +4,93 @@
 	xmlns:form="sap.ui.layout.form">
     <VBox id="idMainPage3.VBox" class="sapUiSmallMargin" alignItems="Center" visible="{PageModel>/pageFlow/corporate}">
 		<VBox id="idContentPage3.VBox" class="customBoxContent" width="65%">
-			<form:SimpleForm editable="true" singleContainerFullSize="false">
+			<form:SimpleForm id="idMain.SimpleForm" editable="true" singleContainerFullSize="false">
                 <form:content>
-                    <VBox>
-						<HBox>
-                            <VBox width="30%">
+                    <VBox id="idMain.VBox">
+						<HBox id="idBankInfo.HBox">
+                            <VBox id="idBankText.VBox" width="30%">
 								<!-- @ui5ignore-patterns -->
                                 <Text id="idBankInfo.Text" text="{i18n>bankInfo}" class="customSubtitle1"/>
                                 <!-- @ui5ignore-patterns -->
 								<Text id="idReview1.Text" text="{i18n>reviewDetails}" class="customText"/>
                             </VBox>
 
-                            <VBox width="24px"/>
+                            <VBox id="idSpaceP3S1.VBox" width="24px"/>
                             
-                            <VBox width="70%">
-								<Label id="idAccountNumberP3.Label" class="customLabel" text="{i18n>accountNumber}"></Label>
-								<Input id="idAccountNumberP3.Input"  editable="false" value="FDNB 0000 1235 1221"/>
+                            <VBox id="idBankInput.VBox" width="70%">
+								<Label id="idAccountNumberP3.Label" class="customLabel" text="{i18n>accountNumber}"/>
+								<Input id="idAccountNumberP3.Input"  editable="false" value="{SupplierInfo>/supplier/accountNumber}"/>
 								<VBox id="idSpaceP3S11.VBox" height="12px"/>
-								<Label id="idBankCodeP3.Label" class="customLabel" text="{i18n>bankCode}"></Label>
-								<Input id="idBankCodeP3.Input"  editable="false" value="ABC12345"/>
+								<Label id="idBankCodeP3.Label" class="customLabel" text="{i18n>bankCode}"/>
+								<Input id="idBankCodeP3.Input"  editable="false" value="{SupplierInfo>/supplier/bankCode}"/>
                             </VBox>
                         </HBox>
 						<HBox id="idSpaceP3S1.HBox" height="40px"/>
 
-                        <HBox>
-                            <VBox width="30%">
+                        <HBox id="idCorporationDetails.HBox">
+                            <VBox id="idCorporationText.VBox" width="30%">
                                 <Text id="idCorporationDetails.Text" text="{i18n>corporationDetails}" class="customSubtitle1"/>
                                 <!-- @ui5ignore-patterns -->
 								<Text id="idReview2.Text" text="{i18n>reviewDetails}" class="customText"/>
                             </VBox>
-                            <VBox width="24px"/>
-                            <VBox width="70%">
-								<Label id="idSupplierIDP3.Label" class="customLabel" text="{i18n>supplierID}"></Label>
-								<Input id="idSupplierIDP3.Input" editable="false" value="SUPA123"/>
+                            <VBox id="idSpaceP3S2.VBox" width="24px"/>
+                            <VBox id="idCorporationInput.VBox" width="70%">
+								<Label id="idSupplierIDP3.Label" class="customLabel" text="{i18n>supplierID}"/>
+								<Input id="idSupplierIDP3.Input" editable="false" value="{SupplierInfo>/supplier/supplierID}"/>
 								<VBox id="idSpaceP3S21.VBox" height="12px"/>
-								<Label id="idLegalEntityNameP3.Label" class="customLabel" text="{i18n>legalName}"></Label>
-								<Input id="idLegalP3.Input" editable="false" value="Company Supplier"/>
+								<Label id="idLegalEntityNameP3.Label" class="customLabel" text="{i18n>legalName}"/>
+                                <!-- @ui5ignore-patterns -->
+								<Input id="idLegalEntityNameP3.Input" editable="false" 
+                                       value="{SupplierInfo>/supplier/supplierName}"/>
 								<VBox id="idSpaceP3S22.VBox" height="12px"/>
 								
-								<Label id="idBusinessRegNumP3.Label" class="customLabel" text="{i18n>businessRegNum}"></Label>
-								<Input id="idBusinessRegNumP3.Input" class="customInputSolid" editable="false" value="Singapore"/>
+								<!-- @ui5ignore-patterns -->
+                                <Label id="idBusinessRegNumP3.Label" class="customLabel" text="{i18n>businessRegNum}"/>
+								<Input id="idBusinessRegNumP3.Input" class="customInputSolid" editable="false" 
+                                       value="{SupplierInfo>/supplier/businessRegNum}"/>
 								<VBox id="idSpaceP3S23.VBox" height="12px"/>
-								<Label id="idCountryP3.Label" class="customLabel" text="{i18n>country}"></Label>
-								<Input id="idCountryP3.Input"  editable="false" value="Singapore"/>
-								<VBox id="idSpaceP3S5.VBox" height="12px"/>
-								<Label id="idCityP3.Label" class="customLabel" text="{i18n>city}"></Label>
-								<Input id="idCityP3.Input"  editable="false" value="Singapore"/>
-								<VBox id="idSpaceP3S6.VBox" height="12px"/>
-								<Label id="idStateP3.Label" class="customLabel" text="{i18n>state}"></Label>
-								<Input id="idStateP3.Input"  editable="false" value="Singapore"/>
-								<VBox id="idSpaceP3S7.VBox" height="12px"/>
-								<Label id="idCompanyAddressP3.Label" class="customLabel" text="{i18n>companyAddress}"></Label>
-								<Input id="idCompanyAddressP3.Input"  editable="false" value="123 Orchard Road"/>
-								<VBox id="idSpaceP3S8.VBox" height="12px"/>
-								<Label id="idPostalCodeP3.Label" class="customLabel" text="{i18n>postalCode}"></Label>
-								<Input id="idPostalCodeP3.Input"  editable="false" value="546080"/>
-								<VBox id="idSpaceP3S9.VBox" height="12px"/>
-								<Label id="idBusinessNature.Label" text="{i18n>businessNature}"></Label>
+								<Label id="idCountryP3.Label" class="customLabel" text="{i18n>country}"/>
+								<Input id="idCountryP3.Input"  editable="false" value="{SupplierInfo>/supplier/country}"/>
+								<VBox id="idSpaceP3S24.VBox" height="12px"/>
+								<Label id="idCityP3.Label" class="customLabel" text="{i18n>city}"/>
+								<Input id="idCityP3.Input"  editable="false" value="{SupplierInfo>/supplier/city}"/>
+								<VBox id="idSpaceP3S25.VBox" height="12px"/>
+								<Label id="idStateP3.Label" class="customLabel" text="{i18n>state}"/>
+								<Input id="idStateP3.Input"  editable="false" value="{SupplierInfo>/supplier/state}"/>
+								<VBox id="idSpaceP3S26.VBox" height="12px"/>
+								<Label id="idCompanyAddressP3.Label" class="customLabel" text="{i18n>companyAddress}"/>
+                                <!-- @ui5ignore-patterns -->
+								<Input id="idCompanyAddressP3.Input"  editable="false" 
+                                       value="{SupplierInfo>/supplier/completeAddress}"/>
+								<VBox id="idSpaceP3S27.VBox" height="12px"/>
+                                <!-- @ui5ignore-patterns -->
+								<Label id="idPostalCodeP3.Label" class="customLabel" text="{i18n>postalCode}"/>
+                                <!-- @ui5ignore-patterns -->
+								<Input id="idPostalCodeP3.Input"  editable="false" 
+                                       value="{SupplierInfo>/supplier/zipCode}"/>
+								<VBox id="idSpaceP3S28.VBox" height="12px"/>
+								<Label id="idBusinessNature.Label" text="{i18n>businessNature}"/>
                                 <Select id="idBusinessNature.Select" items="{path: 'F4>/businessNature'}">
-                                    <core:Item id="idBusinessNature.Item" key="{F4>ID}" text="{F4>BusinessNature}"/>
+                                    <core:Item id="idBusinessNature.Item" key="{F4>selectKey}" text="{F4>businessNature}"/>
                                 </Select>
-                                <Label id="idShareholderCount.Label" text="{i18n>shareholderCount}"></Label>
-                                <HBox >
-                                    <Select id="idShareHolderCount.Select" forceSelection="false" change="onChangeShareCount" selectedKey="{oModelData>/entityDetail/shareHolderCount}">
-                                        <core:Item key="0" text="1" />
-                                        <core:Item key="1" text="2" />
-                                        <core:Item key="2" text="3" />
-                                        <core:Item key="3" text="4" />
-                                        <core:Item key="4" text="5" />
-                                        <core:Item key="5" text="6" />
-                                        <core:Item key="6" text="7" />
-                                        <core:Item key="7" text="8" />
-                                        <core:Item key="8" text="9" />
-                                        <core:Item key="9" text="10" />
-                                        <core:Item key="9" text="11" />
+                                <Label id="idShareholderCount.Label" text="{i18n>shareholderCount}"/>
+                                <HBox id="idShareholderCount.HBox">
+                                    <!-- @ui5ignore-patterns -->
+                                    <Select id="idShareHolderCount.Select" forceSelection="true" class="sapUiSmallMarginEnd"
+                                            change="onChangeShareCount" selectedKey="{F4>/shareholder/count}">
+                                        <core:Item id="idCount1.Item" key="1" text="1"/>
+                                        <core:Item id="idCount2.Item" key="2" text="2"/>
+                                        <core:Item id="idCount3.Item" key="3" text="3"/>
+                                        <core:Item id="idCount4.Item" key="4" text="4"/>
+                                        <core:Item id="idCount5.Item" key="5" text="5"/>
+                                        <core:Item id="idCount6.Item" key="6" text="6"/>
+                                        <core:Item id="idCount7.Item" key="7" text="7"/>
+                                        <core:Item id="idCount8.Item" key="8" text="8"/>
+                                        <core:Item id="idCount9.Item" key="9" text="9"/>
+                                        <core:Item id="idCount10.Item" key="10" text="10"/>
                                     </Select>
-                                    <core:Icon src="sap-icon://hint" class="sapUiTinyMarginTop iconSize" color="#1434CB" press="onInfoIconPress"></core:Icon>
+                                    <core:Icon id="idShareholderInfo.Icon" src="sap-icon://hint" class="sapUiTinyMarginTop iconSize" 
+                                               color="#1434CB" press="onInfoIconPress"/>
                                 </HBox>
                             </VBox>
                         </HBox>
@@ -92,22 +103,22 @@
 								<!-- @ui5ignore-patterns -->
                                 <Text id="idReview3.Text" text="{i18n>reviewDetails}" class="customText"/>
 								<CheckBox text="{i18n>copyOfBusinessReg}" class="customRoundCheckbox" wrapping="true"/>
-                                <CheckBox text="{i18n>certOfIncorporation}" class="customRoundCheckbox" wrapping="true" />
-                                <CheckBox text="{i18n>memorandum}" class="customRoundCheckbox" wrapping="true" />
-                                <CheckBox text="{i18n>boardResolution}" class="customRoundCheckbox" wrapping="true" />
-                                <CheckBox text="{i18n>identificationDocument}" class="customRoundCheckbox"  wrapping="true" />
+                                <CheckBox text="{i18n>certOfIncorporation}" class="customRoundCheckbox" wrapping="true"/>
+                                <!-- <CheckBox text="{i18n>memorandum}" class="customRoundCheckbox" wrapping="true"/>
+                                <CheckBox text="{i18n>boardResolution}" class="customRoundCheckbox" wrapping="true"/>
+                                <CheckBox text="{i18n>identificationDocument}" class="customRoundCheckbox"  wrapping="true"/> -->
                             </VBox>
                             <VBox width="24px"/>
                             
                             <VBox width="70%">
-                                <Text text="{i18n>copyOfBusinessReg}" class="classsubheading1"></Text>
-                                <Label text="{i18n>documentNumber}" class="sapUiTinyMarginTop"></Label>
+                                <Text text="{i18n>copyOfBusinessReg}" class="classsubheading1"/>
+                                <Label text="{i18n>documentNumber}" class="sapUiTinyMarginTop"/>
                                 <Input id="idDoc1.Input"></Input>
-                                <Label text="{i18n>nameOnDocument}"></Label>
+                                <Label text="{i18n>nameOnDocument}"/>
                                 <Input id="idNameDoc1.Input"></Input>
 
                                 <!-- Upload Box -->
-                                <HBox class="classUploadBox" width="75%" visible="{FileModel>/file1/boxVisible1}">
+                                <HBox class="classUploadBox" width="75%" visible="{FileModel>/file1/uploadVisible}">
                                     <VBox class="classUploadItem">
                                         <core:Icon src="sap-icon://upload-to-cloud" size="30px" color="#1434CB">
                                         </core:Icon>
@@ -117,31 +128,37 @@
                                         <Text text="PNG, PDF, JPG or GIF"/>
                                     </VBox>
                                     <VBox class="classUploadItem">
-                                        <Button id="idUploadFile1.Button" type="Transparent" text="Select file" press="onUploadFileButton"></Button>
+                                        <!-- @ui5ignore-patterns -->
+                                        <Button id="idUploadFile1.Button" type="Transparent" 
+                                                text="Select file" press="onUploadFileButton"></Button>
                                     </VBox>
                                 </HBox>
 
-
-                                <HBox class="classFileNameBox" width="75%" visible="false">
+                                <HBox class="classFileNameBox" width="75%" visible="{FileModel>/file1/fileVisible}">
                                     <VBox class="classUploadItem">
-                                        <core:Icon src="sap-icon://attachment-photo" size="20px" color="#1434CB" press="onDownloadFileButton">
+                                        <!-- @ui5ignore-patterns -->
+                                        <core:Icon id="idDownloadFile1.Icon" src="sap-icon://attachment-photo" 
+                                                   size="20px" color="#1434CB" press="onDownloadFileButton">
                                         </core:Icon>
                                     </VBox>
                                     <VBox class="classUploadItem">
                                         <Text text="{FileModel>/file1/fileName1}"/>
                                     </VBox>
                                     <VBox class="classUploadItem">
-                                        <core:Icon src="sap-icon://decline" size="20px" color="#1434CB" press="onDeleteFileButton">
+                                        <!-- @ui5ignore-patterns -->
+                                        <core:Icon id="idDeleteFile1.Icon" src="sap-icon://decline" 
+                                                   size="20px" color="#1434CB" press="onDeleteFileButton">
                                         </core:Icon>
                                     </VBox>
                                 </HBox>
 
-                                <Text text="{i18n>certOfIncorporation}" class="classsubheading1 sapUiTinyMarginTop" wrapping="true"></Text>
-                                <Label text="{i18n>documentNumber}" class="sapUiTinyMarginTop"></Label>
+                                <Text text="{i18n>certOfIncorporation}" 
+                                      class="classsubheading1 sapUiTinyMarginTop" wrapping="true"/>
+                                <Label text="{i18n>documentNumber}" class="sapUiTinyMarginTop"/>
                                 <Input id="idDoc2.Input"></Input>
-                                <Label text="{i18n>nameOnDocument}"></Label>
+                                <Label text="{i18n>nameOnDocument}"/>
                                 <Input id="idNameDoc2.Input"></Input>
-                                <HBox class="classUploadBox" width="75%" visible="{FileModel>/file1/boxVisible1}">
+                                <HBox class="classUploadBox" width="75%" visible="{FileModel>/file2/uploadVisible}">
                                     <VBox class="classUploadItem">
                                         <core:Icon src="sap-icon://upload-to-cloud" size="30px" color="#1434CB">
                                         </core:Icon>
@@ -151,14 +168,33 @@
                                         <Text text="PNG, PDF, JPG or GIF"/>
                                     </VBox>
                                     <VBox class="classUploadItem">
-                                        <Button id="idUploadFile2.Button" type="Transparent" text="Select file" press="onUploadFileButton"></Button>
+                                        <!-- @ui5ignore-patterns -->
+                                        <Button id="idUploadFile2.Button" type="Transparent" 
+                                                text="Select file" press="onUploadFileButton"></Button>
                                     </VBox>
                                 </HBox>
 
-                                <Text text="{i18n>memorandum}" class=" classsubheading1 sapUiTinyMarginTop"></Text>
-                                <Label text="{i18n>documentNumber}" class="sapUiTinyMarginTop"></Label>
+                                <HBox class="classFileNameBox" width="75%" visible="{FileModel>/file2/fileVisible}">
+                                    <VBox class="classUploadItem">
+                                        <!-- @ui5ignore-patterns -->
+                                        <core:Icon id="idDownloadFile2.Icon" src="sap-icon://attachment-photo" 
+                                                   size="20px" color="#1434CB" press="onDownloadFileButton">
+                                        </core:Icon>
+                                    </VBox>
+                                    <VBox class="classUploadItem">
+                                        <Text text="{FileModel>/file1/fileName2}"/>
+                                    </VBox>
+                                    <VBox class="classUploadItem">
+                                        <!-- @ui5ignore-patterns -->
+                                        <core:Icon id="idDeleteFile2.Icon" src="sap-icon://decline" 
+                                                   size="20px" color="#1434CB" press="onDeleteFileButton">
+                                        </core:Icon>
+                                    </VBox>
+                                </HBox>
+                                <!-- <Text text="{i18n>memorandum}" class=" classsubheading1 sapUiTinyMarginTop"/>
+                                <Label text="{i18n>documentNumber}" class="sapUiTinyMarginTop"/>
                                 <Input id="idDoc3.Input"></Input>
-                                <Label text="{i18n>nameOnDocument}"></Label>
+                                <Label text="{i18n>nameOnDocument}"/>
                                 <Input id="idNameDoc3.Input"></Input>
                                 <HBox class="classUploadBox" width="75%" visible="{FileModel>/file1/boxVisible1}">
                                     <VBox class="classUploadItem">
@@ -174,10 +210,10 @@
                                     </VBox>
                                 </HBox>
 
-                                <Text text="{i18n>boardResolution}" class="classsubheading1 sapUiTinyMarginTop"></Text>
-                                <Label text="{i18n>documentNumber}" class="sapUiTinyMarginTop"></Label>
+                                <Text text="{i18n>boardResolution}" class="classsubheading1 sapUiTinyMarginTop"/>
+                                <Label text="{i18n>documentNumber}" class="sapUiTinyMarginTop"/>
                                 <Input id="idDoc4.Input"></Input>
-                                <Label text="{i18n>nameOnDocument}"></Label>
+                                <Label text="{i18n>nameOnDocument}"/>
                                 <Input id="idNameDoc4.Input"></Input>
                                 <HBox class="classUploadBox" width="75%" visible="{FileModel>/file1/boxVisible1}">
                                     <VBox class="classUploadItem">
@@ -193,10 +229,10 @@
                                     </VBox>
                                 </HBox>
 
-                                <Text text="{i18n>identificationDocument}" class="sapUiTinyMarginTop classsubheading1"></Text>
-                                <Label text="{i18n>documentNumber}" class="sapUiTinyMarginTop"></Label>
+                                <Text text="{i18n>identificationDocument}" class="sapUiTinyMarginTop classsubheading1"/>
+                                <Label text="{i18n>documentNumber}" class="sapUiTinyMarginTop"/>
                                 <Input id="idDoc5.Input"></Input>
-                                <Label text="{i18n>nameOnDocument}"></Label>
+                                <Label text="{i18n>nameOnDocument}"/>
                                 <Input id="idNameDoc5.Input"></Input>
                                 <HBox class="classUploadBox" width="75%" visible="{FileModel>/file1/boxVisible1}">
                                     <VBox class="classUploadItem">
@@ -210,15 +246,19 @@
                                     <VBox class="classUploadItem">
                                         <Button id="idUploadFile5.Button" type="Transparent" text="Select file" press="onUploadFileButton"></Button>
                                     </VBox>
-                                </HBox>
+                                </HBox> -->
                             </VBox>
                         </HBox>
+						<HBox id="idSpaceP3S3.HBox" height="40px"/>
 
                         <HBox id="idStep1.HBox" width="100%">
                             <!-- @ui5ignore-patterns -->
                             <Button id="idStep1.Button" text="{i18n>continue}" class="sapUiSmallMarginEnd" 
-                                    type="Emphasized" press="onContinueStep1" />
-                            <Label text="{i18n>lastAutoSaved}" class="sapUiTinyMarginTop"/>
+                                    type="Emphasized" press="onContinueStep1"/>
+                            <!-- @ui5ignore-patterns -->
+                            <Button id="idSaveAndExit.Button" text="{i18n>saveAndExit}" class="sapUiSmallMarginEnd" 
+                                    type="Transparent" press="onSaveAndExit"/>
+                            <Label id="idLastAutosaved.Label" text="{i18n>lastAutoSaved}" class="sapUiTinyMarginTop"/>
                         </HBox>
                     </VBox>
                 </form:content>

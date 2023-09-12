@@ -20,6 +20,17 @@ sap.ui.define([
                 return oModel;
             },
 
+            getNothing: async function () {
+                try {
+                    const response = await fetch("/odata/v4/supplier/getNothing", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        }
+                    });
+                } catch (error) {
+                }
+            },
             getSupplier: async function (oParameter) {
                 let oResult = { "response": {}, "catchError": {} }
                 try {
@@ -29,6 +40,77 @@ sap.ui.define([
                             "Content-Type": "application/json"
                         },
                         body: JSON.stringify(oParameter),
+                    });
+
+                    oResult.response = await response.json();
+                } catch (error) {
+                    oResult.catchError = error;
+                }
+                return oResult;
+            },
+
+            getBuyer: async function (oParameter) {
+                let oResult = { "response": {}, "catchError": {} }
+                try {
+                    const response = await fetch("/odata/v4/supplier/getBuyer", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(oParameter),
+                    });
+
+                    oResult.response = await response.json();
+                } catch (error) {
+                    oResult.catchError = error;
+                }
+                return oResult;
+            },
+
+            getBuyerOnboarding: async function (oParameter) {
+                let oResult = { "response": {}, "catchError": {} }
+                try {
+                    const response = await fetch("/odata/v4/supplier/getBuyerOnboarding", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(oParameter),
+                    });
+
+                    oResult.response = await response.json();
+                } catch (error) {
+                    oResult.catchError = error;
+                }
+                return oResult;
+            },
+
+            getVBIP: async function (oParameter) {
+                let oResult = { "response": {}, "catchError": {} }
+                try {
+                    const response = await fetch("/odata/v4/supplier/getVBIP", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(oParameter),
+                    });
+
+                    oResult.response = await response.json();
+                } catch (error) {
+                    oResult.catchError = error;
+                }
+                return oResult;
+            },
+
+            getBusinessNature: async function () {
+                let oResult = { "response": {}, "catchError": {} }
+                try {
+                    const response = await fetch("/odata/v4/supplier/getBusinessNature", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        }
                     });
 
                     oResult.response = await response.json();

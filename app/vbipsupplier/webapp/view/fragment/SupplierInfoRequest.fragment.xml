@@ -6,38 +6,46 @@
 			<!-- @ui5ignore-patterns -->
 			<Text id="idRequestInfo.Text" text="{i18n>requestInfo}" class="mainTitle"/>
 			<!-- @ui5ignore-patterns -->
-			<Text id="idCompanyCode.Text" text="{i18n>yourCustomer}" class="customText"/>
+			<Text id="idCompanyCode.Text" 
+				  text="{i18n>yourCustomer}  {SupplierInfo>/buyer/legalName}{i18n>yourCustomerP2}" 
+				  class="customText"/>
 			<VBox id="idSpaceP1S1.VBox" height="32px"/>
 
 			<Text id="idLegalEntity.Text" text="{i18n>legalEntity}" class="subTitle"/>
 			<VBox id="idSpaceP1S2.VBox" height="16px"/>
 
-			<Label id="idLegalEntityNameP1.Label" class="customLabel" text="{i18n>legalName}"></Label>
-			<Input id="idLegalP1.Input" width="60%" editable="false" value="Company Supplier"/>
+			<Label id="idLegalEntityNameP1.Label" class="customLabel" text="{i18n>legalName}"/>
+			<!-- @ui5ignore-patterns -->
+			<Input id="idLegalNameP1.Input" width="60%" editable="false" value="{SupplierInfo>/supplier/supplierName}"/>
 			<VBox id="idSpaceP1S3.VBox" height="16px"/>
 
 			<!-- @ui5ignore-patterns -->
-			<Label id="idSAPCustomer.Label" class="customLabel" text="{i18n>SAPCustomer}"></Label>
-			<Select id="idSAPCustomer.Select" forceSelection="false" selectedKey="Yes" width="60%">
-				<core:Item key="Yes" text="Yes" />
-				<core:Item key="No" text="No" />
+			<Label id="idSAPCustomer.Label" class="customLabel" text="{i18n>SAPCustomer}"/>
+			<Select id="idSAPCustomer.Select" forceSelection="false" 
+					selectedKey="{RequestInfo>/requestInfo/SAPCustomer}" width="60%">
+				<core:Item id="idYesSAP.Item" key="true" text="Yes"/>
+				<core:Item id="idNoSAP.Item" key="false" text="No"/>
 			</Select>
 			<VBox id="idSpaceP1S4.VBox" height="16px"/>
 
 			<!-- @ui5ignore-patterns -->
-			<Label id="idAcceptCard.Label" class="customLabel" text="{i18n>acceptCard}"></Label>
-			<Select id="idAcceptCard.Select" forceSelection="false" selectedKey="true" width="60%">
-				<core:Item key="true" text="Yes" />
-				<core:Item key="false" text="No" />
+			<Label id="idAcceptCard.Label" class="customLabel" 
+				   text="{i18n>acceptCard}  {SupplierInfo>/buyer/legalName}{i18n>acceptCardP2}"/>
+			<Select id="idAcceptCard.Select" forceSelection="false" 
+					selectedKey="{RequestInfo>/requestInfo/acceptCard}" width="60%">
+				<core:Item id="idYesCard.Item" key="true" text="Yes"/>
+				<core:Item id="idNoCard.Item" key="false" text="No"/>
 			</Select>
 			<VBox id="idSpaceP1S5.VBox" height="16px"/>
 
-			<HBox id="idInformation.HBox" width="60%">
-				<core:Icon src="sap-icon://hint" size="22px" color="#1434CB">
+			<HBox id="idInformation.HBox" width="60%" class="customInfoBox">
+				<core:Icon id="idInfo.Icon" src="sap-icon://hint" size="22px" color="#1434CB">
 				</core:Icon>
 				<VBox id="idSpaceP1S6.VBox" width="12px"/>
 				<!-- @ui5ignore-patterns -->
-				<Text id="idRequestOnboard.Text" text="{i18n>requestOnboard}" class="customText"/>
+				<Text id="idRequestOnboard.Text" 
+					  text="{i18n>requestOnboard} {SupplierInfo>/buyer/legalName} {i18n>requestOnboardP2}" 
+					  class="customText"/>
 			</HBox>
 			<VBox id="idSpaceP1S7.VBox" height="32px"/>
 

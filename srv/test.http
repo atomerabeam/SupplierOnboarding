@@ -1,4 +1,3 @@
-
 @server = http://localhost:4004 
 
 POST {{server}}/odata/v4/supplier/getSupplier
@@ -6,7 +5,28 @@ headers:
       Content-Type: application/json
 
 {
-        "pID" : "1000010004"
+        "pID" : "a718e5e3-3f38-4a72-9e5e-ffa6d0cdcfe5"
 }
 
 ####################################################
+POST {{server}}/odata/v4/supplier/getBuyer
+headers: 
+      Content-Type: application/json
+
+{
+        "pID" : "1000010004"
+}
+####################################################
+POST {{server}}/odata/v4/supplier/getBusinessNature
+headers: 
+      Content-Type: application/json
+
+   
+####################################################
+POST {{server}}/odata/v4/supplier/getVBIP
+headers: 
+      Content-Type: application/json
+
+{
+        "pID" : "100001"
+}

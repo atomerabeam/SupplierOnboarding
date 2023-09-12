@@ -69,11 +69,11 @@
           "bundleName": "vbipsupplier.i18n.i18n"
         }
       },
-      "": {
-        "dataSource": "mainService",
+      "SupplierInfo": {
+        "type": "sap.ui.model.json.JSONModel",
         "preload": true,
         "settings": {
-          "synchronizationMode": "None",
+          "defaultBindingMode": "TwoWay",
           "operationMode": "Server",
           "autoExpandSelect": true,
           "earlyRequests": true
