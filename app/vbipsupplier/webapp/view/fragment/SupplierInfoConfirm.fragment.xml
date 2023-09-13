@@ -17,7 +17,8 @@
 			<Input id="idLegalP2.Input" editable="true" value="{SupplierInfo>/supplier/supplierName}"/>
 			<VBox id="idSpaceP2S3.VBox" height="12px"/>
 			<Label id="idCountryP2.Label" class="customLabel" text="{i18n>country}"/>
-			<Input id="idCountryP2.Input"  editable="false" value="{SupplierInfo>/supplier/country}"/>
+			<!-- @ui5ignore-patterns -->
+			<Input id="idCountryP2.Input"  editable="false" value="{SupplierInfo>/supplier/countryCode_code}"/>
 			<VBox id="idSpaceP2S4.VBox" height="12px"/>
 			<Label id="idCityP2.Label" class="customLabel" text="{i18n>city}"/>
 			<Input id="idCityP2.Input"  editable="false" value="{SupplierInfo>/supplier/city}"/>

@@ -111,7 +111,7 @@ module.exports = cds.service.impl(async (service) => {
         let oSupplier = req.data.oSupplier;
         let oResult = { "supplier": {}, "catchError": {} }
         try {
-            const response = await fetch(`${oAuthToken.url}/odata/v4/supplier-onboarding/SupplierInfo/(${pID})`, {
+            const response = await fetch(`${oAuthToken.url}/odata/v4/supplier-onboarding/SupplierInfo(${pID})`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",

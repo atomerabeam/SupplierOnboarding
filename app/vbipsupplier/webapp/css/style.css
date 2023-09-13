@@ -118,6 +118,7 @@
     margin: 20px;
     margin-left: 0px;
     padding: 20px;
+    flex-wrap: wrap;
 }
 
 .classFileNameBox {
@@ -127,16 +128,32 @@
     border-style: groove !important;
     margin: 20px;
     margin-left: 0px;
-    padding: 10px;
+    padding: 7px 15px;
     border-radius: 5px;
+    flex-wrap: wrap;
+}
+.customFileNameBox {
+    display: flex;
+    width: 75%;
+    margin: 20px;
+    margin-left: 0px;
+    padding: 7px 15px;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: normal;
+    align-items: flex-start;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.10);
+    background: #ffffff;
 }
 
 .classUploadItem {
-    margin-right: 16px;
+    margin-right: 8px;
     align-content: center;
     flex-wrap: wrap;
     align-self: center;
 }
+
 
 .classTextBold {
     font-weight: bold;
@@ -159,6 +176,17 @@
     box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.05);
 }
 
+.customBoxContent1 {
+    background: #ffffff;
+    width: 65%;
+    padding: 48px 54px;
+    /* flex-direction: column; */
+    /* align-items: flex-start; */
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.10);
+    box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.05);
+}
+
 .customBoxContent2 {
     display: inline-flex;
     padding: 48px 60px;
@@ -168,7 +196,7 @@
     gap: 24px;
     border-radius: 12px;
     border: 1px solid #DCDCDC;
-    background: #FFF
+    background: #ffffff
 }
 
 .customDialog {
@@ -184,8 +212,28 @@
     /* Standard */
     box-shadow: 0px 1px 2px -1px rgba(0, 0, 0, 0.10), 0px 1px 3px 0px rgba(0, 0, 0, 0.10);
     padding: 15px;
-
 }
+
+.customUploadItem1 {
+    margin-right: 8px;
+    align-content: center;
+    flex-wrap: wrap;
+    align-self: center;
+}
+
+.customUploadItem2 {
+    margin-right: 8px;
+    align-content: start;
+    flex-wrap: wrap;
+    align-self: center;
+}
+
+.customUploadItem3 {
+    align-content: center;
+    flex-wrap: wrap;
+    align-self: center;
+}
+
 /* Space */
 .customSpaceLine {
     margin-top: 8px;
@@ -248,8 +296,9 @@
 }
 
 .customText {
+    color: #4A4A4A;
+    /* font-feature-settings: 'clig' off, 'liga' off; */
     /* font-family: "Visa Dialect UI"; */
-    color: #000000;
     font-size: 14px;
     font-style: normal;
     font-weight: 400;

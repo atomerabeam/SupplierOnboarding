@@ -12,7 +12,7 @@ sap.ui.define([
 
         return Controller.extend("vbipsupplier.controller.SupplierInfo", {
             onInit: function () {
-                this._onInitModel();
+                this._onInit();
                 let oRouter = sap.ui.core.UIComponent.getRouterFor(this);
                 oRouter.getRoute("SupplierInfo").attachPatternMatched(this._onObjectMatched, this);
             },
@@ -37,18 +37,21 @@ sap.ui.define([
             onContinueStep2: function () {
                 this.getView().getModel("PageModel").setProperty("/pageFlow/shareholder", false);
                 this.getView().getModel("PageModel").setProperty("/pageFlow/complete", true);
-                this._updateSupplier();
+                this._updateSupplier("noMessage");
             },
             onReportInfo: function () {
 
             },
             onSaveAndExit: async function () {
-                this._updateSupplier();
+                this._updateSupplier("message");
+                this.getView().getModel("PageModel").setProperty("/pageFlow/corporate", false);
+                this.getView().getModel("PageModel").setProperty("/pageFlow/shareholder", false);
+                this.getView().getModel("PageModel").setProperty("/pageFlow/infoRequest", true);
             },
 
             onChangeShareCount: function () {
-                let oShareModel = new JSONModel;
-                this.getView().setModel(oShareModel, "ShareModel");
+                let oShareholderModel = new JSONModel;
+                this.getView().setModel(oShareholderModel, "ShareholderModel");
 
                 var vShareholderCount = this.getView().getModel('F4').getProperty('/shareholder/count');
                 var aShareholder = [];
@@ -59,15 +62,15 @@ sap.ui.define([
                         "Documents":
                             [
                                 {
-                                    "documentName": "Sample",
-                                    "documentType": "Sample Type",
-                                    "nameonDocument": "Sample",
-                                    "documentNumber": "Sample 123"
+                                    "documentName": "",
+                                    "documentType": "",
+                                    "nameonDocument": "",
+                                    "documentNumber": ""
                                 }
                             ]
                     });
                 }
-                this.getView().getModel('ShareModel').setProperty('/info', aShareholder);
+                this.getView().getModel('ShareholderModel').setProperty('/item', aShareholder);
             },
             onUploadFileButton: async function (oEvent) {
                 let strID = oEvent.getParameter("id");
@@ -143,14 +146,18 @@ sap.ui.define([
                 // Trigger the download
                 downloadLink.click();
             },
-            _onInitModel: async function () {
+            onEnterShareholderPopup: async function (oEvent) {
+                debugger;
+            },
+            _onInit: async function () {
                 // Page flow
                 let oPageModel = new JSONModel();
                 let oPageFlow = {
                     "infoRequest": false,
                     "infoConfirm": false,
                     "corporate": false,
-                    "shareholder": false,
+                    // "shareholder": false,
+                    "shareholder": true,
                     "complete": false
                 };
                 oPageModel.setProperty("/pageFlow", oPageFlow);
@@ -159,7 +166,7 @@ sap.ui.define([
                 //F4
                 let oF4Model = new JSONModel();
                 oF4Model.setProperty("/shareholder", {
-                    "count": 2
+                    "count": 1
                 });
                 
                 let oBusinessNatureRead = await Models.getBusinessNature();
@@ -201,7 +208,7 @@ sap.ui.define([
                         vSAPCustomer = "true";
                     }
 
-                    if (oSupplier.status === null) {
+                    if (oSupplier.status === null || oSupplier.status === "Sent") {
                         vAcceptCard = "false";
                     } else {
                         vAcceptCard = "true";
@@ -217,16 +224,16 @@ sap.ui.define([
                     this.getView().getModel("PageModel").setProperty("/pageFlow/infoRequest", true);
                 } else {
                     let oRouter = this.getOwnerComponent().getRouter();
-                    oRouter.navTo("Supplier", {
-                        GUID: "Refresh"
-                    });
+                    // oRouter.navTo("Supplier", {
+                    //     GUID: "Refresh"
+                    // });
                 }
             },
             _onObjectMatched: function (oEvent) {
-                this._onInitModel();
+                this._onInit();
             },
 
-            _updateSupplier: async function () {
+            _updateSupplier: async function (sMessage) {
                 let oSupplier = this.getOwnerComponent().getModel("SupplierInfo").getProperty("/supplier");
                 delete oSupplier["@odata.context"];
                 delete oSupplier["createdAt"];
@@ -249,19 +256,21 @@ sap.ui.define([
                     if (oSupplierUpdate.response.error) {
                         // Error
                         let msgError = `Operation failed Supplier ${oSupplier.supplierID} \nError code ${oSupplierUpdate.response.error.code}`;
-                        MessageToast.show(msgError);
+                        // MessageToast.show(msgError);
 
                     } else {
                         // Success
                         let msgSuccess = `Supplier ${oSupplier.supplierID} information is update`;
-                        MessageToast.show(msgSuccess);
+                        if (sMessage === "message") {
+                            MessageToast.show(msgSuccess);
+                        }
 
                         // Exit
                     }
                 } else {
                     // Catch error
                     let msgError = `Operation failed Supplier ${oSupplier.supplierID} \nError catched`;
-                    MessageToast.show(msgError);
+                    // MessageToast.show(msgError);
                 }
             }
         });

@@ -39,10 +39,7 @@ headers:
 {
         "pID" : "a718e5e3-3f38-4a72-9e5e-ffa6d0cdcfe5",
         "oSupplier": {
-                        "SAPCustomer": true,
-                        "status": "accept",
-                        "accountNumber": "BA800123",
-                        "completeAddress": "1200 Orchard Road"
+                        "supplierName": "Test 1234"
                      }
 }
 

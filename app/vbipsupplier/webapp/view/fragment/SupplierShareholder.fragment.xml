@@ -2,51 +2,84 @@
 	xmlns="sap.m"
     xmlns:core="sap.ui.core"
 	xmlns:form="sap.ui.layout.form">
-    <VBox id="idMainPage4.VBox" class="sapUiSmallMargin" alignItems="Center" visible="{PageModel>/pageFlow/shareholder}">
+    <VBox id="idMainPage4.VBox" class="sapUiSmallMargin" 
+          alignItems="Center" visible="{PageModel>/pageFlow/shareholder}">
 		<VBox id="idContentPage4.VBox" class="customBoxContent" width="65%">
-			<form:SimpleForm editable="true" singleContainerFullSize="false">
+			<form:SimpleForm id="idMainP4.SimpleForm" editable="true" singleContainerFullSize="false">
                 <form:content>
-                    <VBox class="sapUiSmallMargin">
-                        <HBox class="classCustomHeight">
-                            <VBox width="15%">
-                                <Text text="{i18n>shareholderInfo}" class="customSubtitle1"/>
-                                <Text text="{i18n>shareholderContent}" class="customText"/>
+                    <VBox id="idMainP4.VBox">
+                        <HBox id="idShareholder.HBox" class="classCustomHeight">
+                            <VBox id="idShareholderText.VBox" width="15%">
+                                <!-- @ui5ignore-patterns -->
+                                <Text id="idShareholderInfo.Text" class="customSubtitle1" 
+                                      text="{i18n>shareholderInfo}"/>
+                                <!-- @ui5ignore-patterns -->
+                                <Text id="idShareholderConetent.Text" class="customText"
+                                      text="{i18n>shareholderContent}"/>
                             </VBox>
-                            <VBox width="85%" items="{ShareModel>/info}">
+                            
+                            <VBox id="idItem.VBox" width="85%" items="{ShareholderModel>/item}">
                                 <items>
-                                    <Panel expandable="true" width="auto" class="classShareHolderBorder sapUiResponsiveMargin">
+                                    <Panel id="idItem.Panel" expandable="true" 
+                                           width="auto" class="sapUiResponsiveMargin">
                                         <headerToolbar>
-                                            <OverflowToolbar>
-                                                <Text text="{i18n>shareholder}"/>
-                                                <ToolbarSpacer/>
-                                                <Button type="Emphasized" text="{i18n>enterInformation}" press="fnOpenShareHolderPopup"/>
+                                            <OverflowToolbar id="idHeaderOverflowToolbar">
+                                                <Text id="idShareholder.Text" text="{i18n>shareholder}"/>
+                                                <ToolbarSpacer id="idSpace.ToolbarSpacer"/>
+                                                <!-- @ui5ignore-patterns -->
+                                                <Button id="idEnterInfo.Button" type="Emphasized" 
+                                                        text="{i18n>enterInformation}" 
+                                                        press="onEnterShareholderPopup"/>
                                             </OverflowToolbar>
 
                                         </headerToolbar>
                                         <content>
-                                            <HBox>
-                                                <VBox width="50%">
-                                                    <Text text="{i18n>shareholderDetails}"/>
-                                                    <Label text="{i18n>name}"></Label>
-                                                    <Input value="{oModelData>shareHolderProof/name}"/>
-                                                    <Label text="{i18n>sharePercentage}"></Label>
-                                                    <Input value="{oModelData>/shareHolderProof/sharePercentage}"/>
+                                            <HBox id="idContent.HBox">
+                                                <VBox id="idContent.VBox" width="70%">
+                                                    <Text id="idShareholderDetails.Text" text="{i18n>shareholderDetails}"/>
+                                                     <HBox id="idText1.HBox" class="customPanelItem1">
+                                                        <VBox  width="35%">
+                                                        <!-- @ui5ignore-patterns -->
+                                                        <Text id="_IDGenLabel1" class="customText" text="{i18n>name}"/>
+                                                        </VBox>
+                                                        <!-- @ui5ignore-patterns -->
+                                                        <Text id="_IDGenInput1" class="customText" text="Test Data"/>
+                                                     </HBox>
+                                                     <HBox id="idText2.HBox" class="customPanelItem1">
+                                                        <VBox  width="35%">
+                                                        <!-- @ui5ignore-patterns -->
+                                                        <Text id="_IDGenLabel2" class="customText" text="{i18n>sharePercentage}"/>
+                                                        </VBox>
+                                                        <!-- @ui5ignore-patterns -->
+                                                        <Text id="_IDGenInput2" class="customText" text="Test Data"/>
+                                                     </HBox>
 
-                                                    <Text text="{i18n>identityProof}"/>
-                                                    <Label text="{i18n>documentType}"></Label>
-                                                    <Select selectedKey="{oModelData>/shareHolderProof/identityProof/documentType}"/>
-                                                    <Label text="{i18n>documentName}"></Label>
-                                                    <Input value="{oModelData>/shareHolderProof/identityProof/documentName}"/>
-                                                    <Label text="{i18n>documentNumber}"></Label>
-                                                    <Input value="{oModelData>/shareHolderProof/identityProof/documentNumber}"/>
-                                                    <Label text="{i18n>dateOfIssue}"></Label>
-                                                    <Input value=""/>
-                                                    <Label text="{i18n>documentUploaded}"></Label>
-                                                    <Input value=""/>
+                                                    <Text id="idIdentityProof.Text" text="{i18n>identityProof}"/>
+                                                    <!-- @ui5ignore-patterns -->
+                                                    <Label id="_IDGenLabel3" text="{i18n>documentType}"/>
+                                                    <!-- @ui5ignore-patterns -->
+                                                    <Select id="_IDGenSelect1" selectedKey="{oModelData>/shareHolderProof/identityProof/documentType}"/>
+                                                    <!-- @ui5ignore-patterns -->
+                                                    <Label id="_IDGenLabel4" text="{i18n>documentName}"/>
+                                                    <!-- @ui5ignore-patterns -->
+                                                    <Input id="_IDGenInput3" value="{oModelData>/shareHolderProof/identityProof/documentName}"/>
+                                                    <!-- @ui5ignore-patterns -->
+                                                    <Label id="_IDGenLabel5" text="{i18n>documentNumber}"/>
+                                                    <!-- @ui5ignore-patterns -->
+                                                    <Input id="_IDGenInput4" value="{oModelData>/shareHolderProof/identityProof/documentNumber}"/>
+                                                    <!-- @ui5ignore-patterns -->
+                                                    <Label id="_IDGenLabel6" text="{i18n>dateOfIssue}"/>
+                                                    <!-- @ui5ignore-patterns -->
+                                                    <Input id="_IDGenInput5" value=""/>
+                                                    <!-- @ui5ignore-patterns -->
+                                                    <Label id="_IDGenLabel7" text="{i18n>documentUploaded}"/>
+                                                    <!-- @ui5ignore-patterns -->
+                                                    <Input id="_IDGenInput6" value=""/>
                                                 </VBox>
                                                 
-                                                <VBox alignItems="End" width="50%">
-                                                    <Button type="Transparent" text="{i18n>editInformation}"></Button>
+                                                <VBox id="idAction.VBox" alignItems="End" width="30%">
+                                                    <!-- @ui5ignore-patterns -->
+                                                    <Button id="idEditInfot.Button" type="Transparent" text="{i18n>editInformation}"/>
                                                 </VBox>
                                             </HBox>
                                         </content>
@@ -54,11 +87,16 @@
                                 </items>
                             </VBox>
                         </HBox>
-                        <HBox width="100%">
+						<HBox id="idSpaceP4S4.HBox" height="40px"/>
+                        <HBox id="idButton2.HBox" width="100%">
                             <!-- <Button text="{i18n>previousStep}" class="sapUiSmallMarginEnd" type="Emphasized" press="onNavigateTOPreviousStep"/> -->
                             <!-- @ui5ignore-patterns -->
-                            <Button text="{i18n>continue}" class="sapUiSmallMarginEnd" type="Emphasized" press="onContinueStep2"/>
-                            <Label text="{i18n>lastAutoSaved}" class="sapUiTinyMarginTop"/>
+                            <Button id="idContinueStep2.Button" text="{i18n>continue}" class="sapUiSmallMarginEnd" 
+                                    type="Emphasized" press="onContinueStep2"/>
+                            <!-- @ui5ignore-patterns -->
+                            <Button id="idSaveAndExit2.Button" text="{i18n>saveAndExit}" class="sapUiSmallMarginEnd" 
+                                    type="Transparent" press="onSaveAndExit"/>
+                            <Label id="idLastAutosaved2.Label" text="{i18n>lastAutoSaved}" class="sapUiTinyMarginTop"/>
                         </HBox>
                     </VBox>
                 </form:content>
