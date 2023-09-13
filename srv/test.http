@@ -30,3 +30,19 @@ headers:
 {
         "pID" : "100001"
 }
+   
+####################################################
+POST {{server}}/odata/v4/supplier/updateSupplier
+headers: 
+      Content-Type: application/json
+
+{
+        "pID" : "a718e5e3-3f38-4a72-9e5e-ffa6d0cdcfe5",
+        "oSupplier": {
+                        "SAPCustomer": true,
+                        "status": "accept",
+                        "accountNumber": "BA800123",
+                        "completeAddress": "1200 Orchard Road"
+                     }
+}
+

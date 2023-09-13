@@ -37,12 +37,13 @@ sap.ui.define([
             onContinueStep2: function () {
                 this.getView().getModel("PageModel").setProperty("/pageFlow/shareholder", false);
                 this.getView().getModel("PageModel").setProperty("/pageFlow/complete", true);
+                this._updateSupplier();
             },
             onReportInfo: function () {
 
             },
-            onSaveAndExit: function () {
-
+            onSaveAndExit: async function () {
+                this._updateSupplier();
             },
 
             onChangeShareCount: function () {
@@ -224,5 +225,44 @@ sap.ui.define([
             _onObjectMatched: function (oEvent) {
                 this._onInitModel();
             },
+
+            _updateSupplier: async function () {
+                let oSupplier = this.getOwnerComponent().getModel("SupplierInfo").getProperty("/supplier");
+                delete oSupplier["@odata.context"];
+                delete oSupplier["createdAt"];
+                delete oSupplier["createdBy"];
+                delete oSupplier["modifiedAt"];
+                delete oSupplier["modifiedBy"];
+                delete oSupplier["countryCode_code"];
+                delete oSupplier["businessNature_selectKey"];
+
+                let vID = oSupplier.ID;
+                delete oSupplier["ID"];
+                
+                let oParameter = {
+                    "pID": vID,
+                    "oSupplier": oSupplier
+                };
+                let oSupplierUpdate = await Models.updateSupplier(oParameter);
+                if (Object.keys(oSupplierUpdate.catchError).length === 0 &&
+                    oSupplierUpdate.catchError.constructor === Object) {
+                    if (oSupplierUpdate.response.error) {
+                        // Error
+                        let msgError = `Operation failed Supplier ${oSupplier.supplierID} \nError code ${oSupplierUpdate.response.error.code}`;
+                        MessageToast.show(msgError);
+
+                    } else {
+                        // Success
+                        let msgSuccess = `Supplier ${oSupplier.supplierID} information is update`;
+                        MessageToast.show(msgSuccess);
+
+                        // Exit
+                    }
+                } else {
+                    // Catch error
+                    let msgError = `Operation failed Supplier ${oSupplier.supplierID} \nError catched`;
+                    MessageToast.show(msgError);
+                }
+            }
         });
     });

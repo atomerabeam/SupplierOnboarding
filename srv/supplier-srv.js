@@ -25,7 +25,6 @@ module.exports = cds.service.impl(async (service) => {
         }
         return oResult;
     }),
-
     
     service.on("getBuyer", async (req) => {
         let oAuthToken = await vbipService.getToken();
@@ -100,6 +99,28 @@ module.exports = cds.service.impl(async (service) => {
             });
             
             oResult.businessNature = await response.json();
+        } catch (error) {
+            oResult.catchError = error;
+        }
+        return oResult;
+    }),
+
+    service.on("updateSupplier", async (req) => {
+        let oAuthToken = await vbipService.getToken();
+        let pID = req.data.pID;
+        let oSupplier = req.data.oSupplier;
+        let oResult = { "supplier": {}, "catchError": {} }
+        try {
+            const response = await fetch(`${oAuthToken.url}/odata/v4/supplier-onboarding/SupplierInfo/(${pID})`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": oAuthToken.token
+                },
+                body: JSON.stringify(oSupplier)
+            });
+            
+            oResult.supplier = response;
         } catch (error) {
             oResult.catchError = error;
         }
