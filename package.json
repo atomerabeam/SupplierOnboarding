@@ -1,46 +1,49 @@
 {
-    "name": "VBIPSUPPLIER",
-    "version": "1.0.0",
-    "description": "A simple CAP project.",
-    "repository": "<Add your repository here>",
-    "license": "UNLICENSED",
-    "private": true,
-    "dependencies": {
-        "@sap-cloud-sdk/connectivity": "^3.4.0",
-        "@sap-cloud-sdk/mail-client": "^3.4.0",
-        "@sap/cds": "^7",
-        "express": "^4"
-    },
-    "devDependencies": {
-        "@cap-js/sqlite": "^1",
-        "@sap/cds-dk": "^7",
-        "@sap/ux-specification": "^1.108.13",
-        "rimraf": "^3.0.2"
-    },
-    "scripts": {
-        "start": "cds-serve",
-        "watch-vbipsupplier": "cds watch --open vbipsupplier/webapp/index.html?sap-ui-xx-viewCache=false",
-        "undeploy": "cf undeploy VBIPSUPPLIER --delete-services --delete-service-keys --delete-service-brokers",
-        "build": "rimraf resources mta_archives && mbt build --mtar archive",
-        "deploy": "cf deploy mta_archives/archive.mtar --retries 1"
-    },
-    "cds": {
-        "requires": {
-            "destinations": {
-                "binding": {
-                    "type": "cf",
-                    "apiEndpoint": "https://api.cf.ap11.hana.ondemand.com",
-                    "org": "Visa Worldwide Pte. Limited._vbip-development-env-7hhai7s7",
-                    "space": "Dev Space",
-                    "instance": "MAIL-Service",
-                    "key": "SharedMailKey",
-                    "resolved": false
-                },
-                "kind": "destinations",
-                "vcap": {
-                    "name": "destinations"
-                }
-            }
+  "name": "VBIPSUPPLIER",
+  "version": "1.0.0",
+  "description": "A simple CAP project.",
+  "repository": "<Add your repository here>",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "@sap-cloud-sdk/connectivity": "^3.4.0",
+    "@sap-cloud-sdk/mail-client": "^3.4.0",
+    "@sap/cds": "^7",
+    "express": "^4",
+    "@sap/xssec": "^3",
+    "passport": "^0"
+  },
+  "devDependencies": {
+    "@cap-js/sqlite": "^1",
+    "@sap/cds-dk": "^7",
+    "@sap/ux-specification": "^1.108.13",
+    "rimraf": "^3.0.2"
+  },
+  "scripts": {
+    "start": "cds-serve",
+    "watch-vbipsupplier": "cds watch --open vbipsupplier/webapp/index.html?sap-ui-xx-viewCache=false",
+    "undeploy": "cf undeploy VBIPSUPPLIER --delete-services --delete-service-keys --delete-service-brokers",
+    "build": "rimraf resources mta_archives && mbt build --mtar archive",
+    "deploy": "cf deploy mta_archives/archive.mtar --retries 1"
+  },
+  "cds": {
+    "requires": {
+      "destinations": {
+        "binding": {
+          "type": "cf",
+          "apiEndpoint": "https://api.cf.ap11.hana.ondemand.com",
+          "org": "Visa Worldwide Pte. Limited._vbip-development-env-7hhai7s7",
+          "space": "Dev Space",
+          "instance": "MAIL-Service",
+          "key": "SharedMailKey",
+          "resolved": false
+        },
+        "kind": "destinations",
+        "vcap": {
+          "name": "destinations"
         }
+      },
+      "auth": "xsuaa"
     }
+  }
 }
