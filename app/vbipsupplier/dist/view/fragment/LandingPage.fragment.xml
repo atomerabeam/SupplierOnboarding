@@ -1,0 +1,13 @@
+<core:FragmentDefinition 
+	xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    <VBox id="idMainP1.VBox" class="sapUiSmallMargin" alignItems="Center" 
+		  visible="{PageModel>/pageFlow/landing}">
+		<VBox id="idItemP1.VBox" class="customBoxContent" width="65%">
+			<!-- @ui5ignore-patterns -->
+			<Text id="idTitleP1.Text" text="Invalid URL, please access correct URL from your email" 
+				  class="customSubtitle1"/>
+		</VBox>
+        
+    </VBox>
+</core:FragmentDefinition>

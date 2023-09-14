@@ -1,0 +1,20 @@
+<mvc:View controllerName="vbipsupplier.controller.SupplierInfo"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core" displayBlock="true"
+    xmlns="sap.m">
+    <Page id="id.Page" class="sapUiContentPadding">
+        <customHeader>
+            <core:Fragment fragmentName="vbipsupplier.view.fragment.HeaderContent" type="XML"/>
+        </customHeader>
+        <content>
+            <core:Fragment fragmentName="vbipsupplier.view.fragment.SupplierInfoRequest" type="XML"/>
+            <core:Fragment fragmentName="vbipsupplier.view.fragment.SupplierInfoConfirm" type="XML"/>
+            <core:Fragment fragmentName="vbipsupplier.view.fragment.SupplierCorporate" type="XML"/>
+            <core:Fragment fragmentName="vbipsupplier.view.fragment.SupplierShareholder" type="XML"/>
+            <core:Fragment fragmentName="vbipsupplier.view.fragment.SupplierComplete" type="XML"/>
+        </content>
+        <footer>
+            <core:Fragment fragmentName="vbipsupplier.view.fragment.FooterContent" type="XML"/>
+        </footer>
+    </Page>
+</mvc:View>

@@ -1,0 +1,306 @@
+/* Enter your custom styles here */
+.sapMInputBaseContentWrapper {
+    background: none;
+    border-radius: 0px;
+}
+
+.sapMInputBaseInner {
+    background: #ffffff;
+    border-width: 1px;
+    border-radius: 6px;
+    border-style: solid;
+}
+
+.sapMInputBaseContentWrapper:hover {
+    background: none !important;
+    /* box-shadow: none !important; */
+    border-radius: 6px;
+}
+
+.sapMInputBaseInner[readonly] {
+    background: #F5F5F5;
+    border-width: 1px;
+    border-radius: 6px;
+    border-style: dashed;
+}
+
+.customInputSolid .sapMInputBaseInner[readonly] {
+    border-style: solid;
+}
+
+.sapMInputBaseReadonly .sapMInputBaseContentWrapper {
+    background: none;
+}
+
+.mainTitle {
+    color: #000000;
+    /* font-family: "Visa Dialect UI"; */
+    font-size: 25px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 33px;
+    /* 132% */
+}
+
+.sapMITH {
+    border-radius: 10px;
+}
+
+.sapMITBContent {
+    padding: 0;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-bottom: none;
+}
+
+/* Custom */
+.customRoundCheckbox .sapMCbBg,
+.customRoundCheckbox .sapMCbMark {
+    border-radius: 50%;
+    /* Make the checkbox round */
+}
+
+/* Optional: Adjust the size of the round checkbox */
+.customRoundCheckbox .sapMCbBg {
+    width: 20px;
+    /* Adjust as needed */
+    height: 20px;
+    /* Adjust as needed */
+}
+
+.subTitle {
+    /* margin: 1% 0; */
+    /* font-family: "Visa Dialect UI"; */
+    color: #000000;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 21px;
+}
+
+.customText {
+    /* margin: 1% 0; */
+    /* font-family: "Visa Dialect UI"; */
+    color: #000000;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+}
+
+.classBoxLabel {
+    width: 20%;
+    align-self: center;
+}
+
+.classBoxInput {
+    width: 35%;
+    align-self: center;
+}
+
+.classPanel {
+    margin-bottom: 2%;
+}
+
+.classButtonRow {
+    margin-right: 10px;
+}
+
+.classButtonCreate {
+    margin-top: 20px;
+}
+
+.classUploadBox {
+    border-color: #1434CB !important;
+    border-style: dashed !important;
+    border-width: 2px;
+    border-radius: 5px;
+    margin: 20px;
+    margin-left: 0px;
+    padding: 20px;
+    flex-wrap: wrap;
+}
+
+.classFileNameBox {
+    /* border-color: #1434CB !important; */
+    /* border-style: dashed !important; */
+    border-width: 2px !important;
+    border-style: groove !important;
+    margin: 20px;
+    margin-left: 0px;
+    padding: 7px 15px;
+    border-radius: 5px;
+    flex-wrap: wrap;
+}
+.customFileNameBox {
+    display: flex;
+    width: 75%;
+    margin: 20px;
+    margin-left: 0px;
+    padding: 7px 15px;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: normal;
+    align-items: flex-start;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.10);
+    background: #ffffff;
+}
+
+.classUploadItem {
+    margin-right: 8px;
+    align-content: center;
+    flex-wrap: wrap;
+    align-self: center;
+}
+
+
+.classTextBold {
+    font-weight: bold;
+}
+
+.textBox {
+    flex-wrap: wrap;
+    align-content: end;
+}
+
+/* Layout */
+.customBoxContent {
+    background: #ffffff;
+    width: 60%;
+    padding: 48px;
+    /* flex-direction: column; */
+    /* align-items: flex-start; */
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.10);
+    box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.05);
+}
+
+.customBoxContent1 {
+    background: #ffffff;
+    width: 65%;
+    padding: 48px 54px;
+    /* flex-direction: column; */
+    /* align-items: flex-start; */
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.10);
+    box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.05);
+}
+
+.customBoxContent2 {
+    display: inline-flex;
+    padding: 48px 60px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    border-radius: 12px;
+    border: 1px solid #DCDCDC;
+    background: #ffffff
+}
+
+.customDialog {
+    padding-top: 20px;
+    padding-bottom: 0px;
+    padding-left: 24px;
+    padding-right: 24px;
+}
+
+.customInfoBox {border-radius: 8px;
+    border-bottom: 3px solid #0088C7;
+    background: #C7EDFF;
+    /* Standard */
+    box-shadow: 0px 1px 2px -1px rgba(0, 0, 0, 0.10), 0px 1px 3px 0px rgba(0, 0, 0, 0.10);
+    padding: 15px;
+}
+
+.customUploadItem1 {
+    margin-right: 8px;
+    align-content: center;
+    flex-wrap: wrap;
+    align-self: center;
+}
+
+.customUploadItem2 {
+    margin-right: 8px;
+    align-content: start;
+    flex-wrap: wrap;
+    align-self: center;
+}
+
+.customUploadItem3 {
+    align-content: center;
+    flex-wrap: wrap;
+    align-self: center;
+}
+
+/* Space */
+.customSpaceLine {
+    margin-top: 8px;
+}
+
+/* Text */
+.customHeadline1 {
+    color: #000000;
+    /* font-family: "Visa Dialect UI"; */
+    font-size: 25px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 33px;
+    /* 132% */
+    margin-bottom: 12px;
+}
+
+.customHeadline3 {
+    color: #1434CB;
+    /* font-family: "Visa Dialect UI"; */
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 26px;
+    /* 130% */
+    margin-top: 24px;
+    margin-bottom: 8px;
+}
+
+.customSubtitle1 {
+    color: #000000;
+    /* font-family: "Visa Dialect UI"; */
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 21px;
+    /* 131.25% */
+    margin-bottom: 8px;
+}
+
+.customSubtitle2 {
+    color: #000000;
+    /* font-family: "Visa Dialect UI"; */
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 21px;
+    /* 131.25% */
+    margin-bottom: 8px;
+}
+
+.customLabel {
+    color: #4A4A4A;
+    /* font-family: "Visa Dialect UI"; */
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+    /* 133.333% */
+}
+
+.customText {
+    color: #4A4A4A;
+    /* font-feature-settings: 'clig' off, 'liga' off; */
+    /* font-family: "Visa Dialect UI"; */
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 22px;
+}
