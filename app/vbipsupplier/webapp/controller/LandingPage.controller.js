@@ -137,19 +137,19 @@ sap.ui.define([
 
                 // Get Buyer Onboarding
                 let oBuyerOnRead = await Models.getBuyerOnboarding(oBuyerParameter);
-                if (oBuyerOnRead.response.value) {
-                    // Get Buyer Info
-                    this.getOwnerComponent().getModel("SupplierInfo").setProperty("/buyerOnboarding", oBuyerOnRead.response.value.buyerOnboarding);
-                }
+                if (oBuyerOnRead.response.value.buyerOnboarding.value[0]) {
+                    // Set Model Buyer Onboarding
+                    // this.getOwnerComponent().getModel("SupplierInfo").setProperty("/buyerOnboarding", oBuyerOnRead.response.value.buyerOnboarding.value[0]);
 
-                // Get VBIP
-                let oVBIPParameter = {
-                    "pID": oBuyerOnRead.response.value.buyerOnboarding.value[0].vbipID
-                };
-                let oVBIP = await Models.getVBIP(oVBIPParameter);
-                if (oVBIP.response.value) {
-                    // Get Buyer Info
-                    this.getOwnerComponent().getModel("SupplierInfo").setProperty("/VBIP", oVBIP.response.value.vbip);
+                    // Get VBIP
+                    let oVBIPParameter = {
+                        "pID": oBuyerOnRead.response.value.buyerOnboarding.value[0].vbipID
+                    };
+                    let oVBIP = await Models.getVBIP(oVBIPParameter);
+                    if (oVBIP.response.value) {
+                        // Get Buyer Info
+                        this.getOwnerComponent().getModel("SupplierInfo").setProperty("/VBIP", oVBIP.response.value.vbip);
+                    }
                 }
             }
         });

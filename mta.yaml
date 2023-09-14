@@ -77,6 +77,13 @@ resources:
                 ProxyType: Internet
                 Type: HTTP
                 URL: https://ui5.sap.com
+              - Name: VBIPSUPPLIER-srv
+                Authentication: NoAuthentication
+                ProxyType: Internet
+                HTML5.ForwardAuthToken: true
+                HTML5.DynamicDestination: true
+                Type: HTTP
+                URL: https://${default-domain}
             existing_destinations_policy: update
         version: 1.0.0
       service: destination

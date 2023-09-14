@@ -1,13 +1,13 @@
 {
   "welcomeFile": "app/index.html",
-  "authenticationMethod": "none",
+  "authenticationMethod": "route",
   "routes": [
     {
-      "source": "^/odata/(.*)$",
+      "source": "/odata/(.*)$",
       "target": "/odata/$1",
-      "destination": "VBIPSUPPLIER-srv-api",
-      "authenticationType": "none",
-      "csrfProtection": false
+      "destination": "VBIPSUPPLIER-srv",
+      "csrfProtection": true,
+      "authenticationType": "none"
     },
     {
       "source": "^/app/(.*)$",

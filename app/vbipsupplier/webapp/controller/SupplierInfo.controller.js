@@ -146,8 +146,21 @@ sap.ui.define([
                 // Trigger the download
                 downloadLink.click();
             },
-            onEnterShareholderPopup: async function (oEvent) {
-                debugger;
+            onEnterShareholderPopup: function () {
+                if (!this._oDialog) {
+                    this._oDialog = new sap.ui.xmlfragment("vbipsupplier.view.fragment.ShareholderPopup", this);
+                    this.getView().addDependent(this._oDialog);
+                }
+                this._oDialog.open();
+            },
+            onDialogAfterClose: function () {
+                this._oDialog.destroy();
+                this._oDialog = null;
+            },
+            onSave: function () {
+            },
+            onCancel: function () {
+                this.onDialogAfterClose();
             },
             _onInit: async function () {
                 // Page flow
