@@ -28,21 +28,21 @@
   },
   "cds": {
     "requires": {
-      "destinations": {
-        "binding": {
-          "type": "cf",
-          "apiEndpoint": "https://api.cf.ap11.hana.ondemand.com",
-          "org": "Visa Worldwide Pte. Limited._vbip-development-env-7hhai7s7",
-          "space": "Dev Space",
-          "instance": "MAIL-Service",
-          "key": "SharedMailKey",
-          "resolved": false
-        },
-        "kind": "destinations",
-        "vcap": {
-          "name": "destinations"
+        "destinations": {
+          "binding": {
+            "type": "cf",
+            "apiEndpoint": "https://api.cf.ap11.hana.ondemand.com",
+            "org": "Visa Worldwide Pte. Limited._vbip-development-env-7hhai7s7",
+            "space": "Dev Space",
+            "instance": "MAIL-Service",
+            "key": "SharedMailKey",
+            "resolved": false
+          },
+          "kind": "destinations",
+          "vcap": {
+            "name": "destinations"
+          }
         }
-      }
     }
   }
 }

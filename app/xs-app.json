@@ -1,19 +1,13 @@
 {
-  "welcomeFile": "app/index.html",
+  "welcomeFile": "app/vbipsupplier/webapp/index.html",
   "authenticationMethod": "route",
   "routes": [
-    {
-      "source": "/odata/(.*)$",
-      "target": "/odata/$1",
-      "destination": "VBIPSUPPLIER-srv",
-      "csrfProtection": true,
-      "authenticationType": "none"
-    },
     {
       "source": "^/app/(.*)$",
       "target": "$1",
       "localDir": ".",
-      "cacheControl": "no-cache, no-store, must-revalidate"
+      "cacheControl": "no-cache, no-store, must-revalidate",
+      "authenticationType": "xsuaa"
     },
     {
       "source": "^/appconfig/",
@@ -24,7 +18,8 @@
       "source": "^/(.*)$",
       "target": "$1",
       "destination": "srv-api",
-      "csrfProtection": true
+      "csrfProtection": true,
+      "authenticationType": "xsuaa"
     }
   ]
 }

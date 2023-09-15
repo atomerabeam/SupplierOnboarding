@@ -1,14 +1,7 @@
 {
   "welcomeFile": "/index.html",
-  "authenticationMethod": "route",
+  "authenticationMethod": "none",
   "routes": [
-    {
-      "source": "/odata/(.*)$",
-      "target": "/odata/$1",
-      "destination": "VBIPSUPPLIER-srv",
-      "csrfProtection": true,
-      "authenticationType": "none"
-    },
     {
       "source": "^/resources/(.*)$",
       "target": "/resources/$1",
@@ -25,7 +18,7 @@
       "source": "^(.*)$",
       "target": "$1",
       "service": "html5-apps-repo-rt",
-      "authenticationType": "xsuaa"
+      "authenticationType": "none"
     }
   ]
 }

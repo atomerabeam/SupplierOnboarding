@@ -132,20 +132,6 @@
     border-radius: 5px;
     flex-wrap: wrap;
 }
-.customFileNameBox {
-    display: flex;
-    width: 75%;
-    margin: 20px;
-    margin-left: 0px;
-    padding: 7px 15px;
-    flex-wrap: wrap;
-    flex-direction: row;
-    justify-content: normal;
-    align-items: flex-start;
-    border-radius: 8px;
-    border: 1px solid rgba(0, 0, 0, 0.10);
-    background: #ffffff;
-}
 
 .classUploadItem {
     margin-right: 8px;
@@ -199,19 +185,53 @@
     background: #ffffff
 }
 
-.customDialog {
-    padding-top: 20px;
-    padding-bottom: 0px;
-    padding-left: 24px;
-    padding-right: 24px;
+.customDialog1 {
+    background: #ffffff;
+    padding: 48px;
+    /* flex-direction: column; */
+    /* align-items: flex-start; */
+    /* border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.10);
+    box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.05); */
+}
+.customActionBox1 {
+    padding: 16px 24px;
+    justify-content: space-between;
+    flex-wrap: wrap;
 }
 
-.customInfoBox {border-radius: 8px;
+.customInfoBox {
+    border-radius: 8px;
     border-bottom: 3px solid #0088C7;
     background: #C7EDFF;
     /* Standard */
     box-shadow: 0px 1px 2px -1px rgba(0, 0, 0, 0.10), 0px 1px 3px 0px rgba(0, 0, 0, 0.10);
     padding: 15px;
+}
+
+.customUploadBox {
+    border-color: #1434CB !important;
+    border-style: dashed !important;
+    border-width: 2px;
+    border-radius: 5px;
+    margin: 20px 0px;
+    padding: 20px;
+    flex-wrap: wrap;
+}
+
+.customFileNameBox {
+    display: flex;
+    width: 75%;
+    margin: 20px;
+    margin-left: 0px;
+    padding: 7px 15px;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: normal;
+    align-items: flex-start;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.10);
+    background: #ffffff;
 }
 
 .customUploadItem1 {
@@ -281,8 +301,6 @@
     font-style: normal;
     font-weight: 500;
     line-height: 21px;
-    /* 131.25% */
-    margin-bottom: 8px;
 }
 
 .customLabel {
