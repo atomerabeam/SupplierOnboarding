@@ -42,7 +42,8 @@
           "vcap": {
             "name": "destinations"
           }
-        }
+        },
+        "auth": "dummy"
     }
   }
 }

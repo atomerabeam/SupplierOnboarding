@@ -7,7 +7,7 @@
       "target": "$1",
       "localDir": ".",
       "cacheControl": "no-cache, no-store, must-revalidate",
-      "authenticationType": "xsuaa"
+      "authenticationType": "none"
     },
     {
       "source": "^/appconfig/",
@@ -19,7 +19,7 @@
       "target": "$1",
       "destination": "srv-api",
       "csrfProtection": true,
-      "authenticationType": "xsuaa"
+      "authenticationType": "none"
     }
   ]
 }
