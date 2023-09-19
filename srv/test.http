@@ -5,7 +5,8 @@ headers:
       Content-Type: application/json
 
 {
-        "pID" : "a718e5e3-3f38-4a72-9e5e-ffa6d0cdcfe5"
+        "buyerID" : "1000010004",
+        "supplierID": "1000018989"
 }
 
 ####################################################
@@ -14,7 +15,7 @@ headers:
       Content-Type: application/json
 
 {
-        "pID" : "1000010004"
+        "buyerID" : "1000010004"
 }
 ####################################################
 POST {{server}}/odata/v4/supplier/getBusinessNature
@@ -37,9 +38,19 @@ headers:
       Content-Type: application/json
 
 {
-        "pID" : "a718e5e3-3f38-4a72-9e5e-ffa6d0cdcfe5",
+        "buyerID" : "1000010004",
+        "supplierID": "1000018989",
         "oSupplier": {
-                        "supplierName": "Test 1234"
+                        "supplierName": "Test 123456"
                      }
+}
+
+####################################################
+POST {{server}}/odata/v4/supplier/decryptID
+headers: 
+      Content-Type: application/json
+
+{
+      "pID" : "U2FsdGVkX1%252F%252BRvAdCojMrq1h8hN3KMOYf9GAiiY68kvMoy66i%252F2jWoQNbR1O4gVl"
 }
 

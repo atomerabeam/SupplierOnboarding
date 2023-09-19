@@ -59,6 +59,8 @@ sap.ui.define([
                     aShareholder.push({
                         "name": "",
                         "sharePercentage": "",
+                        "enterInfo": true,
+                        "completed": false,
                         "Documents":
                             [
                                 {
@@ -146,7 +148,15 @@ sap.ui.define([
                 // Trigger the download
                 downloadLink.click();
             },
-            onEnterShareholderPopup: function () {
+            onEnterShareholderPopup: function (oEvent) {
+                let oBinding = oEvent.getSource().getBindingContext("ShareholderModel");
+                let oCurrentItem = this.getView().getModel("ShareholderModel").getProperty(oBinding.getPath());
+                oCurrentItem.path = oBinding.getPath();
+
+                let oShareholderPopupModel = new JSONModel;
+                oShareholderPopupModel.setProperty('/popup', oCurrentItem);
+                this.getView().setModel(oShareholderPopupModel, "ShareholderPopupModel");
+
                 if (!this._oDialog) {
                     this._oDialog = new sap.ui.xmlfragment("vbipsupplier.view.fragment.ShareholderPopup", this);
                     this.getView().addDependent(this._oDialog);

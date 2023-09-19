@@ -8,10 +8,11 @@ module.exports = cds.service.impl(async (service) => {
     
     service.on("getSupplier", async (req) => {
         let oAuthToken = await vbipService.getToken();
-        let pID = req.data.pID;
-        let oResult = { "supplier": {}, "catchError": {} }
+        let buyerID = req.data.buyerID;
+        let supplierID = req.data.supplierID;
+        let oResult = {};
         try {
-            const response = await fetch(`${oAuthToken.url}/odata/v4/supplier-onboarding/SupplierInfo(${pID})`, {
+            const response = await fetch(`${oAuthToken.url}/odata/v4/supplier-onboarding/SupplierInfo(buyerID='${buyerID}',supplierID='${supplierID}')`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -28,10 +29,10 @@ module.exports = cds.service.impl(async (service) => {
     
     service.on("getBuyer", async (req) => {
         let oAuthToken = await vbipService.getToken();
-        let pID = req.data.pID;
+        let buyerID = req.data.buyerID;
         let oResult = { "buyer": {}, "catchError": {} }
         try {
-            const response = await fetch(`${oAuthToken.url}/odata/v4/catalog/BuyerInfo(buyerID='${pID}')`, {
+            const response = await fetch(`${oAuthToken.url}/odata/v4/catalog/BuyerInfo(buyerID='${buyerID}')`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -48,10 +49,10 @@ module.exports = cds.service.impl(async (service) => {
     
     service.on("getBuyerOnboarding", async (req) => {
         let oAuthToken = await vbipService.getToken();
-        let pID = req.data.pID;
+        let buyerID = req.data.buyerID;
         let oResult = { "buyerOnboarding": {}, "catchError": {} };
         try {
-            const response = await fetch(`${oAuthToken.url}/odata/v4/catalog/BuyerOnboarding?$filter=buyerID eq '${pID}'`, {
+            const response = await fetch(`${oAuthToken.url}/odata/v4/catalog/BuyerOnboarding?$filter=buyerID eq '${buyerID}'`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -107,11 +108,12 @@ module.exports = cds.service.impl(async (service) => {
 
     service.on("updateSupplier", async (req) => {
         let oAuthToken = await vbipService.getToken();
-        let pID = req.data.pID;
+        let buyerID = req.data.buyerID;
+        let supplierID = req.data.supplierID;
         let oSupplier = req.data.oSupplier;
-        let oResult = { "supplier": {}, "catchError": {} }
+        let oResult = {}
         try {
-            const response = await fetch(`${oAuthToken.url}/odata/v4/supplier-onboarding/SupplierInfo(${pID})`, {
+            const response = await fetch(`${oAuthToken.url}/odata/v4/supplier-onboarding/SupplierInfo(buyerID='${buyerID}',supplierID='${supplierID}')`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
@@ -120,7 +122,7 @@ module.exports = cds.service.impl(async (service) => {
                 body: JSON.stringify(oSupplier)
             });
             
-            oResult.supplier = response;
+            oResult.response = await response.json();
         } catch (error) {
             oResult.catchError = error;
         }
@@ -156,6 +158,12 @@ module.exports = cds.service.impl(async (service) => {
         let pID = req.data.pID;
         let pOTP = req.data.pOTP;
         let result = OTPService.checkOTP(pID, pOTP);
+        return result;
+    }),
+    
+    service.on("decryptID", async (req) => {
+        let pID = req.data.pID;
+        let result = await vbipService.decryptID(pID);
         return result;
     })
 })

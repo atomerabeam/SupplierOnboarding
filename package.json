@@ -10,7 +10,9 @@
     "@sap-cloud-sdk/mail-client": "^3.4.0",
     "@sap/cds": "^7",
     "@sap/xssec": "^3",
+    "crypto-js": "^4.1.1",
     "express": "^4",
+    "latest": "^0.2.0",
     "passport": "^0.6.0"
   },
   "devDependencies": {
@@ -28,22 +30,22 @@
   },
   "cds": {
     "requires": {
-        "destinations": {
-          "binding": {
-            "type": "cf",
-            "apiEndpoint": "https://api.cf.ap11.hana.ondemand.com",
-            "org": "Visa Worldwide Pte. Limited._vbip-development-env-7hhai7s7",
-            "space": "Dev Space",
-            "instance": "MAIL-Service",
-            "key": "SharedMailKey",
-            "resolved": false
-          },
-          "kind": "destinations",
-          "vcap": {
-            "name": "destinations"
-          }
+      "destinations": {
+        "binding": {
+          "type": "cf",
+          "apiEndpoint": "https://api.cf.ap11.hana.ondemand.com",
+          "org": "Visa Worldwide Pte. Limited._vbip-development-env-7hhai7s7",
+          "space": "Dev Space",
+          "instance": "MAIL-Service",
+          "key": "SharedMailKey",
+          "resolved": false
         },
-        "auth": "dummy"
+        "kind": "destinations",
+        "vcap": {
+          "name": "destinations"
+        }
+      },
+      "auth": "dummy"
     }
   }
 }

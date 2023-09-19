@@ -92,13 +92,20 @@ sap.ui.define([
                 let oRouter = sap.ui.core.UIComponent.getRouterFor(this);
                 oRouter.getRoute("Supplier").attachPatternMatched(this._onObjectMatched, this);
                 await Models.getNothing();
-                let oParameter = {
+                let oParameter1 = {
                     "pID": this._GUID
                 };
 
+                let oDecrypt = await Models.decryptID(oParameter1);
+                let oParameter = {
+                    "buyerID": oDecrypt.response.value.split("_")[0],
+                    "supplierID": oDecrypt.response.value.split("_")[1]
+                };
+
                 let oSupplierRead = await Models.getSupplier(oParameter);
-                if (Object.keys(oSupplierRead.catchError).length === 0 &&
-                    oSupplierRead.catchError.constructor === Object) {
+                // if (Object.keys(oSupplierRead.catchError).length === 0 &&
+                //     oSupplierRead.catchError.constructor === Object) {
+                if (oSupplierRead.response) {
                     if (oSupplierRead.response.error) {
                         // Error
                         let msgError = `Failed to get Supplier information \nError code ${oSupplierRead.response.error.code}`;
@@ -112,7 +119,7 @@ sap.ui.define([
                         } else {
                             // Success
                             this.getOwnerComponent().getModel("SupplierInfo").setProperty("/supplier", oSupplierRead.response.value.supplier);
-                            await this._getBuyerInfo(oSupplierRead.response.value.supplier.buyerID);
+                            await this._getBuyerInfo(oSupplierRead.response.supplier.buyerID);
                             this.onResendOTPLinkPress();
                             this.getView().getModel("PageModel").setProperty("/pageFlow/otp", true);
                         }
@@ -127,7 +134,7 @@ sap.ui.define([
 
             _getBuyerInfo: async function (pID) {
                 let oBuyerParameter = {
-                    "pID": pID
+                    "buyerID": pID
                 };
                 let oBuyerRead = await Models.getBuyer(oBuyerParameter);
                 if (oBuyerRead.response.value) {

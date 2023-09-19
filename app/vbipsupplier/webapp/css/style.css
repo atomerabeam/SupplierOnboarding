@@ -150,6 +150,37 @@
     align-content: end;
 }
 
+/* Custom Standard */
+
+.sapMPanel {
+    border-radius: 6px;
+}
+
+.sapMPanelContent {
+    padding: 32px 24px 32px 52px;
+    border-radius: 0px 0px 6px 6px;
+    border-right: 1px solid rgba(0, 0, 0, 0.10);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.10) !important;
+    border-left: 1px solid rgba(0, 0, 0, 0.10);
+    background: #ffffff;
+}
+
+.sapMPanelWrappingDivTb {
+    padding: 16px 24px;
+    border-radius: 6px 6px 0px 0px;
+    border: 1px solid rgba(0, 0, 0, 0.10);
+    background: #ffffff;
+
+}
+
+.sapMPanelWrappingDivTb.sapMPanelWrappingDivTbExpanded {
+    border-bottom: none;
+}
+
+.sapMPanel .sapMPanelWrappingDivTb:not(.sapMPanelWrappingDivTbExpanded) {
+    border-radius: 6px;
+}
+
 /* Layout */
 .customBoxContent {
     background: #ffffff;
@@ -185,6 +216,24 @@
     background: #ffffff
 }
 
+.customBoxItem1 {
+    margin: 1rem 2rem !important;
+    padding: 16px 24px;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    border-radius: 6px;
+    border: 1px solid rgba(0, 0, 0, 0.10);
+}
+
+.customBoxStatus {
+    padding: 0px 8px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50px;
+    background: #C7EDFF;
+}
+
 .customDialog1 {
     background: #ffffff;
     padding: 48px;
@@ -194,6 +243,7 @@
     border: 1px solid rgba(0, 0, 0, 0.10);
     box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.05); */
 }
+
 .customActionBox1 {
     padding: 16px 24px;
     justify-content: space-between;
@@ -321,4 +371,18 @@
     font-style: normal;
     font-weight: 400;
     line-height: 22px;
+}
+
+
+.customTextStatus {
+    color: #1434CB;
+    /* font-feature-settings: 'clig' off, 'liga' off; */
+    /* Web/Overline */
+    /* font-family: Visa Dialect UI; */
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 13px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
 }
