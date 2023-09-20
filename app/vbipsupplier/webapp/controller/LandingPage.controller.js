@@ -91,7 +91,7 @@ sap.ui.define([
 
                 let oRouter = sap.ui.core.UIComponent.getRouterFor(this);
                 oRouter.getRoute("Supplier").attachPatternMatched(this._onObjectMatched, this);
-                await Models.getNothing();
+                await Models.checkService();
                 let oParameter1 = {
                     "pID": this._GUID
                 };
@@ -116,7 +116,7 @@ sap.ui.define([
                         if (oSupplierRead.response.supplier.error) {
                             this.getView().getModel("PageModel").setProperty("/pageFlow/landing", true);
 
-                        } else {
+                        } else if (oSupplierRead.response.supplier) {
                             // Success
                             this.getOwnerComponent().getModel("SupplierInfo").setProperty("/supplier", oSupplierRead.response.supplier);
                             await this._getBuyerInfo(oSupplierRead.response.supplier.buyerID);

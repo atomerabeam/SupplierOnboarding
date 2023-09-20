@@ -20,17 +20,6 @@ sap.ui.define([
                 return oModel;
             },
 
-            getNothing: async function () {
-                try {
-                    const response = await fetch("/odata/v4/supplier/getNothing", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        }
-                    });
-                } catch (error) {
-                }
-            },
             getSupplier: async function (oParameter) {
                 let oResult = {};
                 try {
@@ -196,6 +185,18 @@ sap.ui.define([
                 }
                 console.log(oResult);
                 return oResult;
+            },
+
+            checkService: async function () {
+                try {
+                    const response = await fetch("/odata/v4/supplier/checkService", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        }
+                    });
+                } catch (error) {
+                }
             },
         };
     });

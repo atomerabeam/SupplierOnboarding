@@ -12,7 +12,7 @@ module.exports = cds.service.impl(async (service) => {
         let supplierID = req.data.supplierID;
         let oResult = {};
         try {
-            const response = await fetch(`${oAuthToken.url}/odata/v4/supplier-onboarding/SupplierInfo(buyerID='${buyerID}',supplierID='${supplierID}')`, {
+            const response = await fetch(`${oAuthToken.url}/odata/v4/supplier-onboarding/SupplierInfo(buyerID='${buyerID}',supplierID='${supplierID}')?$expand=supplierDocuments,shareholderDetails`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -22,7 +22,7 @@ module.exports = cds.service.impl(async (service) => {
             
             oResult.supplier = await response.json();
         } catch (error) {
-            oResult.catchError = error;
+            oResult.error = error;
         }
         return oResult;
     }),
@@ -129,8 +129,8 @@ module.exports = cds.service.impl(async (service) => {
         return oResult;
     }),
 
-    service.on("getNothing", async () => {
-        // Nothing
+    service.on("checkService", async () => {
+        return "OK";
     }),
 
     service.on("sendMail", async (req) => {

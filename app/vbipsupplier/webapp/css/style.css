@@ -260,20 +260,22 @@
 }
 
 .customUploadBox {
-    border-color: #1434CB !important;
-    border-style: dashed !important;
-    border-width: 2px;
-    border-radius: 5px;
-    margin: 20px 0px;
-    padding: 20px;
+    display: flex;
+    width: 80%;
+    border-radius: 4px;
+    border: 1px dashed #1434CB;
+    margin: 10px 0px;
+    padding: 24px;
     flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: normal;
+    align-items: flex-start;
 }
 
 .customFileNameBox {
     display: flex;
-    width: 75%;
-    margin: 20px;
-    margin-left: 0px;
+    width: 80%;
+    margin: 10px 0px;
     padding: 7px 15px;
     flex-wrap: wrap;
     flex-direction: row;
