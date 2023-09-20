@@ -23,7 +23,8 @@ async function decryptID (pID) {
     // Encrypt
     let encryptedData = await CryptoJS.AES.encrypt(data, secretKey).toString();
     console.log(encryptedData)
-    const encoded = encodeURIComponent(encodeURIComponent(encryptedData)); 
+    const encoded = encodeURIComponent(encodeURIComponent(encryptedData));
+    // ...index.html#/Supplier/encoded 
     console.log("encodedURI", encodeURIComponent(encryptedData));
     console.log("encodedURI 2", encoded);
     console.log("decodedURI", decodeURIComponent(encodeURIComponent(encoded)));
@@ -31,7 +32,7 @@ async function decryptID (pID) {
 
     // Decrypt
     console.log("decodedURI pID", decodeURIComponent(pID));
-    let decodeURI = decodeURIComponent(decodeURIComponent(pID));
+    let decodeURI = decodeURIComponent(pID);
     let decrypt  = await CryptoJS.AES.decrypt(decodeURI, secretKey);
     let decryptedData = decrypt.toString(CryptoJS.enc.Utf8);
     console.log("decryptedData", decryptedData);

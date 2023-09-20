@@ -9,18 +9,18 @@
                 <form:content>
                     <VBox id="idMainP4.VBox">
                         <HBox id="idShareholderData.HBox" class="classCustomHeight">
-                            <VBox id="idShareholderText.VBox" width="15%">
+                            <VBox id="idShareholderText.VBox" width="15%" class="sapUiSmallMarginEnd">
                                 <!-- @ui5ignore-patterns -->
                                 <Text id="idShareholderInfo.Text" class="customSubtitle1" 
                                       text="{i18n>shareholderInfo}"/>
                                 <!-- @ui5ignore-patterns -->
-                                <Text id="idShareholderConetent.Text" class="customText"
+                                <Text id="idShareholderConetent.Text" class="customText sapUiTinyMarginTop"
                                       text="{i18n>shareholderContent}"/>
                             </VBox>
                             <VBox id="idItem.VBox" width="85%" items="{ShareholderModel>/item}">
                                 <items>
                                     <VBox id="idShareholderItem.VBox">
-                                        <HBox id="idNewItem.HBox" class="customBoxItem1" visible="{ShareholderModel>enterInfo}">
+                                        <HBox id="idNewItem.HBox" class="customBoxItem1 sapUiSmallMarginBottom" visible="{ShareholderModel>enterInfo}">
                                             <Text id="idShareholderHeader.Text" text="{i18n>shareholder}"
                                                   class="customSubtitle1"/>
                                             <!-- @ui5ignore-patterns -->
@@ -29,7 +29,7 @@
                                                     press="onEnterShareholderPopup"/>
                                         </HBox>
                                         <Panel id="idItem.Panel" expandable="true" expandAnimation="false"
-                                            width="auto" visible="{ShareholderModel>completed}">
+                                               class="sapUiSmallMarginBottom" visible="{ShareholderModel>completed}">
                                             <headerToolbar>
                                                 <OverflowToolbar id="idComplete.OverflowToolbar">
                                                     <Text id="idShareholder.Text" text="{i18n>shareholder}"/>
@@ -77,7 +77,7 @@
                                                             </VBox>
                                                             <VBox id="idAddress2.VBox">
                                                                 <!-- @ui5ignore-patterns -->
-                                                                <Text id="idAddressValue.Text" class="customText" text="idAddress Data"/>
+                                                                <Text id="idAddressValue.Text" class="customText" text="{ShareholderModel>address}"/>
                                                             </VBox>
                                                         </HBox>
                                                         <HBox id="idSpaceP4.HBox" height="24px"/>
@@ -91,7 +91,7 @@
                                                             </VBox>
                                                             <VBox id="idDocType2.VBox">
                                                                 <!-- @ui5ignore-patterns -->
-                                                                <Text id="idDocTypeValue.Text" class="customText" text="documentType Data"/>
+                                                                <Text id="idDocTypeValue.Text" class="customText" text="{ShareholderModel>docType}"/>
                                                             </VBox>
                                                         </HBox>
                                                         <HBox id="idDocNum.HBox" class="customPanelItem1">
@@ -101,7 +101,7 @@
                                                             </VBox>
                                                             <VBox id="idDocNum2.VBox">
                                                                 <!-- @ui5ignore-patterns -->
-                                                                <Text id="idDocNumValue.Text" class="customText" text="documentNumber Data"/>
+                                                                <Text id="idDocNumValue.Text" class="customText" text="{ShareholderModel>docNum}"/>
                                                             </VBox>
                                                         </HBox>  
                                                         <HBox id="ididNameOnDoc.HBox" class="customPanelItem1">
@@ -111,7 +111,7 @@
                                                             </VBox>
                                                             <VBox id="idNameOnDoc2.VBox">
                                                                 <!-- @ui5ignore-patterns -->
-                                                                <Text id="idNameOnDocValue.Text" class="customText" text="nameOnDocument Data"/>
+                                                                <Text id="idNameOnDocValue.Text" class="customText" text="{ShareholderModel>nameOnDoc}"/>
                                                             </VBox>
                                                         </HBox>    
                                                         <HBox id="idDateOfIssue.HBox" class="customPanelItem1">
@@ -121,7 +121,7 @@
                                                             </VBox>
                                                             <VBox id="idDateOfIssue2.VBox">
                                                                 <!-- @ui5ignore-patterns -->
-                                                                <Text id="idDateOfIssueValue.Text" class="customText" text="dateOfIssue Data"/>
+                                                                <Text id="idDateOfIssueValue.Text" class="customText" text="{ShareholderModel>dateOfIssue}"/>
                                                             </VBox>
                                                         </HBox>  
                                                         <HBox id="idDocUploaded.HBox" class="customPanelItem1">
@@ -131,14 +131,15 @@
                                                             </VBox>
                                                             <VBox id="idDocUploaded2.VBox">
                                                                 <!-- @ui5ignore-patterns -->
-                                                                <Text id="idDocUploadedValue.Text" class="customText" text="documentUploaded Data"/>
+                                                                <Text id="idDocUploadedValue.Text" class="customText" text="{ShareholderModel>filename}"/>
                                                             </VBox>
                                                         </HBox>
                                                     </VBox>
                                                     
                                                     <VBox id="idAction.VBox" alignItems="End" width="30%">
                                                         <!-- @ui5ignore-patterns -->
-                                                        <Button id="idEditInfot.Button" type="Transparent" text="{i18n>editInformation}"/>
+                                                        <Button id="idEditInfo.Button" type="Transparent" text="{i18n>editInformation}"
+                                                                press="onEnterShareholderPopup"/>
                                                     </VBox>
                                                 </HBox>
                                             </content>

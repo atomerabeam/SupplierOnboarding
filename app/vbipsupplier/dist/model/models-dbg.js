@@ -32,7 +32,7 @@ sap.ui.define([
                 }
             },
             getSupplier: async function (oParameter) {
-                let oResult = { "response": {}, "catchError": {} }
+                let oResult = {};
                 try {
                     const response = await fetch("/odata/v4/supplier/getSupplier", {
                         method: "POST",
@@ -42,15 +42,21 @@ sap.ui.define([
                         body: JSON.stringify(oParameter),
                     });
 
-                    oResult.response = await response.json();
+                    try {
+                        let oResponse = await response.json();
+                        oResult.response = oResponse.value;
+                    } catch (error) {
+                        oResult.response = response;
+                        oResult.error = error;
+                    }
                 } catch (error) {
-                    oResult.catchError = error;
+                    oResult.error = error;
                 }
                 return oResult;
             },
 
             getBuyer: async function (oParameter) {
-                let oResult = { "response": {}, "catchError": {} }
+                let oResult = { "response": {}, "catchError": {} };
                 try {
                     const response = await fetch("/odata/v4/supplier/getBuyer", {
                         method: "POST",
@@ -68,7 +74,7 @@ sap.ui.define([
             },
 
             getBuyerOnboarding: async function (oParameter) {
-                let oResult = { "response": {}, "catchError": {} }
+                let oResult = { "response": {}, "catchError": {} };
                 try {
                     const response = await fetch("/odata/v4/supplier/getBuyerOnboarding", {
                         method: "POST",
@@ -86,7 +92,7 @@ sap.ui.define([
             },
 
             getVBIP: async function (oParameter) {
-                let oResult = { "response": {}, "catchError": {} }
+                let oResult = { "response": {}, "catchError": {} };
                 try {
                     const response = await fetch("/odata/v4/supplier/getVBIP", {
                         method: "POST",
@@ -104,7 +110,7 @@ sap.ui.define([
             },
 
             getBusinessNature: async function () {
-                let oResult = { "response": {}, "catchError": {} }
+                let oResult = { "response": {}, "catchError": {} };
                 try {
                     const response = await fetch("/odata/v4/supplier/getBusinessNature", {
                         method: "POST",
@@ -121,7 +127,7 @@ sap.ui.define([
             },
 
             updateSupplier: async function (oParameter) {
-                let oResult = { "response": {}, "catchError": {} }
+                let oResult = { "response": {}, "catchError": {} };
                 try {
                     const response = await fetch("/odata/v4/supplier/updateSupplier", {
                         method: "POST",
@@ -139,7 +145,7 @@ sap.ui.define([
             },
             
             sendMailOTP: async function (oParameter) {
-                let oResult = { "response": {}, "catchError": {} }
+                let oResult = { "response": {}, "catchError": {} };
                 try {
                     const response = await fetch("/odata/v4/supplier/sendMailOTP", {
                         method: "POST",
@@ -157,7 +163,7 @@ sap.ui.define([
             },
             
             checkOTP: async function (oParameter) {
-                let oResult = { "response": {}, "catchError": {} }
+                let oResult = { "response": {}, "catchError": {} };
                 try {
                     const response = await fetch("/odata/v4/supplier/checkOTP", {
                         method: "POST",
@@ -171,6 +177,24 @@ sap.ui.define([
                 } catch (error) {
                     oResult.catchError = error;
                 }
+                return oResult;
+            },
+            decryptID: async function (oParameter) {
+                let oResult = {};
+                try {
+                    const response = await fetch("/odata/v4/supplier/decryptID", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(oParameter),
+                    });
+
+                    oResult.response = await response.json();
+                } catch (error) {
+                    oResult.catchError = error;
+                }
+                console.log(oResult);
                 return oResult;
             },
         };

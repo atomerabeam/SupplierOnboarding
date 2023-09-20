@@ -60,7 +60,7 @@
 						text="{i18n>reportInfo}" press="onReportInfo"/>
 				<VBox id="idSpaceP2S12.VBox" width="50%"/>
 				<VBox id="idImage.VBox" class="sapUiSmallMarginEnd">
-					<Image id="idGlobal.Image" src="/vbipsupplier/webapp/images/Global.png" width="200px" />
+					<Image id="idGlobal.Image" src="/vbipsupplier/webapp/images/Group.svg" width="200px" />
 				</VBox>
 			</HBox>
 		</VBox>

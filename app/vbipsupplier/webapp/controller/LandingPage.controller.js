@@ -113,12 +113,12 @@ sap.ui.define([
                         this.getView().getModel("PageModel").setProperty("/pageFlow/landing", true);
 
                     } else {
-                        if (oSupplierRead.response.value.supplier.error) {
+                        if (oSupplierRead.response.supplier.error) {
                             this.getView().getModel("PageModel").setProperty("/pageFlow/landing", true);
 
                         } else {
                             // Success
-                            this.getOwnerComponent().getModel("SupplierInfo").setProperty("/supplier", oSupplierRead.response.value.supplier);
+                            this.getOwnerComponent().getModel("SupplierInfo").setProperty("/supplier", oSupplierRead.response.supplier);
                             await this._getBuyerInfo(oSupplierRead.response.supplier.buyerID);
                             this.onResendOTPLinkPress();
                             this.getView().getModel("PageModel").setProperty("/pageFlow/otp", true);

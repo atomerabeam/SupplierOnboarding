@@ -13,10 +13,11 @@
                         <Text id="idShareholderDetails.Text" text="{i18n>shareholderDetails}"
                             class="customSubtitle1"/>
                         <Label id="idName.Label" class="customLabel" text="{i18n>name}"/>
-                        <Input id="idName.Input"/>
+                        <Input id="idName.Input" value="{ShareholderPopupModel>/popup/name}"/>
                         <Label id="idShareholderPercentage.Label" text="{i18n>ShareholderPercentage}" 
-                            class="customLabel" />
-                        <Input id="idShareholderPercentage.Input"/>
+                            class="customLabel"/>
+                        <!-- @ui5ignore-patterns -->    
+                        <Input id="idShareholderPercentage.Input" value="{ShareholderPopupModel>/popup/sharePercentage}"/>
                         <Label id="idShareholderAddress.Label" text="{i18n>shareholderAddress}" 
                             class="customLabel"/>
                         <Input id="idShareholderAddress.Input"/>

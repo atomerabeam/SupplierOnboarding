@@ -59,6 +59,8 @@ sap.ui.define([
                     aShareholder.push({
                         "name": "",
                         "sharePercentage": "",
+                        "enterInfo": true,
+                        "completed": false,
                         "Documents":
                             [
                                 {
@@ -146,7 +148,15 @@ sap.ui.define([
                 // Trigger the download
                 downloadLink.click();
             },
-            onEnterShareholderPopup: function () {
+            onEnterShareholderPopup: function (oEvent) {
+                let oBinding = oEvent.getSource().getBindingContext("ShareholderModel");
+                let oCurrentItem = this.getView().getModel("ShareholderModel").getProperty(oBinding.getPath());
+                oCurrentItem.path = oBinding.getPath();
+
+                let oShareholderPopupModel = new JSONModel;
+                oShareholderPopupModel.setProperty('/popup', oCurrentItem);
+                this.getView().setModel(oShareholderPopupModel, "ShareholderPopupModel");
+
                 if (!this._oDialog) {
                     this._oDialog = new sap.ui.xmlfragment("vbipsupplier.view.fragment.ShareholderPopup", this);
                     this.getView().addDependent(this._oDialog);
@@ -158,6 +168,26 @@ sap.ui.define([
                 this._oDialog = null;
             },
             onSave: function () {
+                let oShareholder = {
+                    "name": this.getView().getModel("ShareholderPopupModel").getProperty("/popup/name"),
+                    "sharePercentage": this.getView().getModel("ShareholderPopupModel").getProperty("/popup/sharePercentage"),
+                    "enterInfo": false,
+                    "completed": true,
+                    "Documents":
+                        [
+                            {
+                                "documentName": "",
+                                "documentType": "",
+                                "nameonDocument": "",
+                                "documentNumber": ""
+                            }
+                        ]
+                };
+                let sPath = this.getView().getModel("ShareholderPopupModel").getProperty("/popup/path");
+                
+                this.getView().getModel("ShareholderModel").setProperty(`${sPath}`, oShareholder);
+
+                this.onDialogAfterClose();
             },
             onCancel: function () {
                 this.onDialogAfterClose();
@@ -169,8 +199,8 @@ sap.ui.define([
                     "infoRequest": false,
                     "infoConfirm": false,
                     "corporate": false,
-                    // "shareholder": false,
-                    "shareholder": true,
+                    "shareholder": false,
+                    // "shareholder": true,
                     "complete": false
                 };
                 oPageModel.setProperty("/pageFlow", oPageFlow);
@@ -237,9 +267,9 @@ sap.ui.define([
                     this.getView().getModel("PageModel").setProperty("/pageFlow/infoRequest", true);
                 } else {
                     let oRouter = this.getOwnerComponent().getRouter();
-                    // oRouter.navTo("Supplier", {
-                    //     GUID: "Refresh"
-                    // });
+                    oRouter.navTo("Supplier", {
+                        GUID: "NotFound"
+                    });
                 }
             },
             _onObjectMatched: function (oEvent) {

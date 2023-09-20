@@ -8,129 +8,143 @@
 			<form:SimpleForm id="idMainP4.SimpleForm" editable="true" singleContainerFullSize="false">
                 <form:content>
                     <VBox id="idMainP4.VBox">
-                        <HBox id="idShareholder.HBox" class="classCustomHeight">
-                            <VBox id="idShareholderText.VBox" width="15%">
+                        <HBox id="idShareholderData.HBox" class="classCustomHeight">
+                            <VBox id="idShareholderText.VBox" width="15%" class="sapUiSmallMarginEnd">
                                 <!-- @ui5ignore-patterns -->
                                 <Text id="idShareholderInfo.Text" class="customSubtitle1" 
                                       text="{i18n>shareholderInfo}"/>
                                 <!-- @ui5ignore-patterns -->
-                                <Text id="idShareholderConetent.Text" class="customText"
+                                <Text id="idShareholderConetent.Text" class="customText sapUiTinyMarginTop"
                                       text="{i18n>shareholderContent}"/>
                             </VBox>
-                            
                             <VBox id="idItem.VBox" width="85%" items="{ShareholderModel>/item}">
                                 <items>
-                                    <Panel id="idItem.Panel" expandable="true" 
-                                           width="auto" class="sapUiResponsiveMargin">
-                                        <headerToolbar>
-                                            <OverflowToolbar id="idHeaderOverflowToolbar">
-                                                <Text id="idShareholder.Text" text="{i18n>shareholder}"/>
-                                                <ToolbarSpacer id="idSpace.ToolbarSpacer"/>
-                                                <!-- @ui5ignore-patterns -->
-                                                <Button id="idEnterInfo.Button" type="Emphasized" 
-                                                        text="{i18n>enterInformation}" 
-                                                        press="onEnterShareholderPopup"/>
-                                            </OverflowToolbar>
-
-                                        </headerToolbar>
-                                        <content>
-                                            <HBox id="idContent.HBox">
-                                                <VBox id="idContent.VBox" width="70%">
-                                                    <Text id="idShareholderDetails.Text" class="customSubtitle2"
-                                                          text="{i18n>shareholderDetails}"/>
-                                                    <HBox id="idName.HBox" class="customPanelItem1">
-                                                        <VBox id="idName1.VBox" width="35%">
-                                                            <!-- @ui5ignore-patterns -->
-                                                            <Text id="idName.Text" class="customText" text="{i18n>name}"/>
-                                                        </VBox>
-                                                        <VBox id="idName2.VBox">
-                                                            <!-- @ui5ignore-patterns -->
-                                                            <Text id="idNameValue.Text" class="customText" text="Test Data"/>
-                                                        </VBox>
-                                                    </HBox>
-                                                    <HBox id="idSharePercentage.HBox" class="customPanelItem1">
-                                                        <VBox id="idSharePercentage1.VBox" width="35%">
-                                                            <!-- @ui5ignore-patterns -->
-                                                            <Text id="idSharePercentage.Text" class="customText" text="{i18n>sharePercentage}"/>
-                                                        </VBox>
-                                                        <VBox id="idSharePercentage2.VBox">
-                                                            <!-- @ui5ignore-patterns -->
-                                                            <Text id="idPercentageValue.Text" class="customText" text="Test Data"/>
-                                                        </VBox>
-                                                    </HBox>
-                                                    <HBox id="idAddress.HBox" class="customPanelItem1">
-                                                        <VBox id="idAddress1.VBox" width="35%">
-                                                            <!-- @ui5ignore-patterns -->
-                                                            <Text id="idAddress.Text" class="customText" text="{i18n>address}"/>
-                                                        </VBox>
-                                                        <VBox id="idAddress2.VBox">
-                                                            <!-- @ui5ignore-patterns -->
-                                                            <Text id="idAddressValue.Text" class="customText" text="idAddress Data"/>
-                                                        </VBox>
-                                                    </HBox>
-                                                    <HBox id="idSpaceP4.HBox" height="24px"/>
-                                                    <Text id="idIdentityProof.Text" class="customSubtitle2"
-                                                          text="{i18n>identityProof}"/>
+                                    <VBox id="idShareholderItem.VBox">
+                                        <HBox id="idNewItem.HBox" class="customBoxItem1 sapUiSmallMarginBottom" visible="{ShareholderModel>enterInfo}">
+                                            <Text id="idShareholderHeader.Text" text="{i18n>shareholder}"
+                                                  class="customSubtitle1"/>
+                                            <!-- @ui5ignore-patterns -->
+                                            <Button id="idEnterInfo.Button" type="Emphasized" 
+                                                    text="{i18n>enterInformation}" 
+                                                    press="onEnterShareholderPopup"/>
+                                        </HBox>
+                                        <Panel id="idItem.Panel" expandable="true" expandAnimation="false"
+                                               class="sapUiSmallMarginBottom" visible="{ShareholderModel>completed}">
+                                            <headerToolbar>
+                                                <OverflowToolbar id="idComplete.OverflowToolbar">
+                                                    <Text id="idShareholder.Text" text="{i18n>shareholder}"/>
+                                                    <ToolbarSpacer id="idSpace2.ToolbarSpacer"/>
                                                     
-                                                    <HBox id="idDocType.HBox" class="customPanelItem1">
-                                                        <VBox id="idDocType1.VBox" width="35%">
-                                                            <!-- @ui5ignore-patterns -->
-                                                            <Text id="idDocType.Text" class="customText" text="{i18n>documentType}"/>
-                                                        </VBox>
-                                                        <VBox id="idDocType2.VBox">
-                                                            <!-- @ui5ignore-patterns -->
-                                                            <Text id="idDocTypeValue.Text" class="customText" text="documentType Data"/>
-                                                        </VBox>
-                                                    </HBox>
-                                                    <HBox id="idDocNum.HBox" class="customPanelItem1">
-                                                        <VBox id="idDocNum1.VBox" width="35%">
-                                                            <!-- @ui5ignore-patterns -->
-                                                            <Text id="idDocNum.Text" class="customText" text="{i18n>documentNumber}"/>
-                                                        </VBox>
-                                                        <VBox id="idDocNum2.VBox">
-                                                            <!-- @ui5ignore-patterns -->
-                                                            <Text id="idDocNumValue.Text" class="customText" text="documentNumber Data"/>
-                                                        </VBox>
-                                                    </HBox>  
-                                                    <HBox id="ididNameOnDoc.HBox" class="customPanelItem1">
-                                                        <VBox id="idNameOnDoc1.VBox" width="35%">
-                                                            <!-- @ui5ignore-patterns -->
-                                                            <Text id="idNameOnDoc.Text" class="customText" text="{i18n>nameOnDocument}"/>
-                                                        </VBox>
-                                                        <VBox id="idNameOnDoc2.VBox">
-                                                            <!-- @ui5ignore-patterns -->
-                                                            <Text id="idNameOnDocValue.Text" class="customText" text="nameOnDocument Data"/>
-                                                        </VBox>
-                                                    </HBox>    
-                                                    <HBox id="idDateOfIssue.HBox" class="customPanelItem1">
-                                                        <VBox id="idDateOfIssue1.VBox" width="35%">
-                                                            <!-- @ui5ignore-patterns -->
-                                                            <Text id="idDateOfIssue.Text" class="customText" text="{i18n>dateOfIssue}"/>
-                                                        </VBox>
-                                                        <VBox id="idDateOfIssue2.VBox">
-                                                            <!-- @ui5ignore-patterns -->
-                                                            <Text id="idDateOfIssueValue.Text" class="customText" text="dateOfIssue Data"/>
-                                                        </VBox>
-                                                    </HBox>  
-                                                    <HBox id="idDocUploaded.HBox" class="customPanelItem1">
-                                                        <VBox id="idDocUploaded1.VBox" width="35%">
-                                                            <!-- @ui5ignore-patterns -->
-                                                            <Text id="idDocUploaded.Text" class="customText" text="{i18n>documentUploaded}"/>
-                                                        </VBox>
-                                                        <VBox id="idDocUploaded2.VBox">
-                                                            <!-- @ui5ignore-patterns -->
-                                                            <Text id="idDocUploadedValue.Text" class="customText" text="documentUploaded Data"/>
-                                                        </VBox>
-                                                    </HBox>
-                                                </VBox>
-                                                
-                                                <VBox id="idAction.VBox" alignItems="End" width="30%">
-                                                    <!-- @ui5ignore-patterns -->
-                                                    <Button id="idEditInfot.Button" type="Transparent" text="{i18n>editInformation}"/>
-                                                </VBox>
-                                            </HBox>
-                                        </content>
-                                    </Panel>
+                                                    <HBox id="idStatus.HBox" class="customBoxStatus">
+                                                        <Image id="idCompleted.Image" 
+                                                            src="././images/CheckCircle.svg" width="16px"/>
+                                                        <!-- @ui5ignore-patterns -->
+                                                        <Text id="idCompleted.Text" class="customTextStatus"
+                                                              text="COMPLETED"/>
+                                                    </HBox>        
+                                                </OverflowToolbar>
+                                            </headerToolbar>
+                                            <content>
+                                                <HBox id="idContent.HBox">
+                                                    <VBox id="idContent.VBox" width="70%">
+                                                        <Text id="idShareholderDetails.Text" class="customSubtitle2"
+                                                            text="{i18n>shareholderDetails}"/>
+                                                        <HBox id="idName.HBox" class="customPanelItem1">
+                                                            <VBox id="idName1.VBox" width="35%">
+                                                                <!-- @ui5ignore-patterns -->
+                                                                <Text id="idName.Text" class="customText" text="{i18n>name}"/>
+                                                            </VBox>
+                                                            <VBox id="idName2.VBox">
+                                                                <!-- @ui5ignore-patterns -->
+                                                                <Text id="idNameValue.Text" class="customText" text="{ShareholderModel>name}"/>
+                                                            </VBox>
+                                                        </HBox>
+                                                        <HBox id="idSharePercentage.HBox" class="customPanelItem1">
+                                                            <VBox id="idSharePercentage1.VBox" width="35%">
+                                                                <!-- @ui5ignore-patterns -->
+                                                                <Text id="idSharePercentage.Text" class="customText" text="{i18n>sharePercentage}"/>
+                                                            </VBox>
+                                                            <VBox id="idSharePercentage2.VBox">
+                                                                <!-- @ui5ignore-patterns -->
+                                                                <Text id="idPercentageValue.Text" class="customText" 
+                                                                      text="{ShareholderModel>sharePercentage}"/>
+                                                            </VBox>
+                                                        </HBox>
+                                                        <HBox id="idAddress.HBox" class="customPanelItem1">
+                                                            <VBox id="idAddress1.VBox" width="35%">
+                                                                <!-- @ui5ignore-patterns -->
+                                                                <Text id="idAddress.Text" class="customText" text="{i18n>address}"/>
+                                                            </VBox>
+                                                            <VBox id="idAddress2.VBox">
+                                                                <!-- @ui5ignore-patterns -->
+                                                                <Text id="idAddressValue.Text" class="customText" text="{ShareholderModel>address}"/>
+                                                            </VBox>
+                                                        </HBox>
+                                                        <HBox id="idSpaceP4.HBox" height="24px"/>
+                                                        <Text id="idIdentityProof.Text" class="customSubtitle2"
+                                                            text="{i18n>identityProof}"/>
+                                                        
+                                                        <HBox id="idDocType.HBox" class="customPanelItem1">
+                                                            <VBox id="idDocType1.VBox" width="35%">
+                                                                <!-- @ui5ignore-patterns -->
+                                                                <Text id="idDocType.Text" class="customText" text="{i18n>documentType}"/>
+                                                            </VBox>
+                                                            <VBox id="idDocType2.VBox">
+                                                                <!-- @ui5ignore-patterns -->
+                                                                <Text id="idDocTypeValue.Text" class="customText" text="{ShareholderModel>docType}"/>
+                                                            </VBox>
+                                                        </HBox>
+                                                        <HBox id="idDocNum.HBox" class="customPanelItem1">
+                                                            <VBox id="idDocNum1.VBox" width="35%">
+                                                                <!-- @ui5ignore-patterns -->
+                                                                <Text id="idDocNum.Text" class="customText" text="{i18n>documentNumber}"/>
+                                                            </VBox>
+                                                            <VBox id="idDocNum2.VBox">
+                                                                <!-- @ui5ignore-patterns -->
+                                                                <Text id="idDocNumValue.Text" class="customText" text="{ShareholderModel>docNum}"/>
+                                                            </VBox>
+                                                        </HBox>  
+                                                        <HBox id="ididNameOnDoc.HBox" class="customPanelItem1">
+                                                            <VBox id="idNameOnDoc1.VBox" width="35%">
+                                                                <!-- @ui5ignore-patterns -->
+                                                                <Text id="idNameOnDoc.Text" class="customText" text="{i18n>nameOnDocument}"/>
+                                                            </VBox>
+                                                            <VBox id="idNameOnDoc2.VBox">
+                                                                <!-- @ui5ignore-patterns -->
+                                                                <Text id="idNameOnDocValue.Text" class="customText" text="{ShareholderModel>nameOnDoc}"/>
+                                                            </VBox>
+                                                        </HBox>    
+                                                        <HBox id="idDateOfIssue.HBox" class="customPanelItem1">
+                                                            <VBox id="idDateOfIssue1.VBox" width="35%">
+                                                                <!-- @ui5ignore-patterns -->
+                                                                <Text id="idDateOfIssue.Text" class="customText" text="{i18n>dateOfIssue}"/>
+                                                            </VBox>
+                                                            <VBox id="idDateOfIssue2.VBox">
+                                                                <!-- @ui5ignore-patterns -->
+                                                                <Text id="idDateOfIssueValue.Text" class="customText" text="{ShareholderModel>dateOfIssue}"/>
+                                                            </VBox>
+                                                        </HBox>  
+                                                        <HBox id="idDocUploaded.HBox" class="customPanelItem1">
+                                                            <VBox id="idDocUploaded1.VBox" width="35%">
+                                                                <!-- @ui5ignore-patterns -->
+                                                                <Text id="idDocUploaded.Text" class="customText" text="{i18n>documentUploaded}"/>
+                                                            </VBox>
+                                                            <VBox id="idDocUploaded2.VBox">
+                                                                <!-- @ui5ignore-patterns -->
+                                                                <Text id="idDocUploadedValue.Text" class="customText" text="{ShareholderModel>filename}"/>
+                                                            </VBox>
+                                                        </HBox>
+                                                    </VBox>
+                                                    
+                                                    <VBox id="idAction.VBox" alignItems="End" width="30%">
+                                                        <!-- @ui5ignore-patterns -->
+                                                        <Button id="idEditInfo.Button" type="Transparent" text="{i18n>editInformation}"
+                                                                press="onEnterShareholderPopup"/>
+                                                    </VBox>
+                                                </HBox>
+                                            </content>
+                                        </Panel>
+                                    </VBox>
                                 </items>
                             </VBox>
                         </HBox>
