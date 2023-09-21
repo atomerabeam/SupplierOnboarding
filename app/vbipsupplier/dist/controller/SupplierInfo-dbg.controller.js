@@ -18,13 +18,13 @@ sap.ui.define([
             },
             onContinue: function () {
                 this.getView().getModel("PageModel").setProperty("/pageFlow/infoRequest", false);
-                let vAcceptCard = this.getView().byId('idAcceptCard.Select').getSelectedKey();
+                let vAcceptCard = this.getView().byId("idAcceptCard.Select").getSelectedKey();
                 if (vAcceptCard === "true") {
                     this.getView().getModel("PageModel").setProperty("/pageFlow/complete", true);
                 } else {
                     this.getView().getModel("PageModel").setProperty("/pageFlow/infoConfirm", true);
                 }
-				
+
             },
             onConfirmInfo: function () {
                 this.getView().getModel("PageModel").setProperty("/pageFlow/infoConfirm", false);
@@ -53,33 +53,34 @@ sap.ui.define([
                 let oShareholderModel = new JSONModel;
                 this.getView().setModel(oShareholderModel, "ShareholderModel");
 
-                var vShareholderCount = this.getView().getModel('F4').getProperty('/shareholder/count');
+                var vShareholderCount = this.getView().getModel("F4").getProperty("/shareholder/count");
                 var aShareholder = [];
                 for (var i = 1; i <= vShareholderCount; i++) {
                     aShareholder.push({
-                        "name": "",
-                        "sharePercentage": "",
                         "enterInfo": true,
                         "completed": false,
-                        "Documents":
-                            [
-                                {
-                                    "documentName": "",
-                                    "documentType": "",
-                                    "nameonDocument": "",
-                                    "documentNumber": ""
-                                }
-                            ]
+                        "name": "",
+                        "sharePercentage": "",
+                        "address": "",
+                        "docType": "",
+                        "docNum": "",
+                        "nameOnDoc": "",
+                        "dateOfIssue": "",
+                        "filename": "",
+                        "fileType": "",
+                        "fileData": "",
+                        "uploadVisible": true,
+                        "fileVisible": false,
                     });
                 }
-                this.getView().getModel('ShareholderModel').setProperty('/item', aShareholder);
+                this.getView().getModel("ShareholderModel").setProperty("/item", aShareholder);
             },
             onUploadFileButton: async function (oEvent) {
                 let strID = oEvent.getParameter("id");
-                let fileNumber = strID.split('idUploadFile')[1].split('.Button')[0];
-    
-                let input = document.createElement('input'); // Create input element
-                input.type = 'file'; // Important to be type File
+                let fileNumber = strID.split("idUploadFile")[1].split(".Button")[0];
+
+                let input = document.createElement("input"); // Create input element
+                input.type = "file"; // Important to be type File
                 input.multiple = true // Alow only one file at a time
                 input.accept = "image/*" // Only accept image file
                 let fileInfo;
@@ -92,7 +93,7 @@ sap.ui.define([
                         let textData = await data.text()
                         var bytes = new Uint8Array(dataArr);
                         var len = bytes.byteLength;
-                        var base64 = '';
+                        var base64 = "";
                         for (let i = 0; i < len; i++) {
                             base64 += String.fromCharCode(bytes[i]);
                         }
@@ -101,8 +102,8 @@ sap.ui.define([
                         // console.log(textData)
                         // console.log(base64)
                     }
-    
-                    let oFile = this.getView().getModel('FileModel');
+
+                    let oFile = this.getView().getModel("FileModel");
                     oFile.setProperty("/file" + fileNumber, {
                         // "fileID1": result.value,
                         "fileName": fileInfo[0].name,
@@ -112,15 +113,15 @@ sap.ui.define([
                         "fileVisible": true,
                     });
                 }.bind(this)
-    
+
                 input.click();
             },
             onDeleteFileButton: async function (oEvent) {
                 //File Number
                 let strID = oEvent.getParameter("id");
-                let fileNumber = strID.split('idDeleteFile')[1].split('.Icon')[0];
-    
-                let oFile = this.getView().getModel('FileModel');
+                let fileNumber = strID.split("idDeleteFile")[1].split(".Icon")[0];
+
+                let oFile = this.getView().getModel("FileModel");
                 oFile.setProperty("/file" + fileNumber, {
                     "fileName": null,
                     "fileType": null,
@@ -128,25 +129,70 @@ sap.ui.define([
                     "uploadVisible": true,
                     "fileVisible": false,
                 });
-    
+
                 //Set model
                 this.getView().setModel(oFile, "FileModel");
             },
             onDownloadFileButton: async function (oEvent) {
                 //File Number
                 let strID = oEvent.getParameter("id");
-                let fileNumber = strID.split('idDownloadFile')[1].split('.Icon')[0];
-    
+                let fileNumber = strID.split("idDownloadFile")[1].split(".Icon")[0];
+
                 //File
-                let oFile = this.getView().getModel('FileModel');
+                let oFile = this.getView().getModel("FileModel");
                 let vFile = oFile.getProperty("/file" + fileNumber);
-    
-                const downloadLink = document.createElement('a');
+
+                const downloadLink = document.createElement("a");
                 let MimeType = vFile.fileType;
                 downloadLink.href = "data:" + MimeType + ";base64," + vFile.fileData; //base64 file content
                 downloadLink.download = vFile.fileName;
                 // Trigger the download
                 downloadLink.click();
+            },
+            onUploadFileSH: async function (oEvent) {
+                let oShareholderPopup = this.getView().getModel("ShareholderPopupModel").getProperty("/popup");
+                let strID = oEvent.getParameter("id");
+                let fileNumber = strID.split("idUploadFile")[1].split(".Button")[0];
+
+                let input = document.createElement("input"); // Create input element
+                input.type = "file"; // Important to be type File
+                input.multiple = true // Alow only one file at a time
+                input.accept = "image/*" // Only accept image file
+                let fileInfo;
+                input.onchange = async function () {
+                    let file = input.files; // get the file
+                    fileInfo = file;
+                    for (let i = 0; i < file.length; i++) {
+                        let data = file[i]
+                        let dataArr = await data.arrayBuffer()
+                        let textData = await data.text()
+                        var bytes = new Uint8Array(dataArr);
+                        var len = bytes.byteLength;
+                        var base64 = "";
+                        for (let i = 0; i < len; i++) {
+                            base64 += String.fromCharCode(bytes[i]);
+                        }
+                        base64 = btoa(base64);
+                    }
+
+                    // let oFile = this.getView().getModel("SHFileModel");
+                    // oShareholderPopup.setProperty("/file" + fileNumber, {
+                    //     // "fileID1": result.value,
+                    //     "fileName": fileInfo[0].name,
+                    //     "fileType": fileInfo[0].type,
+                    //     "fileData": base64,
+                    //     "uploadVisible": false,
+                    //     "fileVisible": true,
+                    // });
+                    oShareholderPopup.fileName = fileInfo[0].name;
+                    oShareholderPopup.fileType = fileInfo[0].type;
+                    oShareholderPopup.fileData = base64;
+                    oShareholderPopup.uploadVisible = false;
+                    oShareholderPopup.fileVisible = true;
+                    this.getView().getModel("ShareholderPopupModel").setProperty("/popup", oShareholderPopup);
+                }.bind(this)
+
+                input.click();
             },
             onEnterShareholderPopup: function (oEvent) {
                 let oBinding = oEvent.getSource().getBindingContext("ShareholderModel");
@@ -154,7 +200,7 @@ sap.ui.define([
                 oCurrentItem.path = oBinding.getPath();
 
                 let oShareholderPopupModel = new JSONModel;
-                oShareholderPopupModel.setProperty('/popup', oCurrentItem);
+                oShareholderPopupModel.setProperty("/popup", oCurrentItem);
                 this.getView().setModel(oShareholderPopupModel, "ShareholderPopupModel");
 
                 if (!this._oDialog) {
@@ -168,23 +214,27 @@ sap.ui.define([
                 this._oDialog = null;
             },
             onSave: function () {
+                let oShareholderPopup = this.getView().getModel("ShareholderPopupModel").getProperty("/popup");
                 let oShareholder = {
-                    "name": this.getView().getModel("ShareholderPopupModel").getProperty("/popup/name"),
-                    "sharePercentage": this.getView().getModel("ShareholderPopupModel").getProperty("/popup/sharePercentage"),
+                    "path": oShareholderPopup.path,
                     "enterInfo": false,
                     "completed": true,
-                    "Documents":
-                        [
-                            {
-                                "documentName": "",
-                                "documentType": "",
-                                "nameonDocument": "",
-                                "documentNumber": ""
-                            }
-                        ]
+                    "name": oShareholderPopup.name,
+                    "sharePercentage": oShareholderPopup.sharePercentage,
+                    "address": oShareholderPopup.address,
+                    "address": "",
+                    "docType": "",
+                    "docNum": "",
+                    "nameOnDoc": "",
+                    "dateOfIssue": "",
+                    "filename": "",
+                    "fileType": "",
+                    "fileData": "",
+                    "uploadVisible": true,
+                    "fileVisible": false,
                 };
                 let sPath = this.getView().getModel("ShareholderPopupModel").getProperty("/popup/path");
-                
+
                 this.getView().getModel("ShareholderModel").setProperty(`${sPath}`, oShareholder);
 
                 this.onDialogAfterClose();
@@ -200,7 +250,6 @@ sap.ui.define([
                     "infoConfirm": false,
                     "corporate": false,
                     "shareholder": false,
-                    // "shareholder": true,
                     "complete": false
                 };
                 oPageModel.setProperty("/pageFlow", oPageFlow);
@@ -211,7 +260,7 @@ sap.ui.define([
                 oF4Model.setProperty("/shareholder", {
                     "count": 1
                 });
-                
+
                 let oBusinessNatureRead = await Models.getBusinessNature();
                 let aBusinessNature;
                 if (oBusinessNatureRead.response.value) {
@@ -221,7 +270,7 @@ sap.ui.define([
 
                 this.getView().setModel(oF4Model, "F4");
                 this.onChangeShareCount();
-    
+
                 //File
                 let oFileModel = new JSONModel();
                 for (let i = 1; i <= 2; i++) {
@@ -234,7 +283,7 @@ sap.ui.define([
                         "fileVisible": false,
                     });
                 }
-    
+
                 //Set model
                 this.getView().setModel(oFileModel, "FileModel");
 
@@ -278,20 +327,39 @@ sap.ui.define([
 
             _updateSupplier: async function (sMessage) {
                 let oSupplier = this.getOwnerComponent().getModel("SupplierInfo").getProperty("/supplier");
-                delete oSupplier["@odata.context"];
-                delete oSupplier["createdAt"];
-                delete oSupplier["createdBy"];
-                delete oSupplier["modifiedAt"];
-                delete oSupplier["modifiedBy"];
-                delete oSupplier["countryCode_code"];
-                delete oSupplier["businessNature_selectKey"];
-
-                let vID = oSupplier.ID;
-                delete oSupplier["ID"];
                 
+                let aShareholder = this.getView().getModel("ShareholderModel").getProperty("/item");
+                aShareholder.forEach((element) => element.sharePercentage = parseInt(element.sharePercentage));
+                let oSupplierData = {
+                    "status": "Saved",
+                    "SAPCustomer": (this.getView().byId("idSAPCustomer.Select").getSelectedKey().toLowerCase() === 'true'),
+                    "businessNature": parseInt(this.getView().byId("idBusinessNature.Select").getSelectedKey()),
+                    "shareholderCount": parseInt(this.getView().byId("idShareHolderCount.Select").getSelectedKey()),
+                    "supplierDocuments": [
+                        {
+                            documentName: "copyOfBusinessReg",
+                            documentType: "copyOfBusinessReg",
+                            nameOnDocument: this.getView().byId("idNameDoc1.Input").getValue(),
+                            documentNumber: this.getView().byId("idDoc1.Input").getValue(),
+                            fileName: this.getView().getModel("FileModel").getProperty("/file1/fileName"),
+                            fileType:this.getView().getModel("FileModel").getProperty("/file1/fileName"),
+                            encodedContent: this.getView().getModel("FileModel").getProperty("/file1/fileName")
+                        },
+                        {
+                            documentName: "certOfIncorporation",
+                            documentType: "certOfIncorporation",
+                            nameOnDocument: this.getView().byId("idNameDoc2.Input").getValue(),
+                            documentNumber: this.getView().byId("idDoc2.Input").getValue(),
+                            fileName: this.getView().getModel("FileModel").getProperty("/file2/fileName"),
+                            fileType:this.getView().getModel("FileModel").getProperty("/file2/fileName"),
+                            encodedContent: this.getView().getModel("FileModel").getProperty("/file2/fileName")
+                        }
+                    ]
+                };
                 let oParameter = {
-                    "pID": vID,
-                    "oSupplier": oSupplier
+                    "buyerID": oSupplier.buyerID,
+                    "supplierID": oSupplier.supplierID,
+                    "oSupplier": oSupplierData
                 };
                 let oSupplierUpdate = await Models.updateSupplier(oParameter);
                 if (Object.keys(oSupplierUpdate.catchError).length === 0 &&
