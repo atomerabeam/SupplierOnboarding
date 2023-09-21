@@ -9,15 +9,15 @@
                 <form:content>
                     <VBox id="idMainP4.VBox">
                         <HBox id="idShareholderData.HBox" class="classCustomHeight">
-                            <VBox id="idShareholderText.VBox" width="15%" class="sapUiSmallMarginEnd">
+                            <VBox id="idShareholderText.VBox" width="25%" class="sapUiSmallMarginEnd">
                                 <!-- @ui5ignore-patterns -->
                                 <Text id="idShareholderInfo.Text" class="customSubtitle1" 
-                                      text="{i18n>shareholderInfo}"/>
+                                      text="{i18n>shareholderInfo}" width="60%"/>
                                 <!-- @ui5ignore-patterns -->
                                 <Text id="idShareholderConetent.Text" class="customText sapUiTinyMarginTop"
                                       text="{i18n>shareholderContent}"/>
                             </VBox>
-                            <VBox id="idItem.VBox" width="85%" items="{ShareholderModel>/item}">
+                            <VBox id="idItem.VBox" width="75%" items="{ShareholderModel>/item}">
                                 <items>
                                     <VBox id="idShareholderItem.VBox">
                                         <HBox id="idNewItem.HBox" class="customBoxItem1 sapUiSmallMarginBottom" visible="{ShareholderModel>enterInfo}">

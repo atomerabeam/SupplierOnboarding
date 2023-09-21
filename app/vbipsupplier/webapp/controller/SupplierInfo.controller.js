@@ -248,7 +248,7 @@ sap.ui.define([
                 let oPageFlow = {
                     "infoRequest": false,
                     "infoConfirm": false,
-                    "corporate": true,
+                    "corporate": false,
                     "shareholder": false,
                     "complete": false
                 };
@@ -316,9 +316,9 @@ sap.ui.define([
                     this.getView().getModel("PageModel").setProperty("/pageFlow/infoRequest", true);
                 } else {
                     let oRouter = this.getOwnerComponent().getRouter();
-                    // oRouter.navTo("Supplier", {
-                    //     GUID: "NotFound"
-                    // });
+                    oRouter.navTo("Supplier", {
+                        GUID: "NotFound"
+                    });
                 }
             },
             _onObjectMatched: function (oEvent) {
