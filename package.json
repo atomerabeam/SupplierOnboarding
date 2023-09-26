@@ -8,15 +8,18 @@
   "dependencies": {
     "@sap-cloud-sdk/connectivity": "^3.4.0",
     "@sap-cloud-sdk/mail-client": "^3.4.0",
+    "@sap-cloud-sdk/openapi": "^3.5.0",
     "@sap/cds": "^7",
     "@sap/xssec": "^3",
     "crypto-js": "^4.1.1",
     "express": "^4",
     "latest": "^0.2.0",
+    "node-jose": "^2.2.0",
     "passport": "^0.6.0"
   },
   "devDependencies": {
     "@cap-js/sqlite": "^1",
+    "@sap-cloud-sdk/openapi-generator": "^3.5.0",
     "@sap/cds-dk": "^7",
     "@sap/ux-specification": "^1.108.13",
     "rimraf": "^3.0.2"
