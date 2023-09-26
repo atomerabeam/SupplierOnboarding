@@ -17,6 +17,8 @@ modules:
     requires:
       - name: VBIPSUPPLIER-auth
       - name: VBIPSUPPLIER-destination-service
+      - name: credentialStore
+      - name: malwareScanner
   - name: VBIPSUPPLIER-app-content
     type: com.sap.application.content
     path: .
@@ -92,6 +94,19 @@ resources:
       config:
         xsappname: VBIPSUPPLIER
         tenant-mode: dedicated
+  - name: credentialStore
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: credstore
+      service-plan: standard
+      service-name: credentialStore
+      service-key-name: credentialsStore-key
+  - name: malwareScanner
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: malware-scanner
+      service-plan: clamav
+      service-name: malwareScanner
 parameters:
   deploy_mode: html5-repo
   enable-parallel-deployments: true
