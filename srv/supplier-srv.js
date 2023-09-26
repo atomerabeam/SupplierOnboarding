@@ -7,7 +7,7 @@ module.exports = cds.service.impl(async (service) => {
     // cryptoService.generateOTP();
     
     service.on("getSupplier", async (req) => {
-        let oAuthToken = await vbipService.getToken();
+        let oAuthToken = await vbipService.getToken("VBIP-API");
         let buyerID = req.data.buyerID;
         let supplierID = req.data.supplierID;
         let oResult = {};
@@ -165,5 +165,27 @@ module.exports = cds.service.impl(async (service) => {
         let pID = req.data.pID;
         let result = await vbipService.decryptID(pID);
         return result;
+    }),
+
+    service.on("submitSupplier", async (req) => {
+        let oAuthToken = await vbipService.getToken("VBIP-CPI");
+        let oSupplier = req.data.oSupplier;
+        let oResult = {};
+        try {
+            const response = await fetch(`${oAuthToken.url}/if4003/router/vbpe/v1/api/onBoard/supplier`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": oAuthToken.token
+                },
+                body: JSON.stringify(oSupplier)
+            });
+            
+            oResult.supplier = await response.json();
+        } catch (error) {
+            oResult.error = error;
+        }
+        return oResult;
     })
+
 })

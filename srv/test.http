@@ -5,8 +5,8 @@ headers:
       Content-Type: application/json
 
 {
-        "buyerID" : "1000010002",
-        "supplierID": "1000018989"
+      "buyerID" : "1000010002",
+      "supplierID": "1000018989"
 }
 
 ####################################################
@@ -15,7 +15,7 @@ headers:
       Content-Type: application/json
 
 {
-        "buyerID" : "1000010004"
+      "buyerID" : "1000010004"
 }
 ####################################################
 POST {{server}}/odata/v4/supplier/getBusinessNature
@@ -29,7 +29,7 @@ headers:
       Content-Type: application/json
 
 {
-        "pID" : "100001"
+      "pID" : "100001"
 }
    
 ####################################################
@@ -38,11 +38,12 @@ headers:
       Content-Type: application/json
 
 {
-        "buyerID" : "1000010004",
-        "supplierID": "1000018989",
-        "oSupplier": {
-                        "supplierName": "Test 123456"
-                     }
+      "buyerID" : "1000010004",
+      "supplierID": "1000018989",
+      "oSupplier": 
+            {
+                  "supplierName": "Test 123456"
+            }
 }
 
 ####################################################
@@ -54,3 +55,92 @@ headers:
       "pID" : "U2FsdGVkX18pDONyEi5KALT%2Fjl54btLC2GD0s5UXtIVuSM%2BYUiGbFvyyUfZkm9%2Bt"
 }
 
+
+####################################################
+POST {{server}}/odata/v4/supplier/submitSupplier
+headers: 
+      Content-Type: application/json
+
+{
+	"oSupplier": {
+		"vbipRequestId": "123483",
+		"businessNature": 1,
+		"shareHolderCount": 1,
+		"isCardAcceptor": false,
+		"buyerId": "test123",
+		"supplierInfo": {
+			"supplierID": "12344468",
+			"firstName": "fn",
+			"lastName": "Ln",
+			"legalName": "Test T",
+			"emailAddress": "ema@.com",
+			"mobileNumberCountryCode": "+91",
+			"mobileNumber": "123456",
+			"website": "www.test.com",
+			"completeAddress": "add",
+			"zipCode": "123456",
+			"countryCode": "IND",
+			"city": "Madurai",
+			"state": "TN",
+			"companyAdditionalEmailAddress": "erc@com"
+		},
+		"kycDetails": {
+			"addressProof": {
+				"documentName": "Australian Company Number",
+				"nameOnDocument": "Tim",
+				"documentNumber": "HK67BN0",
+				"fileName": "Australian Company Number.jpg",
+				"encodedContent": "ABVFHK"
+			},
+			"businessProof": [
+				{
+					"expiryDate": "22-01-1987",
+					"documentName": "Australian Business Number (ABN)",
+					"nameOnDocument": "Mark",
+					"documentNumber": "678TH",
+					"fileName": "ABN.jpg",
+					"encodedContent": "GKILL"
+				}
+			],
+			"identityProof": {
+				"documentName": "Passport",
+				"nameOnDocument": "Xavier",
+				"documentNumber": "HN789T",
+				"dateofBirth": "22-01-1987",
+				"issuingDate": "22-01-1987",
+				"expiryDate": "22-01-1987",
+				"fileName": "passport.jpg",
+				"encodedContent": "HKYT67"
+			},
+			"shareholderProof": [
+				{
+					"name": "",
+					"sharePercentage": 60,
+					"identityProof": {
+						"documentName": "Passport",
+						"nameOnDocument": "Xavier",
+						"documentNumber": "HN789T",
+						"dateofBirth": "22-01-1987",
+						"issuingDate": "22-01-1987",
+						"expiryDate": "22-01-1987",
+						"fileName": "passport.jpg",
+						"encodedContent": "HKYT67"
+					},
+					"documentProof": {
+						"documentName": "Shareholder certificate",
+						"nameOnDocument": "David",
+						"documentNumber": "KTY875VC",
+						"fileName": "Shareholder certificate.jpg",
+						"encodedContent": "HKLVQ"
+					}
+				}
+			]
+		},
+		"supplierBankingInfo": {
+			"accountHolderName": "Supernet Services",
+			"accountNumber": "5699933225566",
+			"branchCity": "SG",
+			"bankCode": "MKLS00425"
+		}
+	}
+}
