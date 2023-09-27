@@ -41,7 +41,7 @@ service Supplier {
     }
 
     type typeSupplierInfo {
-        supplierID                    : String(10);
+        supplierId                    : String(10);
         firstName                     : String(100);
         lastName                      : String(100);
         legalName                     : String(100);
@@ -126,7 +126,8 @@ service Supplier {
     action sendMailOTP(pID : String, smtpDestination : String, mailTo : String, mailSubject : String, mailContent : String) returns String;
     action checkOTP(pID : String, pOTP : String)                                                                            returns String;
     action decryptID(pID : String)                                                                                          returns String;
+    action encryptFile(ID : String, fileContent : LargeBinary)                                                              returns LargeBinary;
+    action decryptFile(ID : String, fileContent : LargeBinary)                                                              returns LargeBinary;
+    action malwareScanning(fileContent : LargeString)                                                                       returns Boolean;
     action submitSupplier(oSupplier : typeSupplierOnboarding)                                                               returns String;
 }
-
-

@@ -12,7 +12,7 @@ sap.ui.define([
 
         return Controller.extend("vbipsupplier.controller.SupplierInfo", {
             onInit: function () {
-                this._onInit();
+                // this._onInit();
                 let oRouter = sap.ui.core.UIComponent.getRouterFor(this);
                 oRouter.getRoute("SupplierInfo").attachPatternMatched(this._onObjectMatched, this);
             },
@@ -64,10 +64,10 @@ sap.ui.define([
                 let aShareholderCount = [];
                 for (let i = 1; i <= vCount; i++) {
                     aShareholderCount.push({
-                        "count": i 
+                        "count": i
                     });
                 }
-                
+
                 this.getView().getModel("F4").setProperty("/shareholderItem", aShareholderCount);
             },
             onChangeShareCount: function () {
@@ -123,16 +123,23 @@ sap.ui.define([
                         // console.log(textData)
                         // console.log(base64)
                     }
+                    let oFileCheck = { "fileContent": base64 };
+                    let isMalwareDetected = await Models.checkMalware(oFileCheck);
+                    if (isMalwareDetected === "true") {
+                        let msgError = "Malware is detected";
+                        MessageToast.show(msgError);
+                    } else {
 
-                    let oFile = this.getView().getModel("FileModel");
-                    oFile.setProperty("/file" + fileNumber, {
-                        // "fileID1": result.value,
-                        "fileName": fileInfo[0].name,
-                        "fileType": fileInfo[0].type,
-                        "fileData": base64,
-                        "uploadVisible": false,
-                        "fileVisible": true,
-                    });
+                        let oFile = this.getView().getModel("FileModel");
+                        oFile.setProperty("/file" + fileNumber, {
+                            // "fileID1": result.value,
+                            "fileName": fileInfo[0].name,
+                            "fileType": fileInfo[0].type,
+                            "fileData": base64,
+                            "uploadVisible": false,
+                            "fileVisible": true,
+                        });
+                    }
                 }.bind(this)
 
                 input.click();
@@ -172,7 +179,7 @@ sap.ui.define([
             },
             onUploadFileSH: async function (oEvent) {
                 let oShareholderPopup = this.getView().getModel("ShareholderPopupModel").getProperty("/popup");
-                
+
                 let input = document.createElement("input"); // Create input element
                 input.type = "file"; // Important to be type File
                 input.multiple = true // Alow only one file at a time
@@ -193,29 +200,26 @@ sap.ui.define([
                         }
                         base64 = btoa(base64);
                     }
-
-                    // let oFile = this.getView().getModel("SHFileModel");
-                    // oShareholderPopup.setProperty("/file" + fileNumber, {
-                    //     // "fileID1": result.value,
-                    //     "fileName": fileInfo[0].name,
-                    //     "fileType": fileInfo[0].type,
-                    //     "fileData": base64,
-                    //     "uploadVisible": false,
-                    //     "fileVisible": true,
-                    // });
-                    oShareholderPopup.fileName = fileInfo[0].name;
-                    oShareholderPopup.fileType = fileInfo[0].type;
-                    oShareholderPopup.fileData = base64;
-                    oShareholderPopup.uploadVisible = false;
-                    oShareholderPopup.fileVisible = true;
-                    this.getView().getModel("ShareholderPopupModel").setProperty("/popup", oShareholderPopup);
+                    let oFileCheck = { "fileContent": base64 };
+                    let isMalwareDetected = await Models.checkMalware(oFileCheck);
+                    if (isMalwareDetected === "true") {
+                        let msgError = "Malware is detected";
+                        MessageToast.show(msgError);
+                    } else {
+                        oShareholderPopup.fileName = fileInfo[0].name;
+                        oShareholderPopup.fileType = fileInfo[0].type;
+                        oShareholderPopup.fileData = base64;
+                        oShareholderPopup.uploadVisible = false;
+                        oShareholderPopup.fileVisible = true;
+                        this.getView().getModel("ShareholderPopupModel").setProperty("/popup", oShareholderPopup);
+                    }
                 }.bind(this)
 
                 input.click();
             },
             onDeleteFileSH: async function (oEvent) {
                 let oShareholderPopup = this.getView().getModel("ShareholderPopupModel").getProperty("/popup");
-               
+
                 oShareholderPopup.fileName = null;
                 oShareholderPopup.fileType = null;
                 oShareholderPopup.fileData = null;
@@ -225,7 +229,7 @@ sap.ui.define([
             },
             onDownloadFileSH: async function (oEvent) {
                 let oShareholderPopup = this.getView().getModel("ShareholderPopupModel").getProperty("/popup");
-            
+
                 const downloadLink = document.createElement("a");
                 downloadLink.href = "data:" + oShareholderPopup.fileType + ";base64," + oShareholderPopup.fileData; //base64 file content
                 downloadLink.download = oShareholderPopup.fileName;
@@ -286,7 +290,7 @@ sap.ui.define([
                 let oPageFlow = {
                     "infoRequest": false,
                     "infoConfirm": false,
-                    "corporate": true,
+                    "corporate": false,
                     "shareholder": false,
                     "complete": false
                 };
@@ -353,9 +357,9 @@ sap.ui.define([
                     this.getView().getModel("PageModel").setProperty("/pageFlow/infoRequest", true);
                 } else {
                     let oRouter = this.getOwnerComponent().getRouter();
-                    // oRouter.navTo("Supplier", {
-                    //     GUID: "NotFound"
-                    // });
+                    oRouter.navTo("Supplier", {
+                        GUID: "NotFound"
+                    });
                 }
             },
             _onObjectMatched: function (oEvent) {
@@ -363,9 +367,18 @@ sap.ui.define([
             },
             _updateSupplier: async function (sMessage) {
                 let oSupplier = this.getOwnerComponent().getModel("SupplierInfo").getProperty("/supplier");
-                
+
                 let aShareholder = this.getView().getModel("ShareholderModel").getProperty("/item");
                 aShareholder.forEach((element) => element.sharePercentage = parseInt(element.sharePercentage));
+
+                // Test encrypt
+                let file1 = this.getView().getModel("FileModel").getProperty("/file1/fileData");
+                let oFile1 = {
+                    "ID": oSupplier.supplierID,
+                    "fileContent": file1
+                };
+                let oFileEncrypt1 = await Models.encryptFile(oFile1);
+
                 let oSupplierData = {
                     "status": "Saved",
                     "SAPCustomer": (this.getView().byId("idSAPCustomer.Select").getSelectedKey().toLowerCase() === 'true'),
@@ -378,8 +391,8 @@ sap.ui.define([
                             nameOnDocument: this.getView().byId("idNameDoc1.Input").getValue(),
                             documentNumber: this.getView().byId("idDoc1.Input").getValue(),
                             fileName: this.getView().getModel("FileModel").getProperty("/file1/fileName"),
-                            fileType:this.getView().getModel("FileModel").getProperty("/file1/fileType"),
-                            encodedContent: this.getView().getModel("FileModel").getProperty("/file1/fileData")
+                            fileType: this.getView().getModel("FileModel").getProperty("/file1/fileType"),
+                            encodedContent: oFileEncrypt1.response.vEncryptFile
                         },
                         {
                             documentName: "certOfIncorporation",
@@ -387,7 +400,7 @@ sap.ui.define([
                             nameOnDocument: this.getView().byId("idNameDoc2.Input").getValue(),
                             documentNumber: this.getView().byId("idDoc2.Input").getValue(),
                             fileName: this.getView().getModel("FileModel").getProperty("/file2/fileName"),
-                            fileType:this.getView().getModel("FileModel").getProperty("/file2/fileType"),
+                            fileType: this.getView().getModel("FileModel").getProperty("/file2/fileType"),
                             encodedContent: this.getView().getModel("FileModel").getProperty("/file2/fileData")
                         }
                     ]
@@ -408,6 +421,119 @@ sap.ui.define([
                     } else {
                         // Success
                         let msgSuccess = `Supplier ${oSupplier.supplierID} information is update`;
+                        if (sMessage === "message") {
+                            MessageToast.show(msgSuccess);
+                        }
+                        this._submitSupplier("");
+
+                        // Exit
+                    }
+                } else {
+                    // Catch error
+                    let msgError = `Operation failed Supplier ${oSupplier.supplierID} \nError catched`;
+                    // MessageToast.show(msgError);
+                }
+            },
+            _submitSupplier: async function (sMessage) {
+                let oSupplier = this.getOwnerComponent().getModel("SupplierInfo").getProperty("/supplier");
+
+                let aShareholder = this.getView().getModel("ShareholderModel").getProperty("/item");
+                aShareholder.forEach((element) => element.sharePercentage = parseInt(element.sharePercentage));
+                let oSupplierOnboarding = {
+                    "vbipRequestId": oSupplier.buyerID + oSupplier.supplierID,
+                    "businessNature": oSupplier.businessNature_selectKey,
+                    "shareHolderCount": oSupplier.shareholderCount,
+                    "isCardAcceptor": (this.getView().byId("idAcceptCard.Select").getSelectedKey().toLowerCase() === 'true'),
+                    "buyerId": oSupplier.buyerID,
+                    "supplierInfo": {
+                        "supplierId": oSupplier.supplierID,
+                        "firstName": oSupplier.firstName,
+                        "lastName": oSupplier.lastName,
+                        "legalName": oSupplier.supplierName,
+                        "emailAddress": oSupplier.emailID,
+                        "mobileNumberCountryCode": oSupplier.mobileCountryCode,
+                        "mobileNumber": oSupplier.mobileNumber,
+                        // "website": "",
+                        "completeAddress": oSupplier.completeAddress,
+                        "zipCode": oSupplier.zipCode,
+                        "countryCode": oSupplier.countryCode_code,
+                        "city": oSupplier.city,
+                        "state": oSupplier.state,
+                        // "companyAdditionalEmailAddress": ""
+                    },
+                    "kycDetails": {
+                        "addressProof": {
+                            "documentName": "",
+                            "nameOnDocument": "",
+                            "documentNumber": "",
+                            "fileName": "",
+                            "encodedContent": ""
+                        },
+                        "businessProof": [
+                            {
+                                "expiryDate": "",
+                                "documentName": "copyOfBusinessReg",
+                                "nameOnDocument": this.getView().byId("idNameDoc1.Input").getValue(),
+                                "documentNumber": this.getView().byId("idDocNum1.Input").getValue(),
+                                "fileName": this.getView().getModel("FileModel").getProperty("/file1/fileName"),
+                                "encodedContent": this.getView().getModel("FileModel").getProperty("/file1/fileData"),
+                            }
+                        ],
+                        // "identityProof": {
+                        //     "documentName": "Passport",
+                        //     "nameOnDocument": "Xavier",
+                        //     "documentNumber": "HN789T",
+                        //     "dateofBirth": "22-01-1987",
+                        //     "issuingDate": "22-01-1987",
+                        //     "expiryDate": "22-01-1987",
+                        //     "fileName": "passport.jpg",
+                        //     "encodedContent": "HKYT67"
+                        // },
+                        // "shareholderProof": [
+                        //     {
+                        //         "name": "",
+                        //         "sharePercentage": 60,
+                        //         "identityProof": {
+                        //             "documentName": "Passport",
+                        //             "nameOnDocument": "Xavier",
+                        //             "documentNumber": "HN789T",
+                        //             "dateofBirth": "22-01-1987",
+                        //             "issuingDate": "22-01-1987",
+                        //             "expiryDate": "22-01-1987",
+                        //             "fileName": "passport.jpg",
+                        //             "encodedContent": "HKYT67"
+                        //         },
+                        //         "documentProof": {
+                        //             "documentName": "Shareholder certificate",
+                        //             "nameOnDocument": "David",
+                        //             "documentNumber": "KTY875VC",
+                        //             "fileName": "Shareholder certificate.jpg",
+                        //             "encodedContent": "HKLVQ"
+                        //         }
+                        //     }
+                        // ]
+                    },
+                    "supplierBankingInfo": {
+                        "accountHolderName": oSupplier.supplierName,
+                        "accountNumber": oSupplier.accountNumber,
+                        "branchCity": "",
+                        "bankCode": oSupplier.bankCode
+                    }
+                };
+                let oParameter = {
+                    "oSupplier": oSupplierOnboarding
+                };
+                let oSupplierUpdate = await Models.submitSupplier(oParameter);
+                if (Object.keys(oSupplierUpdate.catchError).length === 0 &&
+                    oSupplierUpdate.catchError.constructor === Object) {
+                    if (oSupplierUpdate.response.error) {
+                        // Error
+                        let msgError = `Operation failed Supplier ${oSupplier.supplierID} \nError code ${oSupplierUpdate.response.error.code}`;
+                        // MessageToast.show(msgError);
+
+                    } else {
+                        // Success
+                        let msgSuccess = `Supplier ${oSupplier.supplierID} information is submitted`;
                         if (sMessage === "message") {
                             MessageToast.show(msgSuccess);
                         }

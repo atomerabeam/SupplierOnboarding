@@ -69,7 +69,7 @@ headers:
 		"isCardAcceptor": false,
 		"buyerId": "test123",
 		"supplierInfo": {
-			"supplierID": "12344468",
+			"supplierId": "12344468",
 			"firstName": "fn",
 			"lastName": "Ln",
 			"legalName": "Test T",

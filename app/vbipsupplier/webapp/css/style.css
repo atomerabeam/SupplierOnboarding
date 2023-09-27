@@ -306,6 +306,15 @@
     align-self: center;
 }
 
+.customBoxCard {
+    /* margin: 1rem 2rem !important; */
+    padding: 24px;
+    /* align-items: center; */
+    flex-wrap: wrap;
+    border-radius: 6px;
+    border: 1px solid rgba(0, 0, 0, 0.10);
+    background: #1434CB;
+}
 /* Space */
 .customSpaceLine {
     margin-top: 8px;
@@ -387,4 +396,15 @@
     line-height: 13px;
     letter-spacing: 1px;
     text-transform: uppercase;
+}
+
+.customTextCard {
+    color: #ffffff;
+    /* font-feature-settings: 'clig' off, 'liga' off; */
+    /* Web/Overline */
+    /* font-family: Visa Dialect UI; */
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 21px;
 }

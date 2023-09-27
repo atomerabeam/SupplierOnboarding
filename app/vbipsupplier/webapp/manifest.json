@@ -111,6 +111,13 @@
           "target": [
             "TargetSupplierInfo"
           ]
+        },
+        {
+          "name": "CardInfo",
+          "pattern": "Card/{token}",
+          "target": [
+            "TargetCardInfo"
+          ]
         }
       ],
       "targets": {
@@ -121,13 +128,19 @@
           "viewId": "LandingPage",
           "viewName": "LandingPage"
         },
-        
         "TargetSupplierInfo": {
           "viewType": "XML",
           "transition": "slide",
           "clearControlAggregation": false,
           "viewId": "SupplierInfo",
           "viewName": "SupplierInfo"
+        },
+        "TargetCardInfo": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "CardInfo",
+          "viewName": "CardInfo"
         }
       }
     },
