@@ -281,20 +281,22 @@
     flex-direction: row;
     justify-content: normal;
     align-items: flex-start;
+    align-self: stretch;
     border-radius: 8px;
     border: 1px solid rgba(0, 0, 0, 0.10);
     background: #ffffff;
 }
 
 .customUploadItem1 {
-    margin-right: 8px;
+    margin-right: 16px;
     align-content: center;
     flex-wrap: wrap;
     align-self: center;
 }
 
 .customUploadItem2 {
-    margin-right: 8px;
+    margin-right: 16px;
+    width: 60%;
     align-content: start;
     flex-wrap: wrap;
     align-self: center;
@@ -304,6 +306,7 @@
     align-content: center;
     flex-wrap: wrap;
     align-self: center;
+    justify-self: end;
 }
 
 .customBoxCard {

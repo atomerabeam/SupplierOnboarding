@@ -51,7 +51,7 @@
                                 <core:Icon id="idUploadSH.Icon" src="sap-icon://upload-to-cloud" 
                                         size="30px" color="#1434CB"/>
                             </VBox>
-                            <VBox id="idTextUploadSH.VBox" class="customUploadItem2" width="70%">
+                            <VBox id="idTextUploadSH.VBox" class="customUploadItem2" width="60%">
                                 <!-- @ui5ignore-patterns -->
                                 <Text id="idUploadSH.Text" class="classTextBold" text="{i18n>clickToUpload}"/>
                                 <!-- @ui5ignore-patterns -->

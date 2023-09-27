@@ -15,7 +15,7 @@ headers:
       Content-Type: application/json
 
 {
-      "buyerID" : "1000010004"
+      "buyerID" : "1000010002"
 }
 ####################################################
 POST {{server}}/odata/v4/supplier/getBusinessNature
