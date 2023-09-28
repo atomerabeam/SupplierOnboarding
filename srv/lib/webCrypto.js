@@ -10,7 +10,7 @@ const credentialStore = require("./credentialStore")
  */
 async function encryptData(vkeyID, vDataTobeEncrypted) {
     
-
+    console.log(vDataTobeEncrypted)
     // Get Stored JWK in Credential Store
     let oBinding = credentialStore.getBinding()
     
@@ -51,6 +51,7 @@ async function encryptData(vkeyID, vDataTobeEncrypted) {
      * - fileContent(LargeBinary): fileContent as Base64 format
      */
 async function decryptData(vkeyID, vDataTobeDecrypted) {
+    console.log(vkeyID)
     // Get Stored JWK in Credential Store
     let oBinding = credentialStore.getBinding()
     const credential = await credentialStore.readCredential(oBinding, "VISA-Credentials", "password", "JWK_Crypto_Key")

@@ -115,6 +115,16 @@ service Supplier {
         encodedContent : String;
     }
 
+    type cardInfo : {
+        cardNumber : String;
+        cvv2       : String;
+        expiredate : String;
+    }
+    type  errorPayload: array of  {
+        errorCode: String;
+        errorMessage: String;
+    }
+
     action getSupplier(buyerID : String, supplierID : String)                                                               returns String;
     action getBuyer(buyerID : String)                                                                                       returns String;
     action getBuyerOnboarding(buyerID : String)                                                                             returns String;
@@ -126,8 +136,9 @@ service Supplier {
     action sendMailOTP(pID : String, smtpDestination : String, mailTo : String, mailSubject : String, mailContent : String) returns String;
     action checkOTP(pID : String, pOTP : String)                                                                            returns String;
     action decryptID(pID : String)                                                                                          returns String;
-    action encryptFile(ID : String, fileContent : LargeBinary)                                                              returns LargeBinary;
+    action encryptFile(ID : String, fileContent : LargeString)                                                              returns LargeString;
     action decryptFile(ID : String, fileContent : LargeBinary)                                                              returns LargeBinary;
     action malwareScanning(fileContent : LargeString)                                                                       returns Boolean;
     action submitSupplier(oSupplier : typeSupplierOnboarding)                                                               returns String;
+    action getCardInfo(vbipRequestID : String)                        returns cardInfo;
 }

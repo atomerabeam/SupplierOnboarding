@@ -4,3 +4,4 @@ namespace my.namespace;
 //     key ID          : String(6);
 //         Name        : String(50);
 // }
+

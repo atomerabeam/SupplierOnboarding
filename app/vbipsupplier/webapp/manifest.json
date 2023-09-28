@@ -113,8 +113,15 @@
           ]
         },
         {
-          "name": "CardInfo",
+          "name": "Card",
           "pattern": "Card/{token}",
+          "target": [
+            "TargetCardLandingPage"
+          ]
+        },
+        {
+          "name": "CardInfo",
+          "pattern": "CardInfo",
           "target": [
             "TargetCardInfo"
           ]
