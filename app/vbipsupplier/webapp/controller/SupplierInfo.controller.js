@@ -340,9 +340,6 @@ sap.ui.define([
                 //Set model
                 this.getView().setModel(oDocumentModel, "DocumentModel");
 
-                this.onChangeBusinessNature();
-                this.onChangeShareCount();
-
                 // Get select key request info
                 let oPageInfoModel = new JSONModel();
                 let vSAPCustomer, vAcceptCard;
@@ -356,10 +353,10 @@ sap.ui.define([
                         vSAPCustomer = "true";
                     }
 
-                    if (oSupplier.status === null || oSupplier.status === "Sent") {
-                        vAcceptCard = "false";
-                    } else {
+                    if (oSupplier.status === "CardAccepted") {
                         vAcceptCard = "true";
+                    } else {
+                        vAcceptCard = "false";
                     }
 
                     let oSupplierInfo = {
@@ -372,7 +369,7 @@ sap.ui.define([
                     this.getView().getModel("PageModel").setProperty("/pageFlow/infoRequest", true);
 
                     let aDocument = oSupplier.supplierDocuments;
-                    for (let i = 0; i <= aDocument.length; i++) {
+                    for (let i = 0; i <= (aDocument.length - 1); i++) {
                         let oDocumentItem = {
                             "visible": true,
                             "nameOnDocument": aDocument[i].nameOnDocument,
@@ -392,6 +389,9 @@ sap.ui.define([
                         GUID: "NotFound"
                     });
                 }
+
+                this.onChangeBusinessNature();
+                this.onChangeShareCount();
             },
             _onObjectMatched: function (oEvent) {
                 this._onInit();
@@ -422,7 +422,7 @@ sap.ui.define([
                         "documentNumber": oDocumentItem.documentNumber,
                         "fileName": oDocumentItem.fileName,
                         "fileType": oDocumentItem.fileType,
-                        "encodedContent": oFileEncrypt.response.vEncryptFile
+                        "encodedContent": oFileEncrypt.response.value
                     });
                 }
 
@@ -447,7 +447,7 @@ sap.ui.define([
                                     "documentNumber": oShareholder.docNum,
                                     "fileName": oShareholder.fileName,
                                     "fileType": oShareholder.fileType,
-                                    "encodedContent": oFileEncrypt.response.vEncryptFile,
+                                    "encodedContent": oFileEncrypt.response.value,
                                     // "dateOfIssue": oShareholder.dateOfIssue,
                                     "expiryDate": oShareholder.expiryDate,
                                 }

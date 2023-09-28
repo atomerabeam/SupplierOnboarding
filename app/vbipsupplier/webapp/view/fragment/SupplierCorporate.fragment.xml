@@ -73,7 +73,7 @@
 								<Label id="idBusinessNature.Label" text="{i18n>businessNature}"/>
                                 <!-- @ui5ignore-patterns -->
                                 <Select id="idBusinessNature.Select" items="{path:'F4>/businessNature'}"
-                                        change="onChangeBusinessNature">
+                                        change="onChangeBusinessNature" selectedKey="{SupplierInfo>/supplier/businessNature_selectKey}">
                                     <core:Item id="idBusinessNature.Item" key="{F4>selectKey}" text="{F4>businessNature}"/>
                                 </Select>
                                 <Label id="idShareholderCount.Label" text="{i18n>shareholderCount}"/>
