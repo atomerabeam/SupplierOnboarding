@@ -53,19 +53,19 @@ sap.ui.define([
             onChangeBusinessNature: function () {
                 let vBusinessNature = parseInt(this.getView().byId("idBusinessNature.Select").getSelectedKey());
                 let vCount;
-                let aDocument = this.getView().getModel("DocumentModel").getProperty("/docItems");
+                let aDocument = this.getView().getModel("DocumentModel").getProperty("/docKeys");
                 if (vBusinessNature === 1) {
                     vCount = 4;
-                    aDocument = [1, 2];
+                    aDocument = [1, 2, 3, 4, 5];
                 } else if (vBusinessNature === 2) {
                     vCount = 6;
-                    aDocument = [1];
+                    aDocument = [1, 5, 6];
                 } else if (vBusinessNature === 3) {
                     vCount = 1;
-                    aDocument = [2];
+                    aDocument = [7, 8, 9];
                 } else {
                     vCount = 4;
-                    aDocument = [1, 2];
+                    aDocument = [1, 2, 3, 4, 5];
                 }
 
                 let aShareholderCount = [];
@@ -75,7 +75,7 @@ sap.ui.define([
                     });
                 }
 
-                for (let i = 1; i <= 5; i++) {
+                for (let i = 1; i <= 9; i++) {
                     let oDocumentItem = this.getView().getModel("DocumentModel").getProperty("/doc" + i);
                     if (aDocument.includes(i)) {
                         oDocumentItem.visible = true;
@@ -85,7 +85,7 @@ sap.ui.define([
                     this.getView().getModel("DocumentModel").setProperty("/doc" + i, oDocumentItem);
                 }
 
-                this.getView().getModel("DocumentModel").setProperty("/docItems", aDocument);
+                this.getView().getModel("DocumentModel").setProperty("/docKeys", aDocument);
                 this.getView().getModel("F4").setProperty("/shareholderItem", aShareholderCount);
             },
             onChangeShareCount: function () {
@@ -301,7 +301,7 @@ sap.ui.define([
                 let oPageFlow = {
                     "infoRequest": false,
                     "infoConfirm": false,
-                    "corporate": true,
+                    "corporate": false,
                     "shareholder": false,
                     "complete": false
                 };
@@ -323,9 +323,11 @@ sap.ui.define([
 
                 //Document
                 let oDocumentModel = new JSONModel();
-                for (let i = 1; i <= 5; i++) {
+                for (let i = 1; i <= 9; i++) {
                     oDocumentModel.setProperty("/doc" + i, {
                         "visible": false,
+                        "nameOnDocument": null,
+                        "documentNumber": null,
                         "fileName": null,
                         "fileType": null,
                         "fileData": null,
@@ -333,7 +335,7 @@ sap.ui.define([
                         "fileVisible": false,
                     });
                 }
-                oDocumentModel.setProperty("/docItems", [1, 2, 3, 4, 5]);
+                oDocumentModel.setProperty("/docKeys", [1, 2, 3, 4, 5, 6, 7, 8, 9]);
 
                 //Set model
                 this.getView().setModel(oDocumentModel, "DocumentModel");
@@ -368,11 +370,27 @@ sap.ui.define([
                     this.getView().setModel(oPageInfoModel, "RequestInfo");
 
                     this.getView().getModel("PageModel").setProperty("/pageFlow/infoRequest", true);
+
+                    let aDocument = oSupplier.supplierDocuments;
+                    for (let i = 0; i <= aDocument.length; i++) {
+                        let oDocumentItem = {
+                            "visible": true,
+                            "nameOnDocument": aDocument[i].nameOnDocument,
+                            "documentNumber": aDocument[i].documentNumber,
+                            "fileName": aDocument[i].fileName,
+                            "fileType": aDocument[i].fileType,
+                            "fileData": null,
+                            "uploadVisible": false,
+                            "fileVisible": true,
+                        };
+                        
+                        this.getView().getModel("DocumentModel").setProperty("/doc" + aDocument[i].documentType, oDocumentItem);
+                    } 
                 } else {
                     let oRouter = this.getOwnerComponent().getRouter();
-                    // oRouter.navTo("Supplier", {
-                    //     GUID: "NotFound"
-                    // });
+                    oRouter.navTo("Supplier", {
+                        GUID: "NotFound"
+                    });
                 }
             },
             _onObjectMatched: function (oEvent) {
@@ -385,34 +403,32 @@ sap.ui.define([
                 // aShareholder.forEach((element) => element.sharePercentage = parseInt(element.sharePercentage));
 
                 // Document
-                let aDocument = this.getView().getModel("DocumentModel").getProperty("/docItems");
+                let aDocument = this.getView().getModel("DocumentModel").getProperty("/docKeys");
                 let aSupplierDocument = [];
 
-                for (let i = 1; i <= 5; i++) {
-                    if (aDocument.includes(i)) {
-                        let oDocumentItem = this.getView().getModel("DocumentModel").getProperty("/doc" + i);
+                for (let i = 0; i <= (aDocument.length - 1); i++) {
+                    let oDocumentItem = this.getView().getModel("DocumentModel").getProperty("/doc" + aDocument[i]);
 
-                        let oFile = {
-                            "ID": oSupplier.supplierID,
-                            "fileContent": oDocumentItem.fileData
-                        };
-                        let oFileEncrypt = await Models.encryptFile(oFile);
+                    let oFile = {
+                        "ID": oSupplier.supplierID,
+                        "fileContent": oDocumentItem.fileData
+                    };
+                    let oFileEncrypt = await Models.encryptFile(oFile);
 
-                        aSupplierDocument.push({
-                            "documentName": "doc" + i,
-                            "documentType": "doc" + i,
-                            "nameOnDocument": this.getView().byId(`idNameDoc${i}.Input`).getValue(),
-                            "documentNumber": this.getView().byId(`idDoc${i}.Input`).getValue(),
-                            "fileName": oDocumentItem.fileName,
-                            "fileType": oDocumentItem.fileType,
-                            "encodedContent": oFileEncrypt.response.vEncryptFile
-                        });
-                    }
+                    aSupplierDocument.push({
+                        "documentName": "doc" + aDocument[i],
+                        "documentType": aDocument[i].toString(),
+                        "nameOnDocument": oDocumentItem.nameOnDocument,
+                        "documentNumber": oDocumentItem.documentNumber,
+                        "fileName": oDocumentItem.fileName,
+                        "fileType": oDocumentItem.fileType,
+                        "encodedContent": oFileEncrypt.response.vEncryptFile
+                    });
                 }
 
-                let vShareholderCount = parseInt(this.getView().byId("idShareHolderCount.Select").getSelectedKey());
+                let vShareholderCount = parseInt(this.getView().byId("idShareholderCount.Select").getSelectedKey());
                 let aShareholder = [];
-                for (let i = 1; i <= vShareholderCount; i++) {
+                for (let i = 0; i <= (vShareholderCount - 1); i++) {
                     let oShareholder = this.getView().getModel("ShareholderModel").getProperty("/item/" + i);
 
                     let oFile = {
@@ -421,7 +437,7 @@ sap.ui.define([
                     };
                     let oFileEncrypt = await Models.encryptFile(oFile);
                     aShareholder.push({
-                        "shareholderName": oShareholder.name, sharePercentage,
+                        "shareholderName": oShareholder.name,
                         "sharePercentage": parseInt(oShareholder.sharePercentage),
                         "shareholderDocuments":
                             [
@@ -432,7 +448,7 @@ sap.ui.define([
                                     "fileName": oShareholder.fileName,
                                     "fileType": oShareholder.fileType,
                                     "encodedContent": oFileEncrypt.response.vEncryptFile,
-                                    "dateOfBirth": oShareholder.dateOfIssue,
+                                    // "dateOfIssue": oShareholder.dateOfIssue,
                                     "expiryDate": oShareholder.expiryDate,
                                 }
                             ]

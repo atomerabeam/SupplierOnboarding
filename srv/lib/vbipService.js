@@ -17,19 +17,25 @@ async function getToken(sDestionation) {
 
 async function decryptID(pID) {
     const secretKey = "visaproject";
-    let data = "1000010002_1000018989";
+    let data = "1000010002_1000012345";
 
     // Encrypt
     let encryptedData = await CryptoJS.AES.encrypt(data, secretKey).toString();
     console.log(encryptedData)
-    const encoded = encodeURIComponent(encodeURIComponent(encryptedData));
-    // ...index.html#/Supplier/encoded 
-    console.log("encodedURI 2", encoded);
+    const encoded1 = encodeURIComponent(encryptedData);
+    const encoded2 = encodeURIComponent(encodeURIComponent(encryptedData));
+    // ...index.html#/Supplier/encoded
+    console.log("encodedURI 1", encoded1); 
+    console.log("encodedURI 2", encoded2);
 
     // Decrypt
     let decodeURI = decodeURIComponent(pID);
     let decrypt = await CryptoJS.AES.decrypt(decodeURI, secretKey);
-    let decryptedData = decrypt.toString(CryptoJS.enc.Utf8);
+    let decryptedData = decrypt.toString(CryptoJS.enc.Utf8); 
+    let decodeURI2 = decodeURIComponent(decodeURIComponent(pID));
+    let decrypt2 = await CryptoJS.AES.decrypt(decodeURI2, secretKey);
+    let decryptedData2 = decrypt2.toString(CryptoJS.enc.Utf8); 
+    console.log("decodedURI 2", decryptedData2);
     return decryptedData;
 }
 

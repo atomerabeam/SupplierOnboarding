@@ -197,7 +197,7 @@ sap.ui.define([
                         body: JSON.stringify(oParameter),
                     });
 
-                    oResult.response = await response.json();
+                    oResult.response = await response.text();
                 } catch (error) {
                     oResult.catchError = error;
                 }
@@ -215,7 +215,7 @@ sap.ui.define([
                         body: JSON.stringify(oParameter),
                     });
 
-                    oResult.response = await response.json();
+                    oResult.response = await response.text();
                 } catch (error) {
                     oResult.catchError = error;
                 }

@@ -9,8 +9,6 @@ const credentialStore = require("./credentialStore")
  * - encryptedData(ArrayBuffer): Encrypted Data
  */
 async function encryptData(vkeyID, vDataTobeEncrypted) {
-    
-
     // Get Stored JWK in Credential Store
     let oBinding = credentialStore.getBinding()
     
@@ -38,7 +36,7 @@ async function encryptData(vkeyID, vDataTobeEncrypted) {
     let encryptedData = await crypto.subtle.encrypt(
         { name: 'AES-GCM', iv: aBuffer },
         oCryptoKey,
-        vDataTobeEncrypted,
+        vDataTobeEncrypted
     )
     return encryptedData
 }
