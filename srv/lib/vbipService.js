@@ -30,7 +30,11 @@ async function decryptID(pID) {
     // Decrypt
     let decodeURI = decodeURIComponent(pID);
     let decrypt = await CryptoJS.AES.decrypt(decodeURI, secretKey);
-    let decryptedData = decrypt.toString(CryptoJS.enc.Utf8);
+    let decryptedData = decrypt.toString(CryptoJS.enc.Utf8); 
+    let decodeURI2 = decodeURIComponent(decodeURIComponent(pID));
+    let decrypt2 = await CryptoJS.AES.decrypt(decodeURI2, secretKey);
+    let decryptedData2 = decrypt2.toString(CryptoJS.enc.Utf8); 
+    console.log("decodedURI 2", decryptedData2);
     return decryptedData;
 }
 

@@ -38,7 +38,7 @@ async function encryptData(vkeyID, vDataTobeEncrypted) {
     let encryptedData = await crypto.subtle.encrypt(
         { name: 'AES-GCM', iv: aBuffer },
         oCryptoKey,
-        vDataTobeEncrypted,
+        vDataTobeEncrypted
     )
     return encryptedData
 }

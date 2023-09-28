@@ -94,35 +94,66 @@
                         <!-- Document upload -->
                         <HBox id="idDocumentUpload.HBox">
                             <VBox id="idDocumentText.VBox" width="30%">
-                                <Text id="idDocumentUpload.Text" class="classTitle1" text="{i18n>documentUpload}"/>
+                                <Text id="idDocumentUpload.Text" class="customSubtitle1" text="{i18n>documentUpload}"/>
 								<!-- @ui5ignore-patterns -->
                                 <Text id="idReview3.Text" text="{i18n>reviewDetails}" class="customText"/>
 								<!-- @ui5ignore-patterns -->
                                 <CheckBox id="idDocument1.CheckBox" text="{i18n>copyOfBusinessReg}" 
+                                          visible="{DocumentModel>/doc1/visible}"
                                           class="customRoundCheckbox" wrapping="true"/>
                                 <!-- @ui5ignore-patterns -->
-                                <CheckBox id="idDocument2.CheckBox" text="{i18n>certOfIncorporation}" 
+                                <CheckBox id="idDocument2.CheckBox" text="{i18n>certOfIncorporation}"
+                                          visible="{DocumentModel>/doc2/visible}"
                                           class="customRoundCheckbox" wrapping="true"/>
-                                <!-- <CheckBox text="{i18n>memorandum}" class="customRoundCheckbox" wrapping="true"/>
-                                <CheckBox text="{i18n>boardResolution}" class="customRoundCheckbox" wrapping="true"/>
-                                <CheckBox text="{i18n>identificationDocument}" class="customRoundCheckbox"  wrapping="true"/> -->
+                                <!-- @ui5ignore-patterns -->
+                                <CheckBox id="idDocument3.CheckBox" text="{i18n>memorandum}"
+                                          visible="{DocumentModel>/doc3/visible}"
+                                          class="customRoundCheckbox" wrapping="true"/>
+                                <!-- @ui5ignore-patterns -->
+                                <CheckBox id="idDocument4.CheckBox" text="{i18n>boardResolution}"
+                                          visible="{DocumentModel>/doc4/visible}"
+                                          class="customRoundCheckbox" wrapping="true"/>
+                                <!-- @ui5ignore-patterns -->
+                                <CheckBox id="idDocument6.CheckBox" text="{i18n>certOfRegistration}"
+                                          visible="{DocumentModel>/doc6/visible}"
+                                          class="customRoundCheckbox" wrapping="true"/>
+                                <!-- @ui5ignore-patterns -->
+                                <CheckBox id="idDocument5.CheckBox" text="{i18n>identificationDocument}"
+                                          visible="{DocumentModel>/doc5/visible}"
+                                          class="customRoundCheckbox" wrapping="true"/>
+                                <!-- @ui5ignore-patterns -->
+                                <CheckBox id="idDocument7.CheckBox" text="{i18n>recentPhotograph}"
+                                          visible="{DocumentModel>/doc7/visible}"
+                                          class="customRoundCheckbox" wrapping="true"/>
+                                <!-- @ui5ignore-patterns -->
+                                <CheckBox id="idDocument8.CheckBox" text="{i18n>copyOfIDAndAddress}"
+                                          visible="{DocumentModel>/doc8/visible}"
+                                          class="customRoundCheckbox" wrapping="true"/>
+                                <!-- @ui5ignore-patterns -->
+                                <CheckBox id="idDocument9.CheckBox" text="{i18n>documentsPertaining}"
+                                          visible="{DocumentModel>/doc9/visible}"
+                                          class="customRoundCheckbox" wrapping="true"/>
                             </VBox>
                             <VBox id="idSpaceP3S3.VBox" width="24px"/>
                             
                             <VBox id="idDocumentUpload.VBox" width="70%">
-                                <VBox id="idDocument1.VBox" visible="{DocumentModel>/doc1/visible}">
+                                <VBox id="idDocument1.VBox" visible="{DocumentModel>/doc1/visible}"
+                                      class="customBoxDocument">
                                     <!-- @ui5ignore-patterns -->
-                                    <Text id="idDocument1.Text" text="{i18n>copyOfBusinessReg}" class="classsubheading1"/>
+                                    <Text id="idDocument1.Text" text="{i18n>copyOfBusinessReg}" 
+                                          class="customSubtitle3"/>
                                     <!-- @ui5ignore-patterns -->
                                     <Label id="idDocNum1.Label" text="{i18n>documentNumber}" class="sapUiTinyMarginTop"/>
-                                    <Input id="idDoc1.Input"/>
+                                    <!-- @ui5ignore-patterns -->
+                                    <Input id="idDoc1.Input" value="{DocumentModel>/doc1/documentNumber}"/>
                                     <!-- @ui5ignore-patterns -->
                                     <Label id="idNameDoc1.Label" text="{i18n>nameOnDocument}"/>
-                                    <Input id="idNameDoc1.Input"/>
+                                    <!-- @ui5ignore-patterns -->
+                                    <Input id="idNameDoc1.Input" value="{DocumentModel>/doc1/nameOnDocument}"/>
 
                                     <!-- Upload Box -->
                                     <HBox id="idUpload1.HBox" class="customUploadBox"
-                                        visible="{DocumentModel>/doc1/uploadVisible}">
+                                          visible="{DocumentModel>/doc1/uploadVisible}">
                                         <VBox id="idIconUpload1.VBox" class="customUploadItem1">
                                             <core:Icon id="idUpload1.Icon" src="sap-icon://upload-to-cloud" 
                                                     size="30px" color="#1434CB"/>
@@ -160,17 +191,20 @@
                                     </HBox>
                                 </VBox>
 
-                                <VBox id="idDocument2.VBox" visible="{DocumentModel>/doc2/visible}">
+                                <VBox id="idDocument2.VBox" visible="{DocumentModel>/doc2/visible}"
+                                      class="customBoxDocument">
                                     <!-- @ui5ignore-patterns -->
                                     <Text id="idDocument2.Text" text="{i18n>certOfIncorporation}" 
-                                        class="classsubheading1 sapUiTinyMarginTop"/>
+                                          class="customSubtitle3"/>
                                     <!-- @ui5ignore-patterns -->
                                     <Label id="idDocNum2.Label" text="{i18n>documentNumber}" 
-                                        class="sapUiTinyMarginTop"/>
-                                    <Input id="idDoc2.Input"/>
+                                           class="sapUiTinyMarginTop"/>
+                                    <!-- @ui5ignore-patterns -->
+                                    <Input id="idDoc2.Input" value="{DocumentModel>/doc2/documentNumber}"/>
                                     <!-- @ui5ignore-patterns -->
                                     <Label id="idNameDoc2.Label" text="{i18n>nameOnDocument}"/>
-                                    <Input id="idNameDoc2.Input"/>
+                                    <!-- @ui5ignore-patterns -->
+                                    <Input id="idNameDoc2.Input" value="{DocumentModel>/doc2/nameOnDocument}"/>
                                     <HBox id="idUpload2.HBox" class="customUploadBox"
                                         visible="{DocumentModel>/doc2/uploadVisible}">
                                         <VBox id="idIconUpload2.VBox" class="customUploadItem1">
@@ -209,6 +243,378 @@
                                         </VBox>
                                     </HBox>
                                 </VBox>
+
+                                <VBox id="idDocument3.VBox" visible="{DocumentModel>/doc3/visible}"
+                                      class="customBoxDocument">
+                                    <!-- @ui5ignore-patterns -->
+                                    <Text id="idDocument3.Text" text="{i18n>memorandum}" 
+                                          class="customSubtitle3"/>
+                                    <!-- @ui5ignore-patterns -->
+                                    <Label id="idDocNum3.Label" text="{i18n>documentNumber}" 
+                                           class="sapUiTinyMarginTop"/>
+                                    <!-- @ui5ignore-patterns -->
+                                    <Input id="idDoc3.Input" value="{DocumentModel>/doc3/documentNumber}"/>
+                                    <!-- @ui5ignore-patterns -->
+                                    <Label id="idNameDoc3.Label" text="{i18n>nameOnDocument}"/>
+                                    <!-- @ui5ignore-patterns -->
+                                    <Input id="idNameDoc3.Input" value="{DocumentModel>/doc3/nameOnDocument}"/>
+                                    <HBox id="idUpload3.HBox" class="customUploadBox"
+                                        visible="{DocumentModel>/doc3/uploadVisible}">
+                                        <VBox id="idIconUpload3.VBox" class="customUploadItem1">
+                                            <core:Icon id="idUpload3.Icon" src="sap-icon://upload-to-cloud" 
+                                                    size="30px" color="#1434CB"/>
+                                        </VBox>
+                                        <VBox id="idTextUpload3.VBox" class="customUploadItem2">
+                                            <!-- @ui5ignore-patterns -->
+                                            <Text id="idUpload3.Text" class="classTextBold" text="{i18n>clickToUpload}"/>
+                                            <!-- @ui5ignore-patterns -->
+                                            <Text id="idFileType3.Text" text="{i18n>fileType}"/>
+                                        </VBox>
+                                        <VBox id="idbuttonUpload3.VBox" class="customUploadItem3">
+                                            <!-- @ui5ignore-patterns -->
+                                            <Button id="idUploadFile3.Button" type="Transparent" 
+                                                    text="Select file" press="onUploadFileButton"/>
+                                        </VBox>
+                                    </HBox>
+
+                                    <HBox id="idFile3.HBox" class="customFileNameBox"
+                                        visible="{DocumentModel>/doc3/fileVisible}">
+                                        <VBox id="idIconFile3.VBox" class="customUploadItem1">
+                                            <!-- @ui5ignore-patterns -->
+                                            <core:Icon id="idDownloadFile3.Icon" src="sap-icon://attachment-photo" 
+                                                    size="24px" color="#1434CB" press="onDownloadFileButton">
+                                            </core:Icon>
+                                        </VBox>
+                                        <VBox id="idFileName3.VBox" class="customUploadItem2">
+                                            <Text id="idFileName3.Text" text="{DocumentModel>/doc3/fileName}"/>
+                                        </VBox>
+                                        <VBox id="idDeleteFile3.VBox" class="customUploadItem3">
+                                            <!-- @ui5ignore-patterns -->
+                                            <core:Icon id="idDeleteFile3.Icon" src="sap-icon://decline" 
+                                                    size="24px" color="#1434CB" press="onDeleteFileButton">
+                                            </core:Icon>
+                                        </VBox>
+                                    </HBox>
+                                </VBox>
+                                
+                                <VBox id="idDocument4.VBox" visible="{DocumentModel>/doc4/visible}"
+                                      class="customBoxDocument">
+                                    <!-- @ui5ignore-patterns -->
+                                    <Text id="idDocument4.Text" text="{i18n>boardResolution}" 
+                                          class="customSubtitle3"/>
+                                    <!-- @ui5ignore-patterns -->
+                                    <Label id="idDocNum4.Label" text="{i18n>documentNumber}" 
+                                           class="sapUiTinyMarginTop"/>
+                                    <!-- @ui5ignore-patterns -->
+                                    <Input id="idDoc4.Input" value="{DocumentModel>/doc4/documentNumber}"/>
+                                    <!-- @ui5ignore-patterns -->
+                                    <Label id="idNameDoc4.Label" text="{i18n>nameOnDocument}"/>
+                                    <!-- @ui5ignore-patterns -->
+                                    <Input id="idNameDoc4.Input" value="{DocumentModel>/doc4/nameOnDocument}"/>
+                                    <HBox id="idUpload4.HBox" class="customUploadBox"
+                                        visible="{DocumentModel>/doc4/uploadVisible}">
+                                        <VBox id="idIconUpload4.VBox" class="customUploadItem1">
+                                            <core:Icon id="idUpload4.Icon" src="sap-icon://upload-to-cloud" 
+                                                    size="30px" color="#1434CB"/>
+                                        </VBox>
+                                        <VBox id="idTextUpload4.VBox" class="customUploadItem2">
+                                            <!-- @ui5ignore-patterns -->
+                                            <Text id="idUpload4.Text" class="classTextBold" text="{i18n>clickToUpload}"/>
+                                            <!-- @ui5ignore-patterns -->
+                                            <Text id="idFileType4.Text" text="{i18n>fileType}"/>
+                                        </VBox>
+                                        <VBox id="idbuttonUpload4.VBox" class="customUploadItem3">
+                                            <!-- @ui5ignore-patterns -->
+                                            <Button id="idUploadFile4.Button" type="Transparent" 
+                                                    text="Select file" press="onUploadFileButton"/>
+                                        </VBox>
+                                    </HBox>
+
+                                    <HBox id="idFile4.HBox" class="customFileNameBox"
+                                        visible="{DocumentModel>/doc4/fileVisible}">
+                                        <VBox id="idIconFile4.VBox" class="customUploadItem1">
+                                            <!-- @ui5ignore-patterns -->
+                                            <core:Icon id="idDownloadFile4.Icon" src="sap-icon://attachment-photo" 
+                                                    size="24px" color="#1434CB" press="onDownloadFileButton">
+                                            </core:Icon>
+                                        </VBox>
+                                        <VBox id="idFileName4.VBox" class="customUploadItem2">
+                                            <Text id="idFileName4.Text" text="{DocumentModel>/doc4/fileName}"/>
+                                        </VBox>
+                                        <VBox id="idDeleteFile4.VBox" class="customUploadItem3">
+                                            <!-- @ui5ignore-patterns -->
+                                            <core:Icon id="idDeleteFile4.Icon" src="sap-icon://decline" 
+                                                    size="24px" color="#1434CB" press="onDeleteFileButton">
+                                            </core:Icon>
+                                        </VBox>
+                                    </HBox>
+                                </VBox>
+
+                                <VBox id="idDocument6.VBox" visible="{DocumentModel>/doc6/visible}"
+                                      class="customBoxDocument">
+                                    <!-- @ui5ignore-patterns -->
+                                    <Text id="idDocument6.Text" text="{i18n>certOfRegistration}" 
+                                          class="customSubtitle3"/>
+                                    <!-- @ui5ignore-patterns -->
+                                    <Label id="idDocNum6.Label" text="{i18n>documentNumber}" 
+                                           class="sapUiTinyMarginTop"/>
+                                    <!-- @ui5ignore-patterns -->
+                                    <Input id="idDoc6.Input" value="{DocumentModel>/doc6/documentNumber}"/>
+                                    <!-- @ui5ignore-patterns -->
+                                    <Label id="idNameDoc6.Label" text="{i18n>nameOnDocument}"/>
+                                    <!-- @ui5ignore-patterns -->
+                                    <Input id="idNameDoc6.Input" value="{DocumentModel>/doc6/nameOnDocument}"/>
+                                    <HBox id="idUpload6.HBox" class="customUploadBox"
+                                        visible="{DocumentModel>/doc6/uploadVisible}">
+                                        <VBox id="idIconUpload6.VBox" class="customUploadItem1">
+                                            <core:Icon id="idUpload6.Icon" src="sap-icon://upload-to-cloud" 
+                                                    size="30px" color="#1434CB"/>
+                                        </VBox>
+                                        <VBox id="idTextUpload6.VBox" class="customUploadItem2">
+                                            <!-- @ui5ignore-patterns -->
+                                            <Text id="idUpload6.Text" class="classTextBold" text="{i18n>clickToUpload}"/>
+                                            <!-- @ui5ignore-patterns -->
+                                            <Text id="idFileType6.Text" text="{i18n>fileType}"/>
+                                        </VBox>
+                                        <VBox id="idbuttonUpload6.VBox" class="customUploadItem3">
+                                            <!-- @ui5ignore-patterns -->
+                                            <Button id="idUploadFile6.Button" type="Transparent" 
+                                                    text="Select file" press="onUploadFileButton"/>
+                                        </VBox>
+                                    </HBox>
+
+                                    <HBox id="idFile6.HBox" class="customFileNameBox"
+                                        visible="{DocumentModel>/doc6/fileVisible}">
+                                        <VBox id="idIconFile6.VBox" class="customUploadItem1">
+                                            <!-- @ui5ignore-patterns -->
+                                            <core:Icon id="idDownloadFile6.Icon" src="sap-icon://attachment-photo" 
+                                                    size="24px" color="#1434CB" press="onDownloadFileButton">
+                                            </core:Icon>
+                                        </VBox>
+                                        <VBox id="idFileName6.VBox" class="customUploadItem2">
+                                            <Text id="idFileName6.Text" text="{DocumentModel>/doc6/fileName}"/>
+                                        </VBox>
+                                        <VBox id="idDeleteFile6.VBox" class="customUploadItem3">
+                                            <!-- @ui5ignore-patterns -->
+                                            <core:Icon id="idDeleteFile6.Icon" src="sap-icon://decline" 
+                                                    size="24px" color="#1434CB" press="onDeleteFileButton">
+                                            </core:Icon>
+                                        </VBox>
+                                    </HBox>
+                                </VBox>
+
+                                <VBox id="idDocument5.VBox" visible="{DocumentModel>/doc5/visible}"
+                                      class="customBoxDocument">
+                                    <!-- @ui5ignore-patterns -->
+                                    <Text id="idDocument5.Text" text="{i18n>identificationDocument}" 
+                                          class="customSubtitle3"/>
+                                    <!-- @ui5ignore-patterns -->
+                                    <Label id="idDocNum5.Label" text="{i18n>documentNumber}" 
+                                           class="sapUiTinyMarginTop"/>
+                                    <!-- @ui5ignore-patterns -->
+                                    <Input id="idDoc5.Input" value="{DocumentModel>/doc5/documentNumber}"/>
+                                    <!-- @ui5ignore-patterns -->
+                                    <Label id="idNameDoc5.Label" text="{i18n>nameOnDocument}"/>
+                                    <!-- @ui5ignore-patterns -->
+                                    <Input id="idNameDoc5.Input" value="{DocumentModel>/doc5/nameOnDocument}"/>
+                                    <HBox id="idUpload5.HBox" class="customUploadBox"
+                                        visible="{DocumentModel>/doc5/uploadVisible}">
+                                        <VBox id="idIconUpload5.VBox" class="customUploadItem1">
+                                            <core:Icon id="idUpload5.Icon" src="sap-icon://upload-to-cloud" 
+                                                    size="30px" color="#1434CB"/>
+                                        </VBox>
+                                        <VBox id="idTextUpload5.VBox" class="customUploadItem2">
+                                            <!-- @ui5ignore-patterns -->
+                                            <Text id="idUpload5.Text" class="classTextBold" text="{i18n>clickToUpload}"/>
+                                            <!-- @ui5ignore-patterns -->
+                                            <Text id="idFileType5.Text" text="{i18n>fileType}"/>
+                                        </VBox>
+                                        <VBox id="idbuttonUpload5.VBox" class="customUploadItem3">
+                                            <!-- @ui5ignore-patterns -->
+                                            <Button id="idUploadFile5.Button" type="Transparent" 
+                                                    text="Select file" press="onUploadFileButton"/>
+                                        </VBox>
+                                    </HBox>
+
+                                    <HBox id="idFile5.HBox" class="customFileNameBox"
+                                        visible="{DocumentModel>/doc5/fileVisible}">
+                                        <VBox id="idIconFile5.VBox" class="customUploadItem1">
+                                            <!-- @ui5ignore-patterns -->
+                                            <core:Icon id="idDownloadFile5.Icon" src="sap-icon://attachment-photo" 
+                                                    size="24px" color="#1434CB" press="onDownloadFileButton">
+                                            </core:Icon>
+                                        </VBox>
+                                        <VBox id="idFileName5.VBox" class="customUploadItem2">
+                                            <Text id="idFileName5.Text" text="{DocumentModel>/doc5/fileName}"/>
+                                        </VBox>
+                                        <VBox id="idDeleteFile5.VBox" class="customUploadItem3">
+                                            <!-- @ui5ignore-patterns -->
+                                            <core:Icon id="idDeleteFile5.Icon" src="sap-icon://decline" 
+                                                    size="24px" color="#1434CB" press="onDeleteFileButton">
+                                            </core:Icon>
+                                        </VBox>
+                                    </HBox>
+                                </VBox>
+
+                                <VBox id="idDocument7.VBox" visible="{DocumentModel>/doc7/visible}"
+                                      class="customBoxDocument">
+                                    <!-- @ui5ignore-patterns -->
+                                    <Text id="idDocument7.Text" text="{i18n>recentPhotograph}" 
+                                          class="customSubtitle3"/>
+                                    <!-- @ui5ignore-patterns -->
+                                    <Label id="idDocNum7.Label" text="{i18n>documentNumber}" 
+                                           class="sapUiTinyMarginTop"/>
+                                    <!-- @ui5ignore-patterns -->
+                                    <Input id="idDoc7.Input" value="{DocumentModel>/doc7/documentNumber}"/>
+                                    <!-- @ui5ignore-patterns -->
+                                    <Label id="idNameDoc7.Label" text="{i18n>nameOnDocument}"/>
+                                    <!-- @ui5ignore-patterns -->
+                                    <Input id="idNameDoc7.Input" value="{DocumentModel>/doc7/nameOnDocument}"/>
+                                    <HBox id="idUpload7.HBox" class="customUploadBox"
+                                        visible="{DocumentModel>/doc7/uploadVisible}">
+                                        <VBox id="idIconUpload7.VBox" class="customUploadItem1">
+                                            <core:Icon id="idUpload7.Icon" src="sap-icon://upload-to-cloud" 
+                                                    size="30px" color="#1434CB"/>
+                                        </VBox>
+                                        <VBox id="idTextUpload7.VBox" class="customUploadItem2">
+                                            <!-- @ui5ignore-patterns -->
+                                            <Text id="idUpload7.Text" class="classTextBold" text="{i18n>clickToUpload}"/>
+                                            <!-- @ui5ignore-patterns -->
+                                            <Text id="idFileType7.Text" text="{i18n>fileType}"/>
+                                        </VBox>
+                                        <VBox id="idbuttonUpload7.VBox" class="customUploadItem3">
+                                            <!-- @ui5ignore-patterns -->
+                                            <Button id="idUploadFile7.Button" type="Transparent" 
+                                                    text="Select file" press="onUploadFileButton"/>
+                                        </VBox>
+                                    </HBox>
+
+                                    <HBox id="idFile7.HBox" class="customFileNameBox"
+                                        visible="{DocumentModel>/doc7/fileVisible}">
+                                        <VBox id="idIconFile7.VBox" class="customUploadItem1">
+                                            <!-- @ui5ignore-patterns -->
+                                            <core:Icon id="idDownloadFile7.Icon" src="sap-icon://attachment-photo" 
+                                                    size="24px" color="#1434CB" press="onDownloadFileButton">
+                                            </core:Icon>
+                                        </VBox>
+                                        <VBox id="idFileName7.VBox" class="customUploadItem2">
+                                            <Text id="idFileName7.Text" text="{DocumentModel>/doc7/fileName}"/>
+                                        </VBox>
+                                        <VBox id="idDeleteFile7.VBox" class="customUploadItem3">
+                                            <!-- @ui5ignore-patterns -->
+                                            <core:Icon id="idDeleteFile7.Icon" src="sap-icon://decline" 
+                                                    size="24px" color="#1434CB" press="onDeleteFileButton">
+                                            </core:Icon>
+                                        </VBox>
+                                    </HBox>
+                                </VBox>
+                                
+                                <VBox id="idDocument8.VBox" visible="{DocumentModel>/doc8/visible}"
+                                      class="customBoxDocument">
+                                    <!-- @ui5ignore-patterns -->
+                                    <Text id="idDocument8.Text" text="{i18n>copyOfIDAndAddress}" 
+                                          class="customSubtitle3"/>
+                                    <!-- @ui5ignore-patterns -->
+                                    <Label id="idDocNum8.Label" text="{i18n>documentNumber}" 
+                                           class="sapUiTinyMarginTop"/>
+                                    <!-- @ui5ignore-patterns -->
+                                    <Input id="idDoc8.Input" value="{DocumentModel>/doc8/documentNumber}"/>
+                                    <!-- @ui5ignore-patterns -->
+                                    <Label id="idNameDoc8.Label" text="{i18n>nameOnDocument}"/>
+                                    <!-- @ui5ignore-patterns -->
+                                    <Input id="idNameDoc8.Input" value="{DocumentModel>/doc8/nameOnDocument}"/>
+                                    <HBox id="idUpload8.HBox" class="customUploadBox"
+                                        visible="{DocumentModel>/doc8/uploadVisible}">
+                                        <VBox id="idIconUpload8.VBox" class="customUploadItem1">
+                                            <core:Icon id="idUpload8.Icon" src="sap-icon://upload-to-cloud" 
+                                                    size="30px" color="#1434CB"/>
+                                        </VBox>
+                                        <VBox id="idTextUpload8.VBox" class="customUploadItem2">
+                                            <!-- @ui5ignore-patterns -->
+                                            <Text id="idUpload8.Text" class="classTextBold" text="{i18n>clickToUpload}"/>
+                                            <!-- @ui5ignore-patterns -->
+                                            <Text id="idFileType8.Text" text="{i18n>fileType}"/>
+                                        </VBox>
+                                        <VBox id="idbuttonUpload8.VBox" class="customUploadItem3">
+                                            <!-- @ui5ignore-patterns -->
+                                            <Button id="idUploadFile8.Button" type="Transparent" 
+                                                    text="Select file" press="onUploadFileButton"/>
+                                        </VBox>
+                                    </HBox>
+
+                                    <HBox id="idFile8.HBox" class="customFileNameBox"
+                                        visible="{DocumentModel>/doc8/fileVisible}">
+                                        <VBox id="idIconFile8.VBox" class="customUploadItem1">
+                                            <!-- @ui5ignore-patterns -->
+                                            <core:Icon id="idDownloadFile8.Icon" src="sap-icon://attachment-photo" 
+                                                    size="24px" color="#1434CB" press="onDownloadFileButton">
+                                            </core:Icon>
+                                        </VBox>
+                                        <VBox id="idFileName8.VBox" class="customUploadItem2">
+                                            <Text id="idFileName8.Text" text="{DocumentModel>/doc8/fileName}"/>
+                                        </VBox>
+                                        <VBox id="idDeleteFile8.VBox" class="customUploadItem3">
+                                            <!-- @ui5ignore-patterns -->
+                                            <core:Icon id="idDeleteFile8.Icon" src="sap-icon://decline" 
+                                                    size="24px" color="#1434CB" press="onDeleteFileButton">
+                                            </core:Icon>
+                                        </VBox>
+                                    </HBox>
+                                </VBox>
+                                
+                                <VBox id="idDocument9.VBox" visible="{DocumentModel>/doc9/visible}"
+                                      class="customBoxDocument">
+                                    <!-- @ui5ignore-patterns -->
+                                    <Text id="idDocument9.Text" text="{i18n>documentsPertaining}" 
+                                          class="customSubtitle3"/>
+                                    <!-- @ui5ignore-patterns -->
+                                    <Label id="idDocNum9.Label" text="{i18n>documentNumber}" 
+                                           class="sapUiTinyMarginTop"/>
+                                    <!-- @ui5ignore-patterns -->
+                                    <Input id="idDoc9.Input" value="{DocumentModel>/doc9/documentNumber}"/>
+                                    <!-- @ui5ignore-patterns -->
+                                    <Label id="idNameDoc9.Label" text="{i18n>nameOnDocument}"/>
+                                    <!-- @ui5ignore-patterns -->
+                                    <Input id="idNameDoc9.Input" value="{DocumentModel>/doc9/nameOnDocument}"/>
+                                    <HBox id="idUpload9.HBox" class="customUploadBox"
+                                        visible="{DocumentModel>/doc9/uploadVisible}">
+                                        <VBox id="idIconUpload9.VBox" class="customUploadItem1">
+                                            <core:Icon id="idUpload9.Icon" src="sap-icon://upload-to-cloud" 
+                                                    size="30px" color="#1434CB"/>
+                                        </VBox>
+                                        <VBox id="idTextUpload9.VBox" class="customUploadItem2">
+                                            <!-- @ui5ignore-patterns -->
+                                            <Text id="idUpload9.Text" class="classTextBold" text="{i18n>clickToUpload}"/>
+                                            <!-- @ui5ignore-patterns -->
+                                            <Text id="idFileType9.Text" text="{i18n>fileType}"/>
+                                        </VBox>
+                                        <VBox id="idbuttonUpload9.VBox" class="customUploadItem3">
+                                            <!-- @ui5ignore-patterns -->
+                                            <Button id="idUploadFile9.Button" type="Transparent" 
+                                                    text="Select file" press="onUploadFileButton"/>
+                                        </VBox>
+                                    </HBox>
+
+                                    <HBox id="idFile9.HBox" class="customFileNameBox"
+                                        visible="{DocumentModel>/doc9/fileVisible}">
+                                        <VBox id="idIconFile9.VBox" class="customUploadItem1">
+                                            <!-- @ui5ignore-patterns -->
+                                            <core:Icon id="idDownloadFile9.Icon" src="sap-icon://attachment-photo" 
+                                                    size="24px" color="#1434CB" press="onDownloadFileButton">
+                                            </core:Icon>
+                                        </VBox>
+                                        <VBox id="idFileName9.VBox" class="customUploadItem2">
+                                            <Text id="idFileName9.Text" text="{DocumentModel>/doc9/fileName}"/>
+                                        </VBox>
+                                        <VBox id="idDeleteFile9.VBox" class="customUploadItem3">
+                                            <!-- @ui5ignore-patterns -->
+                                            <core:Icon id="idDeleteFile9.Icon" src="sap-icon://decline" 
+                                                    size="24px" color="#1434CB" press="onDeleteFileButton">
+                                            </core:Icon>
+                                        </VBox>
+                                    </HBox>
+                                </VBox>
+
                             </VBox>
                         </HBox>
 						<HBox id="idSpaceP3S3.HBox" height="40px"/>

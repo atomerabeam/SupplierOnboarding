@@ -309,6 +309,10 @@
     justify-self: end;
 }
 
+.customBoxDocument {
+    margin-bottom: 32px;
+}
+
 .customBoxCard {
     /* margin: 1rem 2rem !important; */
     padding: 24px;
@@ -318,6 +322,7 @@
     border: 1px solid rgba(0, 0, 0, 0.10);
     background: #1434CB;
 }
+
 /* Space */
 .customSpaceLine {
     margin-top: 8px;
@@ -365,6 +370,15 @@
     font-style: normal;
     font-weight: 500;
     line-height: 21px;
+}
+
+.customSubtitle3 {
+    color: #000000;
+    /* font-family: "Visa Dialect UI"; */
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 18px;
 }
 
 .customLabel {
