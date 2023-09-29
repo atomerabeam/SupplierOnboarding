@@ -7,12 +7,16 @@
 			<!-- @ui5ignore-patterns -->
 			<VBox id="Card.VBox" class="customBoxCard" width="50%">
 				<!-- @ui5ignore-patterns -->
+				<HBox justifyContent="SpaceBetween">
 				<Text id="idTitleP1.Text" text="VISA" class="customTextCard"/>
+				<Button id="ideye.Button" icon="{CardInfo>/btnIcon}" press="onShowInfor"> </Button>
+				</HBox>
 				<VBox id="idCardSpace.VBox" height="50px"/>
 				<!-- @ui5ignore-patterns -->
 				<HBox justifyContent="SpaceBetween">
 				<Text id="idText1.Text" text="Card Number" class="customTextCard"/>
-				<Text id="idText4.Value" text="{CardInfo>/cardNumber}" class="customTextCard"></Text>
+				<Text id="idText4.Value" text="{CardInfo>/cardNumber}" class="customTextCard" ></Text>
+				
 				</HBox>
 				<!-- @ui5ignore-patterns -->
 				<HBox justifyContent="SpaceBetween">

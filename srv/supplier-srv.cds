@@ -1,6 +1,7 @@
 using my.visaModels as sp from '../db/supplier';
 
-service Supplier {
+
+service Supplier @(requires: 'authenticated-user') {
     type cardInfo     : {
         cardNumber : String;
         cvv2       : String;
