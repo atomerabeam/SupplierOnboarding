@@ -9,8 +9,7 @@ const credentialStore = require("./credentialStore")
  * - encryptedData(ArrayBuffer): Encrypted Data
  */
 async function encryptData(vkeyID, vDataTobeEncrypted) {
-    
-    console.log(vDataTobeEncrypted)
+
     // Get Stored JWK in Credential Store
     let oBinding = credentialStore.getBinding()
     

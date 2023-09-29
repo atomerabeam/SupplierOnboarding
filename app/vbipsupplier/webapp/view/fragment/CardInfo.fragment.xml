@@ -2,7 +2,7 @@
 	xmlns="sap.m"
     xmlns:core="sap.ui.core">
     <VBox id="idMainP1.VBox" class="sapUiSmallMargin" alignItems="Center" 
-		  visible="{PageModel>/pageFlow/landing}">
+		  visible="{PageModel>/pageFlow/cardInfo}">
 		<VBox id="idContent.VBox" class="customBoxContent" alignItems="Center" width="50%">
 			<!-- @ui5ignore-patterns -->
 			<VBox id="Card.VBox" class="customBoxCard" width="50%">
@@ -10,11 +10,20 @@
 				<Text id="idTitleP1.Text" text="VISA" class="customTextCard"/>
 				<VBox id="idCardSpace.VBox" height="50px"/>
 				<!-- @ui5ignore-patterns -->
+				<HBox justifyContent="SpaceBetween">
 				<Text id="idText1.Text" text="Card Number" class="customTextCard"/>
+				<Text id="idText4.Value" text="{CardInfo>/cardNumber}" class="customTextCard"></Text>
+				</HBox>
 				<!-- @ui5ignore-patterns -->
+				<HBox justifyContent="SpaceBetween">
 				<Text id="idText2.Text" text="Expired Date" class="customTextCard"/>
+				<Text id="idText2.Value" text="{CardInfo>/expiredate}" class="customTextCard"></Text>
+				</HBox>
 				<!-- @ui5ignore-patterns -->
+				<HBox justifyContent="SpaceBetween">
 				<Text id="idText3.Text" text="CVV" class="customTextCard"/>
+				<Text id="idText3.Value" text="{CardInfo>/cvv2}" class="customTextCard"></Text>
+				</HBox>
 			</VBox>
 		</VBox>
         

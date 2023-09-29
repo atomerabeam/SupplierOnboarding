@@ -142,6 +142,13 @@
           "viewId": "SupplierInfo",
           "viewName": "SupplierInfo"
         },
+        "TargetCardLandingPage": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "CardLandingPage",
+          "viewName": "CardLandingPage"
+        },
         "TargetCardInfo": {
           "viewType": "XML",
           "transition": "slide",

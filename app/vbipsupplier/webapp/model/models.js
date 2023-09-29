@@ -269,5 +269,22 @@ sap.ui.define([
                 } catch (error) {
                 }
             },
+            getCardInfo: async function(oParameter){
+                let oResult = {}
+                try {
+                    const response = await fetch("/odata/v4/supplier/getCardInfo", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(oParameter),
+                    });
+                    
+                    oResult.response =  await response.json()
+                } catch (error) {
+                    oResult.catchError = error;
+                }
+                return oResult;
+            }
         };
     });

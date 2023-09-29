@@ -227,10 +227,11 @@ module.exports = cds.service.impl(async (service) => {
     })
 
     service.on("getCardInfo", async (req) => {
-        let encodedRequestID = req.data.vbipRequestID
+        // let encodedRequestID = req.data.vbipRequestID
         // console.log(req.data.errorPayload)
         //Decode URL to VBIPRequestID
-        let sVbipRequestID = await vbipService.decryptID(encodedRequestID)
+        // let sVbipRequestID = await vbipService.decryptID(encodedRequestID)
+        let sVbipRequestID = req.data.vbipRequestID
         let oAuthToken = await vbipService.getToken("VBIP-API");
         try {
             const response = await fetch(`${oAuthToken.url}/odata/v4/catalog/CASupplierPaymentDetails?$filter=vbipRequestId eq '${sVbipRequestID}'`, {
@@ -242,11 +243,14 @@ module.exports = cds.service.impl(async (service) => {
             });
             let oJsonResponse = await response.json()
             let oCardInfo = oJsonResponse.value[0]
-
-            oCardInfo.cardNumber = await cryptoService.decryptData(sVbipRequestID, cryptoService.convertBase64toArrayBuffer(oCardInfo.cardNumber))
-            oCardInfo.cvv2 = await cryptoService.decryptData(sVbipRequestID, cryptoService.convertBase64toArrayBuffer(oCardInfo.cvv2))
-            oCardInfo.expiredate = await cryptoService.decryptData(sVbipRequestID, cryptoService.convertBase64toArrayBuffer(oCardInfo.expiredate))
-            delete oCardInfo["vbipRequestId"]
+            if(oCardInfo) {
+                oCardInfo.cardNumber = await cryptoService.decryptData(sVbipRequestID, cryptoService.convertBase64toArrayBuffer(oCardInfo.cardNumber))
+                oCardInfo.cvv2 = await cryptoService.decryptData(sVbipRequestID, cryptoService.convertBase64toArrayBuffer(oCardInfo.cvv2))
+                oCardInfo.expiredate = await cryptoService.decryptData(sVbipRequestID, cryptoService.convertBase64toArrayBuffer(oCardInfo.expiredate))
+                delete oCardInfo["vbipRequestId"]
+            } else {
+                oCardInfo = {}
+            }
             return oCardInfo
         } catch (error) {
             req.error(400, error)
