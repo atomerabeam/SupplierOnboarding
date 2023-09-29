@@ -169,6 +169,11 @@ module.exports = cds.service.impl(async (service) => {
     service.on("encryptFile", async (req) => {
         let vID = req.data.ID;
         let fileContent = req.data.fileContent;
+        if (fileContent) {
+            fileContent = fileContent.toString()
+        } else {
+            return ""
+        }
         // Encrypt fileContent
         let oEncryptResult = await cryptoService.encryptData(vID, fileContent);
         // Convert encrypted Data(ArrayBuffer) to Base64 format
@@ -183,6 +188,9 @@ module.exports = cds.service.impl(async (service) => {
             // Get fileContent from Database
             // let documentDetails = await service.get(DocumentDetails).where({ ID: vID });
             let encodedContent = req.data.fileContent;
+            if (!encodedContent) {
+                return ""
+            }
             // let encodedContent = await service.run( SELECT.from(DocumentDetails).columns("encodedContent").where({ ID: vID }))
             //Convert Base64 content to ArrayBuffer
             let encryptedContent = cryptoService.convertBase64toArrayBuffer(encodedContent);
