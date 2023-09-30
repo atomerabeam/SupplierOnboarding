@@ -21,7 +21,7 @@
 
 			<!-- @ui5ignore-patterns -->
 			<Label id="idSAPCustomer.Label" class="customLabel" text="{i18n>SAPCustomer}"/>
-			<Select id="idSAPCustomer.Select" forceSelection="false" 
+			<Select id="idSAPCustomer.Select" 
 					selectedKey="{RequestInfo>/requestInfo/SAPCustomer}" width="60%">
 				<core:Item id="idYesSAP.Item" key="true" text="Yes"/>
 				<core:Item id="idNoSAP.Item" key="false" text="No"/>

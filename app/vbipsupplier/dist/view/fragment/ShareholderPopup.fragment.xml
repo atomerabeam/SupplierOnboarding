@@ -39,11 +39,11 @@
                         <Input id="idDocNum.Input" value="{ShareholderPopupModel>/popup/docNum}"/>
                         <!-- @ui5ignore-patterns -->
                         <Label id="idNameOnDoc.Label" text="{i18n>nameOnDocument}" class="customLabel"/>
-                        <Input id="idNameOnDoc.Input"  value="{ShareholderPopupModel>/popup/nameOnDoc}"/>
+                        <Input id="idNameOnDoc.Input" value="{ShareholderPopupModel>/popup/nameOnDoc}"/>
                         <Label id="idDateOfIssue.Label" text="{i18n>dateOfIssue}" class="customLabel"/>
-                        <Input id="idDateOfIssue.Input"  value="{ShareholderPopupModel>/popup/dateOfIssue}"/>
+                        <DatePicker id="idDateOfIssue.DatePicker" value="{ShareholderPopupModel>/popup/dateOfIssue}"/>
                         <Label id="idDateOfExpiry.Label" text="{i18n>dateOfExpiry}" class="customLabel"/>
-                        <Input id="idDateOfExpiry.Input"  value="{ShareholderPopupModel>/popup/dateOfExpiry}"/>
+                        <DatePicker id="idDateOfExpiry.DatePicker" value="{ShareholderPopupModel>/popup/dateOfExpiry}"/>
 
                         <HBox id="idUploadSH.HBox" class="customUploadBox"
                               visible="{ShareholderPopupModel>/popup/uploadVisible}">
@@ -51,7 +51,7 @@
                                 <core:Icon id="idUploadSH.Icon" src="sap-icon://upload-to-cloud" 
                                         size="30px" color="#1434CB"/>
                             </VBox>
-                            <VBox id="idTextUploadSH.VBox" class="customUploadItem2" width="70%">
+                            <VBox id="idTextUploadSH.VBox" class="customUploadItem2" width="60%">
                                 <!-- @ui5ignore-patterns -->
                                 <Text id="idUploadSH.Text" class="classTextBold" text="{i18n>clickToUpload}"/>
                                 <!-- @ui5ignore-patterns -->
@@ -60,7 +60,7 @@
                             <VBox id="idbuttonUploadSH.VBox" class="customUploadItem3">
                                 <!-- @ui5ignore-patterns -->
                                 <Button id="idUploadFileSH.Button" type="Transparent" 
-                                        text="Select file" press="onUploadFileButton"/>
+                                        text="Select file" press="onUploadFileSH"/>
                             </VBox>
                         </HBox>
 
@@ -69,7 +69,7 @@
                             <VBox id="idIconFileSH.VBox" class="customUploadItem1">
                                 <!-- @ui5ignore-patterns -->
                                 <core:Icon id="idDownloadFileSH.Icon" src="sap-icon://attachment-photo" 
-                                            size="24px" color="#1434CB" press="onDownloadFileButton">
+                                            size="24px" color="#1434CB" press="onDownloadFileSH">
                                 </core:Icon>
                             </VBox>
                             <VBox id="idFileNameSH.VBox" class="customUploadItem2" width="85%">
@@ -78,7 +78,7 @@
                             <VBox id="idDeleteFileSH.VBox" class="customUploadItem3">
                                 <!-- @ui5ignore-patterns -->
                                 <core:Icon id="idDeleteFileSH.Icon" src="sap-icon://decline" 
-                                            size="24px" color="#1434CB" press="onDeleteFileButton">
+                                            size="24px" color="#1434CB" press="onDeleteFileSH">
                                 </core:Icon>
                             </VBox>
                         </HBox>

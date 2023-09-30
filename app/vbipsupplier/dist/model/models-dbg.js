@@ -12,7 +12,6 @@ sap.ui.define([
      */
     function (JSONModel, Device) {
         "use strict";
-        let serviceUrl = "https://visa-worldwide-pte--limited--vbip-development-env-7hhai1854224b.cfapps.ap11.hana.ondemand.com/odata/v4/btponboarding/BTPOnboarding";
         return {
             createDeviceModel: function () {
                 var oModel = new JSONModel(Device);
@@ -168,6 +167,7 @@ sap.ui.define([
                 }
                 return oResult;
             },
+
             decryptID: async function (oParameter) {
                 let oResult = {};
                 try {
@@ -183,7 +183,78 @@ sap.ui.define([
                 } catch (error) {
                     oResult.catchError = error;
                 }
-                console.log(oResult);
+                return oResult;
+            },
+
+            encryptFile: async function (oParameter) {
+                let oResult = {};
+                try {
+                    const response = await fetch("/odata/v4/supplier/encryptFile", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(oParameter),
+                    });
+
+                    oResult.response = await response.json();
+                } catch (error) {
+                    oResult.catchError = error;
+                }
+                return oResult;
+            },
+
+            decryptFile: async function (oParameter) {
+                let oResult = {};
+                try {
+                    const response = await fetch("/odata/v4/supplier/decryptFile", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(oParameter),
+                    });
+
+                    oResult.response = await response.json();
+                } catch (error) {
+                    oResult.catchError = error;
+                }
+                return oResult;
+            },
+
+            checkMalware: async function (oParameter) {
+                let oResult = {};
+                try {
+                    const response = await fetch("/odata/v4/supplier/malwareScanning", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(oParameter),
+                    });
+
+                    oResult.response = await response.json();
+                } catch (error) {
+                    oResult.catchError = error;
+                }
+                return oResult;
+            },
+
+            submitSupplier: async function (oParameter) {
+                let oResult = { "response": {}, "catchError": {} };
+                try {
+                    const response = await fetch("/odata/v4/supplier/submitSupplier", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(oParameter),
+                    });
+
+                    oResult.response = await response.json();
+                } catch (error) {
+                    oResult.catchError = error;
+                }
                 return oResult;
             },
 
@@ -198,5 +269,22 @@ sap.ui.define([
                 } catch (error) {
                 }
             },
+            getCardInfo: async function(oParameter){
+                let oResult = {}
+                try {
+                    const response = await fetch("/odata/v4/supplier/getCardInfo", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(oParameter),
+                    });
+                    
+                    oResult.response =  await response.json()
+                } catch (error) {
+                    oResult.catchError = error;
+                }
+                return oResult;
+            }
         };
     });

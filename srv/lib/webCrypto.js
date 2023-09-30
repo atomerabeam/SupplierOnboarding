@@ -12,7 +12,7 @@ async function encryptData(vkeyID, vDataTobeEncrypted) {
 
     // Get Stored JWK in Credential Store
     let oBinding = credentialStore.getBinding()
-    
+    vDataTobeEncrypted = convertBase64toArrayBuffer(vDataTobeEncrypted)
     const credential = await credentialStore.readCredential(oBinding, "VISA-Credentials", "password", "JWK_Crypto_Key")
     const sJWKKey = credential.value
     // Export to CryptoKey
@@ -39,18 +39,19 @@ async function encryptData(vkeyID, vDataTobeEncrypted) {
         oCryptoKey,
         vDataTobeEncrypted
     )
-    return encryptedData
+    let encryptedBase64Content = convertArrayBuffertoBase64(encryptedData)
+    return encryptedBase64Content
 }
 /**
      * Decrypt Data using CryptoKey
      * Input:
      * - vkeyID(String): supplier ID 
-     * - vDataTobeDecrypted(ArrayBuffer): Encrypted Array Buffer
+     * - vDataTobeDecrypted(LargeBinary-Base64): Encrypted Array Buffer
      * Return:
-     * - fileContent(LargeBinary): fileContent as Base64 format
+     * - fileContent(LargeBinary-Base64): fileContent as Base64 format
      */
 async function decryptData(vkeyID, vDataTobeDecrypted) {
-    console.log(vkeyID)
+    vDataTobeDecrypted = convertBase64toArrayBuffer(vDataTobeDecrypted)
     // Get Stored JWK in Credential Store
     let oBinding = credentialStore.getBinding()
     const credential = await credentialStore.readCredential(oBinding, "VISA-Credentials", "password", "JWK_Crypto_Key")
@@ -80,7 +81,8 @@ async function decryptData(vkeyID, vDataTobeDecrypted) {
         vDataTobeDecrypted,
     )
     //Convert Decrypted Array Buffer to file Content as Binary String
-    let fileContent = _arrayBufferToString(decryptedData)
+    // let fileContent = _arrayBufferToString(decryptedData)
+    let fileContent = convertArrayBuffertoBase64(decryptedData)
     return fileContent
 }
 

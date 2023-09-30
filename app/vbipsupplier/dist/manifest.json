@@ -111,6 +111,20 @@
                     "target": [
                         "TargetSupplierInfo"
                     ]
+                },
+                {
+                    "name": "Card",
+                    "pattern": "Card/{token}",
+                    "target": [
+                        "TargetCardLandingPage"
+                    ]
+                },
+                {
+                    "name": "CardInfo",
+                    "pattern": "CardInfo",
+                    "target": [
+                        "TargetCardInfo"
+                    ]
                 }
             ],
             "targets": {
@@ -127,6 +141,20 @@
                     "clearControlAggregation": false,
                     "viewId": "SupplierInfo",
                     "viewName": "SupplierInfo"
+                },
+                "TargetCardLandingPage": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
+                    "viewId": "CardLandingPage",
+                    "viewName": "CardLandingPage"
+                },
+                "TargetCardInfo": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
+                    "viewId": "CardInfo",
+                    "viewName": "CardInfo"
                 }
             }
         },

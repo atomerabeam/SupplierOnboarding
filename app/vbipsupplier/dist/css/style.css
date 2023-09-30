@@ -281,20 +281,22 @@
     flex-direction: row;
     justify-content: normal;
     align-items: flex-start;
+    align-self: stretch;
     border-radius: 8px;
     border: 1px solid rgba(0, 0, 0, 0.10);
     background: #ffffff;
 }
 
 .customUploadItem1 {
-    margin-right: 8px;
+    margin-right: 16px;
     align-content: center;
     flex-wrap: wrap;
     align-self: center;
 }
 
 .customUploadItem2 {
-    margin-right: 8px;
+    margin-right: 16px;
+    width: 60%;
     align-content: start;
     flex-wrap: wrap;
     align-self: center;
@@ -304,6 +306,21 @@
     align-content: center;
     flex-wrap: wrap;
     align-self: center;
+    justify-self: end;
+}
+
+.customBoxDocument {
+    margin-bottom: 32px;
+}
+
+.customBoxCard {
+    /* margin: 1rem 2rem !important; */
+    padding: 24px;
+    /* align-items: center; */
+    flex-wrap: wrap;
+    border-radius: 6px;
+    border: 1px solid rgba(0, 0, 0, 0.10);
+    background: #1434CB;
 }
 
 /* Space */
@@ -355,6 +372,15 @@
     line-height: 21px;
 }
 
+.customSubtitle3 {
+    color: #000000;
+    /* font-family: "Visa Dialect UI"; */
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 18px;
+}
+
 .customLabel {
     color: #4A4A4A;
     /* font-family: "Visa Dialect UI"; */
@@ -387,4 +413,15 @@
     line-height: 13px;
     letter-spacing: 1px;
     text-transform: uppercase;
+}
+
+.customTextCard {
+    color: #ffffff;
+    /* font-feature-settings: 'clig' off, 'liga' off; */
+    /* Web/Overline */
+    /* font-family: Visa Dialect UI; */
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 21px;
 }
