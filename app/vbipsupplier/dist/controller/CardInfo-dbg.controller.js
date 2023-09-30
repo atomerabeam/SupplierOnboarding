@@ -15,7 +15,7 @@ sap.ui.define([
 		onInit: async function () {
 			// let oCardInfoModelDisplay = new JSONModel()
 		    // this.getView().setModel(oCardInfoModelDisplay, "CardInfoDisplay")
-
+			let sAuthToken = ""
 			let oSupplier = this.getOwnerComponent().getModel("SupplierInfo").getProperty("/supplier");
 			let oPageModel = new JSONModel();
             let oPageFlow = {
@@ -25,8 +25,9 @@ sap.ui.define([
             this.getView().setModel(oPageModel, "PageModel");
 
 			if (oSupplier !== undefined) {
+				sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken")
 				let oParameter = { "vbipRequestID": oSupplier.buyerID.concat(oSupplier.supplierID) }
-				let oCardInfo = await Models.getCardInfo(oParameter)
+				let oCardInfo = await Models.getCardInfo(oParameter, sAuthToken)
 				if (oCardInfo.response) {
 					let oCardInfoModel = new JSONModel(Object.assign({"btnIcon": "sap-icon://hide"},oCardInfo.response))
 					let oCardInfoDisplayModel = new JSONModel(oCardInfoModel.getData())
@@ -49,6 +50,7 @@ sap.ui.define([
 		},
 
 		onShowInfor: function(){
+			let sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken")
 			let oModelDisplay = this.getView().getModel("CardInfoDisplay");
 			let oModel = this.getView().getModel("CardInfo");
 			let vButton = oModel.getProperty("/btnIcon");

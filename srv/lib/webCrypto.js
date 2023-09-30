@@ -6,7 +6,7 @@ const credentialStore = require("./credentialStore")
  * - vkeyID(String): supplier ID 
  * - vDataTobeEncrypted(LargeBinary): File Content as Base64
  * Return:
- * - encryptedData(ArrayBuffer): Encrypted Data
+ * - encryptedData(LargeBinary): Encrypted Data
  */
 async function encryptData(vkeyID, vDataTobeEncrypted) {
 

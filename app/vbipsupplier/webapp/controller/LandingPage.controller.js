@@ -16,6 +16,7 @@ sap.ui.define([
             },
 
             onResendOTPLinkPress: async function () {
+                let sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken")
                 let oSupplier = this.getOwnerComponent().getModel("SupplierInfo").getProperty("/supplier");
                 let oVBIP = this.getOwnerComponent().getModel("SupplierInfo").getProperty("/VBIP");
 
@@ -31,7 +32,7 @@ sap.ui.define([
                                     <p>Your OTP code is [OTP]</p><br/><p>Thanks</p>`
                 };
 
-                let oResult = await Models.sendMailOTP(oMail);
+                let oResult = await Models.sendMailOTP(oMail, sAuthToken);
                 if (oResult.response.ok === true) {
                     MessageToast.show("Sent OTP");
                 } else {
@@ -39,12 +40,13 @@ sap.ui.define([
                 }
             },
             onContinueButtonPress: async function () {
+                let sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken")
                 let inputOTP = this.getView().byId("idOTP.Input").getValue();
                 let oParameter = {
                     "pID": this._GUID,
                     "pOTP": inputOTP
                 };
-                let oResult = await Models.checkOTP(oParameter);
+                let oResult = await Models.checkOTP(oParameter, sAuthToken);
                 if (Object.keys(oResult.catchError).length === 0 &&
                     oResult.catchError.constructor === Object) {
                     if (oResult.response.error) {
@@ -80,6 +82,9 @@ sap.ui.define([
             },
 
             _onInit: async function () {
+                // Auth  Model
+                this.getOwnerComponent().setModel(new JSONModel({"authToken": ""}), "AuthModel")
+                let sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken")
                 // Page flow
                 let oPageModel = new JSONModel();
                 let oPageFlow = {
@@ -95,14 +100,21 @@ sap.ui.define([
                 let oParameter1 = {
                     "pID": this._GUID
                 };
-
-                let oDecrypt = await Models.decryptID(oParameter1);
+                //Authorize session
+                let oToken = await Models.authorize({
+                    "encryptedUrl": this._GUID
+                })
+                if (oToken) {
+                    this.getOwnerComponent().getModel("AuthModel").setProperty("/authToken", oToken.value)
+                    sAuthToken = oToken.value
+                }
+                let oDecrypt = await Models.decryptID(oParameter1,sAuthToken);
                 let oParameter = {
                     "buyerID": oDecrypt.response.value.split("_")[0],
                     "supplierID": oDecrypt.response.value.split("_")[1]
                 };
 
-                let oSupplierRead = await Models.getSupplier(oParameter);
+                let oSupplierRead = await Models.getSupplier(oParameter,sAuthToken);
                 // if (Object.keys(oSupplierRead.catchError).length === 0 &&
                 //     oSupplierRead.catchError.constructor === Object) {
                 if (oSupplierRead.response) {
@@ -133,17 +145,18 @@ sap.ui.define([
             },
 
             _getBuyerInfo: async function (pID) {
+                let sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken")
                 let oBuyerParameter = {
                     "buyerID": pID
                 };
-                let oBuyerRead = await Models.getBuyer(oBuyerParameter);
+                let oBuyerRead = await Models.getBuyer(oBuyerParameter, sAuthToken);
                 if (oBuyerRead.response.value) {
                     // Get Buyer Info
                     this.getOwnerComponent().getModel("SupplierInfo").setProperty("/buyer", oBuyerRead.response.value.buyer);
                 }
 
                 // Get Buyer Onboarding
-                let oBuyerOnRead = await Models.getBuyerOnboarding(oBuyerParameter);
+                let oBuyerOnRead = await Models.getBuyerOnboarding(oBuyerParameter, sAuthToken);
                 if (oBuyerOnRead.response.value.buyerOnboarding.value[0]) {
                     // Set Model Buyer Onboarding
                     // this.getOwnerComponent().getModel("SupplierInfo").setProperty("/buyerOnboarding", oBuyerOnRead.response.value.buyerOnboarding.value[0]);
@@ -152,7 +165,7 @@ sap.ui.define([
                     let oVBIPParameter = {
                         "pID": oBuyerOnRead.response.value.buyerOnboarding.value[0].vbipID
                     };
-                    let oVBIP = await Models.getVBIP(oVBIPParameter);
+                    let oVBIP = await Models.getVBIP(oVBIPParameter, sAuthToken);
                     if (oVBIP.response.value) {
                         // Get Buyer Info
                         this.getOwnerComponent().getModel("SupplierInfo").setProperty("/VBIP", oVBIP.response.value.vbip);

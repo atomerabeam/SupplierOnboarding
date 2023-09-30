@@ -251,9 +251,9 @@ module.exports = cds.service.impl(async (service) => {
             let oJsonResponse = await response.json()
             let oCardInfo = oJsonResponse.value[0]
             if (oCardInfo) {
-                oCardInfo.cardNumber = await cryptoService.decryptData(sVbipRequestID, cryptoService.convertBase64toArrayBuffer(oCardInfo.cardNumber))
-                oCardInfo.cvv2 = await cryptoService.decryptData(sVbipRequestID, cryptoService.convertBase64toArrayBuffer(oCardInfo.cvv2))
-                oCardInfo.expiredate = await cryptoService.decryptData(sVbipRequestID, cryptoService.convertBase64toArrayBuffer(oCardInfo.expiredate))
+                oCardInfo.cardNumber = await cryptoService.decryptData(sVbipRequestID, oCardInfo.cardNumber)
+                oCardInfo.cvv2 = await cryptoService.decryptData(sVbipRequestID, oCardInfo.cvv2)
+                oCardInfo.expiredate = await cryptoService.decryptData(sVbipRequestID, oCardInfo.expiredate)
                 delete oCardInfo["vbipRequestId"]
             } else {
                 oCardInfo = {}

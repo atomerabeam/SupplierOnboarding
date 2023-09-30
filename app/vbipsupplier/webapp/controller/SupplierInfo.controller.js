@@ -115,6 +115,7 @@ sap.ui.define([
                 this.getView().getModel("ShareholderModel").setProperty("/item", aShareholder);
             },
             onUploadFileButton: async function (oEvent) {
+                let sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken")
                 let strID = oEvent.getParameter("id");
                 let docID = strID.split("idUploadFile")[1].split(".Button")[0];
 
@@ -142,7 +143,7 @@ sap.ui.define([
                         // console.log(base64)
                     }
                     let oFileCheck = { "fileContent": base64 };
-                    let isMalwareDetected = await Models.checkMalware(oFileCheck);
+                    let isMalwareDetected = await Models.checkMalware(oFileCheck, sAuthToken);
                     if (isMalwareDetected === "true") {
                         let msgError = "Malware is detected";
                         MessageToast.show(msgError);
@@ -190,6 +191,7 @@ sap.ui.define([
                 downloadLink.click();
             },
             onUploadFileSH: async function (oEvent) {
+                let sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken")
                 let oShareholderPopup = this.getView().getModel("ShareholderPopupModel").getProperty("/popup");
 
                 let input = document.createElement("input"); // Create input element
@@ -213,7 +215,7 @@ sap.ui.define([
                         base64 = btoa(base64);
                     }
                     let oFileCheck = { "fileContent": base64 };
-                    let isMalwareDetected = await Models.checkMalware(oFileCheck);
+                    let isMalwareDetected = await Models.checkMalware(oFileCheck, sAuthToken);
                     if (isMalwareDetected === "true") {
                         let msgError = "Malware is detected";
                         MessageToast.show(msgError);
@@ -296,6 +298,7 @@ sap.ui.define([
                 this.onDialogAfterClose();
             },
             _onInit: async function () {
+                let sAuthToken = ""
                 // Page flow
                 let oPageModel = new JSONModel();
                 let oPageFlow = {
@@ -311,14 +314,6 @@ sap.ui.define([
                 //F4
                 let oF4Model = new JSONModel();
                 oF4Model.setProperty("/shareholderCount", 1);
-
-                let oBusinessNatureRead = await Models.getBusinessNature();
-                let aBusinessNature;
-                if (oBusinessNatureRead.response.value) {
-                    aBusinessNature = oBusinessNatureRead.response.value.businessNature.value;
-                }
-                oF4Model.setProperty("/businessNature", aBusinessNature);
-
                 this.getView().setModel(oF4Model, "F4");
 
                 //Document
@@ -345,6 +340,13 @@ sap.ui.define([
                 let vSAPCustomer, vAcceptCard;
                 let oSupplier = this.getOwnerComponent().getModel("SupplierInfo").getProperty("/supplier");
                 if (oSupplier !== undefined) {
+                    sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken")
+                    let oBusinessNatureRead = await Models.getBusinessNature(sAuthToken);
+                    let aBusinessNature;
+                    if (oBusinessNatureRead.response.value) {
+                        aBusinessNature = oBusinessNatureRead.response.value.businessNature.value;
+                    }
+                    oF4Model.setProperty("/businessNature", aBusinessNature);
                     if (oSupplier.SAPCustomer === "true") {
                         vSAPCustomer = "true";
                     } else if (oSupplier.SAPCustomer === "false") {
@@ -380,9 +382,9 @@ sap.ui.define([
                             "uploadVisible": false,
                             "fileVisible": true,
                         };
-                        
+
                         this.getView().getModel("DocumentModel").setProperty("/doc" + aDocument[i].documentType, oDocumentItem);
-                    } 
+                    }
                 } else {
                     let oRouter = this.getOwnerComponent().getRouter();
                     oRouter.navTo("Supplier", {
@@ -397,6 +399,7 @@ sap.ui.define([
                 this._onInit();
             },
             _updateSupplier: async function (sMessage) {
+                let sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken")
                 let oSupplier = this.getOwnerComponent().getModel("SupplierInfo").getProperty("/supplier");
 
                 // let aShareholder = this.getView().getModel("ShareholderModel").getProperty("/item");
@@ -413,7 +416,7 @@ sap.ui.define([
                         "ID": oSupplier.supplierID,
                         "fileContent": oDocumentItem.fileData
                     };
-                    let oFileEncrypt = await Models.encryptFile(oFile);
+                    let oFileEncrypt = await Models.encryptFile(oFile, sAuthToken);
 
                     aSupplierDocument.push({
                         "documentName": "doc" + aDocument[i],
@@ -435,7 +438,7 @@ sap.ui.define([
                         "ID": oSupplier.supplierID,
                         "fileContent": oShareholder.fileData
                     };
-                    let oFileEncrypt = await Models.encryptFile(oFile);
+                    let oFileEncrypt = await Models.encryptFile(oFile, sAuthToken);
                     aShareholder.push({
                         "shareholderName": oShareholder.name,
                         "sharePercentage": parseInt(oShareholder.sharePercentage),
@@ -470,7 +473,7 @@ sap.ui.define([
                     "oSupplier": oSupplierData
                 };
 
-                let oSupplierUpdate = await Models.updateSupplier(oParameter);
+                let oSupplierUpdate = await Models.updateSupplier(oParameter, sAuthToken);
                 if (Object.keys(oSupplierUpdate.catchError).length === 0 &&
                     oSupplierUpdate.catchError.constructor === Object) {
                     if (oSupplierUpdate.response.error) {
@@ -495,6 +498,7 @@ sap.ui.define([
                 }
             },
             _submitSupplier: async function (sMessage) {
+                let sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken")
                 let oSupplier = this.getOwnerComponent().getModel("SupplierInfo").getProperty("/supplier");
 
                 let aShareholder = this.getView().getModel("ShareholderModel").getProperty("/item");
@@ -583,7 +587,7 @@ sap.ui.define([
                 let oParameter = {
                     "oSupplier": oSupplierOnboarding
                 };
-                let oSupplierUpdate = await Models.submitSupplier(oParameter);
+                let oSupplierUpdate = await Models.submitSupplier(oParameter, sAuthToken);
                 if (Object.keys(oSupplierUpdate.catchError).length === 0 &&
                     oSupplierUpdate.catchError.constructor === Object) {
                     if (oSupplierUpdate.response.error) {

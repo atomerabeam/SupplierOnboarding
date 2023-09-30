@@ -17,7 +17,7 @@ async function getToken(sDestionation) {
 
 async function decryptID(pID) {
     const secretKey = "visaproject";
-    let data = "10000100021000012345";
+    let data = "1000010002_1000012345";
 
     // Encrypt
     let encryptedData = await CryptoJS.AES.encrypt(data, secretKey).toString();
