@@ -1,5 +1,5 @@
 const jose = require('node-jose');
-const fetch = require('node-fetch');
+const fetch = require('node-fetch-h2');
 const xsenv = require("@sap/xsenv");
 
 

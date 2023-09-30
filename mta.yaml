@@ -11,9 +11,10 @@ modules:
         properties:
           srv-url: ${default-url}
     parameters:
-      buildpack: nodejs_buildpack
-    build-parameters:
-      builder: npm
+      builder: npm-ci
+      ignore:
+        - node_modules/
+        - .env
     requires:
       - name: VBIPSUPPLIER-auth
       - name: VBIPSUPPLIER-destination-service
