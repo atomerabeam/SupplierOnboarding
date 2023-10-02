@@ -7,7 +7,7 @@ sap.ui.define([
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller, JSONModel, Models, MessageToast) {
+    function (Controller, JSONModel, Models, MessageToast, formatter) {
         "use strict";
 
         return Controller.extend("vbipsupplier.controller.LandingPage", {
@@ -93,21 +93,30 @@ sap.ui.define([
                 };
                 oPageModel.setProperty("/pageFlow", oPageFlow);
                 this.getView().setModel(oPageModel, "PageModel");
-
+                //Countries Model
+                this.getOwnerComponent().setModel(new JSONModel(), "Countries")
                 let oRouter = sap.ui.core.UIComponent.getRouterFor(this);
                 oRouter.getRoute("Supplier").attachPatternMatched(this._onObjectMatched, this);
                 await Models.checkService();
                 let oParameter1 = {
                     "pID": this._GUID
                 };
-                //Authorize session
-                let oToken = await Models.authorize({
-                    "encryptedUrl": this._GUID
-                })
-                if (oToken) {
-                    this.getOwnerComponent().getModel("AuthModel").setProperty("/authToken", oToken.value)
-                    sAuthToken = oToken.value
-                }
+
+                /**
+                 * Start of Authorization
+                 * Comment this block of code if you want to run locally
+                 */
+                // let oToken = await Models.authorize({
+                //     "encryptedUrl": this._GUID
+                // })
+                // if (oToken) {
+                //     this.getOwnerComponent().getModel("AuthModel").setProperty("/authToken", oToken.value)
+                //     sAuthToken = oToken.value
+                // } else {
+                //     this.getView().getModel("PageModel").setProperty("/pageFlow/landing", true);
+                // }
+                // End of Authorization 
+
                 let oDecrypt = await Models.decryptID(oParameter1,sAuthToken);
                 let oParameter = {
                     "buyerID": oDecrypt.response.value.split("_")[0],
@@ -131,9 +140,12 @@ sap.ui.define([
                         } else if (oSupplierRead.response.supplier) {
                             // Success
                             this.getOwnerComponent().getModel("SupplierInfo").setProperty("/supplier", oSupplierRead.response.supplier);
+                            let oCountriesModel = this.getOwnerComponent().getModel("Countries")
+                            Models.getCountries(oCountriesModel, sAuthToken)
                             await this._getBuyerInfo(oSupplierRead.response.supplier.buyerID);
                             this.onResendOTPLinkPress();
                             this.getView().getModel("PageModel").setProperty("/pageFlow/otp", true);
+
                         }
                     }
                 } else {

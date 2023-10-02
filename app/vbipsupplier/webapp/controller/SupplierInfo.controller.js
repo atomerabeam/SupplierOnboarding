@@ -2,15 +2,17 @@ sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/model/json/JSONModel",
     "../model/models",
-    "sap/m/MessageToast"
+    "sap/m/MessageToast",
+    "../model/formatter"
 ],
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller, JSONModel, Models, MessageToast) {
+    function (Controller, JSONModel, Models, MessageToast, formatter) {
         "use strict";
 
         return Controller.extend("vbipsupplier.controller.SupplierInfo", {
+            formatter: formatter,
             onInit: function () {
                 // this._onInit();
                 let oRouter = sap.ui.core.UIComponent.getRouterFor(this);

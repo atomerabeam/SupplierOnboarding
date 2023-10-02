@@ -1,13 +1,17 @@
 using my.visaModels as sp from '../db/supplier';
 
-
-service Supplier @(requires: 'authenticated-user') {
+service Supplier  {
+    type Countries : array of {
+        name: String(255);
+        descr: String;
+        code: String(3);
+    }
+    
     type cardInfo     : {
         cardNumber : String;
         cvv2       : String;
         expiredate : String;
     }
-
     type errorPayload : array of {
         errorCode    : String;
         errorMessage : String;
@@ -29,4 +33,5 @@ service Supplier @(requires: 'authenticated-user') {
     action malwareScanning(fileContent : LargeString) returns Boolean;
     action submitSupplier(oSupplier : sp.typeSupplierOnboarding) returns String;
     action getCardInfo(vbipRequestID : String) returns cardInfo;
+    function getCountries() returns  Countries;
 }

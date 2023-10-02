@@ -193,3 +193,9 @@ headers:
 {
       "encryptedUrl": "U2FsdGVkX1%2FYYiscrCb1Ey%2BX0JYGGg6vyU8TPXNqcuFuNycaaP8Ur9xDov%2BQ9fj5"
 }
+
+####################################################
+GET {{server}}/odata/v4/supplier/getCountries()
+headers: 
+      Content-Type: application/json
+

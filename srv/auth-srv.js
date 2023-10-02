@@ -20,6 +20,7 @@ module.exports = cds.service.impl(async (service) => {
                     }
                 });
                 let oJsonResponse = await response.json()
+                console.log(oJsonResponse)
                 if(oJsonResponse.error){
                     req.error(401)
                 } else{

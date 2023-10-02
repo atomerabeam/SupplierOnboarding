@@ -60,7 +60,7 @@
           "name": "destinations"
         }
       },
-      "auth": "jwt"
+      "auth": "dummy"
     }
   }
 }

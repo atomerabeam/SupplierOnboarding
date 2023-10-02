@@ -51,7 +51,10 @@
 								<VBox id="idSpaceP3S23.VBox" height="12px"/>
 								<Label id="idCountryP3.Label" class="customLabel" text="{i18n>country}"/>
                                 <!-- @ui5ignore-patterns -->
-								<Input id="idCountryP3.Input"  editable="false" value="{SupplierInfo>/supplier/countryCode_code}"/>
+								<Input id="idCountryP3.Input"  editable="false" value="{
+						            path: 'SupplierInfo>/supplier/countryCode_code',
+						            formatter: '.formatter.countryFormatter'}"
+                               />
 								<VBox id="idSpaceP3S24.VBox" height="12px"/>
 								<Label id="idCityP3.Label" class="customLabel" text="{i18n>city}"/>
 								<Input id="idCityP3.Input"  editable="false" value="{SupplierInfo>/supplier/city}"/>
