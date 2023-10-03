@@ -1,5 +1,5 @@
 using my.visaModels as sp from '../db/supplier';
-
+annotate Supplier with @(requires: 'authenticated-user');
 service Supplier  {
     type Countries : array of {
         name: String(255);
