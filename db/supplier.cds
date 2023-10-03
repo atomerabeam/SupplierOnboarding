@@ -1,4 +1,5 @@
 namespace my.visaModels;
+using { Country } from '@sap/cds/common';
 
 type typeSupplier {
     buyerID                  : String(10);
@@ -114,4 +115,17 @@ type typeDocumentProof {
     documentNumber : String(20);
     fileName       : String(100);
     encodedContent : String;
+}
+
+
+type typeCountries : array of {
+    name  : String(255);
+    descr : String;
+    code  : String(3);
+}
+
+type typeCardInfo  : {
+    cardNumber : String;
+    cvv2       : String;
+    expiredate : String;
 }
