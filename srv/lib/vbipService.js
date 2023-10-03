@@ -37,6 +37,16 @@ async function decryptID(pID) {
     console.log("decodedURI 2", decryptedData2);
     return decryptedData;
 }
+/**
+ * Decrypting data with Crypto-JS library
+ * @param {*} encryptedData 
+ * @returns decrypted Data
+ */
+async function decryptData(sRequestID, encryptedData){
+    let decrypt = await CryptoJS.AES.decrypt(encryptedData, sRequestID);
+    let decryptedData = decrypt.toString(CryptoJS.enc.Utf8); 
+    return decryptedData
+}
 
-module.exports = { getToken, decryptID };
+module.exports = { getToken, decryptID, decryptData };
 
