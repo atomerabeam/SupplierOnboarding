@@ -255,6 +255,16 @@ module.exports = cds.service.impl(async (service) => {
                 oCardInfo.cvv2 = await vbipService.decryptData(sVbipRequestID, oCardInfo.cvv2)
                 oCardInfo.expiredate = await vbipService.decryptData(sVbipRequestID, oCardInfo.expiredate)
                 delete oCardInfo["vbipRequestId"]
+
+                //Update Payment Status
+                await fetch(`${oAuthToken.url}/odata/v4/catalog/cardInfoCallback`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": oAuthToken.token
+                    },
+                    body: JSON.stringify({"vbipRequestId": oCardInfo.vbipRequestId})
+                })
             } else {
                 oCardInfo = {}
             }
