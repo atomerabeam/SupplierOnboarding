@@ -29,7 +29,7 @@ sap.ui.define([
                     });
                     return await response.json()
                 } catch (error) {
-                    return null
+                    return error
                 }
             },
             getSupplier: async function (oParameter, sAuthToken) {

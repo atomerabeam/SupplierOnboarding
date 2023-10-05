@@ -3,11 +3,14 @@ sap.ui.define([], function () {
 
     return {
         countryFormatter: function (sCountryCode) {
-            let aCountries = this.getOwnerComponent().getModel("Countries").getData()
-            let oCountry = aCountries.find((oCountry) => {
-                return oCountry.code === sCountryCode
-            })
-            return oCountry.name
+            let oCountriesModel = this.getOwnerComponent().getModel("Countries")
+            if (oCountriesModel) {
+                let aCountries = oCountriesModel.getData()
+                let oCountry = aCountries.find((oCountry) => {
+                    return oCountry.code === sCountryCode
+                })
+                return oCountry?.name
+            }
         }
     };
 });

@@ -191,7 +191,7 @@ headers:
       Content-Type: application/json
 
 {
-      "encryptedUrl": "U2FsdGVkX1%2FYYiscrCb1Ey%2BX0JYGGg6vyU8TPXNqcuFuNycaaP8Ur9xDov%2BQ9fj5"
+      "encryptedUrl": "U2FsdGVkX1%252FYYiscrCb1Ey%252BX0JYGGg6vyU8TPXNqcuFuNycaaP8Ur9xDov%252BQ9fj5"
 }
 
 ####################################################

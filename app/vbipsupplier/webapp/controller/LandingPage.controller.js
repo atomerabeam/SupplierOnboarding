@@ -83,13 +83,17 @@ sap.ui.define([
 
             _onInit: async function () {
                 // Auth  Model
-                this.getOwnerComponent().setModel(new JSONModel({"authToken": ""}), "AuthModel")
+                this.getOwnerComponent().setModel(new JSONModel({ "authToken": "" }), "AuthModel")
                 let sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken")
                 // Page flow
                 let oPageModel = new JSONModel();
                 let oPageFlow = {
                     "otp": false,
-                    "landing": false
+                    "landing": false,
+                    "landingText": {
+                        "invalid": true,
+                        "expire": false
+                    }
                 };
                 oPageModel.setProperty("/pageFlow", oPageFlow);
                 this.getView().setModel(oPageModel, "PageModel");
@@ -102,58 +106,60 @@ sap.ui.define([
                     "pID": this._GUID
                 };
 
-                /**
-                 * Start of Authorization
-                 * Comment this block of code if you want to run locally
-                 */
-                // let oToken = await Models.authorize({
-                //     "encryptedUrl": this._GUID
-                // })
-                // if (oToken) {
-                //     this.getOwnerComponent().getModel("AuthModel").setProperty("/authToken", oToken.value)
-                //     sAuthToken = oToken.value
-                // } else {
-                //     this.getView().getModel("PageModel").setProperty("/pageFlow/landing", true);
-                // }
-                // End of Authorization 
+                let oToken = await Models.authorize({
+                    "encryptedUrl": this._GUID
+                })
+                if (oToken.error) {
+                    if (oToken.error.code == "900") {
+                        this.getView().getModel("PageModel").setProperty("/pageFlow/landingText/expire", true);
+                        this.getView().getModel("PageModel").setProperty("/pageFlow/landingText/invalid", false);
+                    }
+                    this.getView().getModel("PageModel").setProperty("/pageFlow/landing", true);
+                } else {
+                    //Authorize Success
+                    this.getOwnerComponent().getModel("AuthModel").setProperty("/authToken", oToken.value)
+                    sAuthToken = oToken.value
+                    let oDecrypt = await Models.decryptID(oParameter1, sAuthToken);
+                    let oParameter = {
+                        "buyerID": oDecrypt.response.value.split("_")[0],
+                        "supplierID": oDecrypt.response.value.split("_")[1]
+                    };
 
-                let oDecrypt = await Models.decryptID(oParameter1,sAuthToken);
-                let oParameter = {
-                    "buyerID": oDecrypt.response.value.split("_")[0],
-                    "supplierID": oDecrypt.response.value.split("_")[1]
-                };
-
-                let oSupplierRead = await Models.getSupplier(oParameter,sAuthToken);
-                // if (Object.keys(oSupplierRead.catchError).length === 0 &&
-                //     oSupplierRead.catchError.constructor === Object) {
-                if (oSupplierRead.response) {
-                    if (oSupplierRead.response.error) {
-                        // Error
-                        let msgError = `Failed to get Supplier information \nError code ${oSupplierRead.response.error.code}`;
-                        // MessageToast.show(msgError);
-                        this.getView().getModel("PageModel").setProperty("/pageFlow/landing", true);
-
-                    } else {
-                        if (oSupplierRead.response.supplier.error) {
+                    let oSupplierRead = await Models.getSupplier(oParameter, sAuthToken);
+                    // if (Object.keys(oSupplierRead.catchError).length === 0 &&
+                    //     oSupplierRead.catchError.constructor === Object) {
+                    if (oSupplierRead.response) {
+                        if (oSupplierRead.response.error) {
+                            // Error
+                            let msgError = `Failed to get Supplier information \nError code ${oSupplierRead.response.error.code}`;
+                            // MessageToast.show(msgError);
                             this.getView().getModel("PageModel").setProperty("/pageFlow/landing", true);
 
-                        } else if (oSupplierRead.response.supplier) {
-                            // Success
-                            this.getOwnerComponent().getModel("SupplierInfo").setProperty("/supplier", oSupplierRead.response.supplier);
-                            let oCountriesModel = this.getOwnerComponent().getModel("Countries")
-                            Models.getCountries(oCountriesModel, sAuthToken)
-                            await this._getBuyerInfo(oSupplierRead.response.supplier.buyerID);
-                            this.onResendOTPLinkPress();
-                            this.getView().getModel("PageModel").setProperty("/pageFlow/otp", true);
+                        } else {
+                            if (oSupplierRead.response.supplier.error) {
+                                this.getView().getModel("PageModel").setProperty("/pageFlow/landing", true);
 
+                            } else if (oSupplierRead.response.supplier) {
+                                // Success
+                                this.getOwnerComponent().getModel("SupplierInfo").setProperty("/supplier", oSupplierRead.response.supplier);
+                                let oCountriesModel = this.getOwnerComponent().getModel("Countries")
+                                Models.getCountries(oCountriesModel, sAuthToken)
+                                await this._getBuyerInfo(oSupplierRead.response.supplier.buyerID);
+                                this.onResendOTPLinkPress();
+                                this.getView().getModel("PageModel").setProperty("/pageFlow/otp", true);
+
+                            }
                         }
+                    } else {
+                        // Catch error
+                        let msgError = `Failed to get Supplier information \nError catched`;
+                        // MessageToast.show(msgError);
+                        this.getView().getModel("PageModel").setProperty("/pageFlow/landing", true);
                     }
-                } else {
-                    // Catch error
-                    let msgError = `Failed to get Supplier information \nError catched`;
-                    // MessageToast.show(msgError);
-                    this.getView().getModel("PageModel").setProperty("/pageFlow/landing", true);
                 }
+
+
+
             },
 
             _getBuyerInfo: async function (pID) {

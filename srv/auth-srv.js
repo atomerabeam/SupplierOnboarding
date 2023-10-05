@@ -19,15 +19,21 @@ module.exports = cds.service.impl(async (service) => {
                         "Authorization": oBuyerService.token
                     }
                 });
-                let oJsonResponse = await response.json()
-                console.log(oJsonResponse)
-                if(oJsonResponse.error){
-                    req.error(401)
-                } else{
+                const oSupplierInfo = await response.json()
+                if(oSupplierInfo.error){
+                    req.error(oSupplierInfo.error)
+                } else { 
+                    const sInviteDate = new Date(oSupplierInfo.inviteDate).getTime()
+                    // Check valid day for URL
+                    if(sInviteDate < Date.now() - 259200000 ){//259200000ms = 3days
+                        req.error(900, "URL has expired")
+                    } 
                     let oSupplierService = await vbipService.getToken("VBIPSupplier-srv");
                     return oSupplierService.token
-                }
+                } 
             
+            } else {
+                req.error(404)
             }
             
         } catch (error) {
