@@ -17,7 +17,7 @@ async function sendEmail(destinationName, mailTo, subject, htmlBody) {
 }
 
 async function sendEmailOTP(pID, destinationName, mailTo, subject, htmlBody) {
-    let vOTP = await genOTP(pID);
+    let vOTP = await genOTPNew(pID);
     let vContentOTP = htmlBody.replace("[OTP]", vOTP);
     let oDestinationInf = await oConnect.getDestination({ destinationName: destinationName })
     const mailConfig = {
@@ -47,7 +47,7 @@ async function genOTP(pID) {
     let index = aOTP.findIndex(item => item.uID === pID);
     console.log("index " + index);
     console.log(aOTP);
-    // remove current OTP by supplier ID
+    // increse current OTP by supplier ID
     if (index >= 0) {
         console.log("splice " + pID);
         aOTP.splice(index, 1);
@@ -61,6 +61,41 @@ async function genOTP(pID) {
     });
     console.log(aOTP);
 
+    return vOTP;
+}
+
+/**
+ * Generate new OTP and set OTP limit
+ * @param {*} pID 
+ * @returns OTP
+ */
+async function genOTPNew(pID) {
+    const expireIn = 30000; // miliseconds
+    const nOTPLimit = 2
+    let vDigits = "0123456789";
+    let vOTP = "";
+    for (let i = 0; i < 6; i++) {
+        vOTP += vDigits[Math.floor(Math.random() * 10)];
+    }
+    let vExpiredTime = Date.now() + expireIn;
+
+    console.log("pID: " + pID);
+    let oOTP = aOTP.find(item => item.uID === pID);
+    console.log(aOTP);
+    // Set OTP Limit
+    if (oOTP) {
+        oOTP.OTP = vOTP
+        oOTP.expiredTime = vExpiredTime
+        oOTP.OTPRemain -= 1
+    } else {
+        aOTP.push({
+            "uID": pID,
+            "OTP": vOTP,
+            "expiredTime": vExpiredTime,
+            "OTPRemain": nOTPLimit
+        });
+    }
+    console.log(aOTP);
     return vOTP;
 }
 
@@ -83,7 +118,17 @@ async function checkOTP(pID, inputOTP) {
     }
 }
 
-module.exports = { sendEmail, sendEmailOTP, checkOTP };
+async function isOTPAvailable(pID) {
+    let oOTP = aOTP.find(item => item.uID === pID);
+    if (oOTP) {
+        if (oOTP.OTPRemain <= 0) {
+            return false
+        }
+    }
+    return true
+}
+
+module.exports = { sendEmail, sendEmailOTP, checkOTP, isOTPAvailable };
 
 
 

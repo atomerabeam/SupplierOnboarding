@@ -141,15 +141,30 @@ module.exports = cds.service.impl(async (service) => {
             // OTPService.sendEmail(smtpDestination, mailTo, mailSubject, mailContent);
         }),
 
+        // service.on("sendMailOTP", async (req) => {
+        //     // send mail
+        //     let pID = req.data.pID;
+        //     let smtpDestination = req.data.smtpDestination;
+        //     let mailTo = req.data.mailTo;
+        //     let mailSubject = req.data.mailSubject;
+        //     let mailContent = req.data.mailContent;
+        //     let oResult = OTPService.sendEmailOTP(pID, smtpDestination, mailTo, mailSubject, mailContent);
+        //     return oResult;
+        // }),
+
         service.on("sendMailOTP", async (req) => {
             // send mail
             let pID = req.data.pID;
-            let smtpDestination = req.data.smtpDestination;
-            let mailTo = req.data.mailTo;
-            let mailSubject = req.data.mailSubject;
-            let mailContent = req.data.mailContent;
-            let oResult = OTPService.sendEmailOTP(pID, smtpDestination, mailTo, mailSubject, mailContent);
-            return oResult;
+            if (! await OTPService.isOTPAvailable(pID)) {
+                req.error(900, "Reach OTP generation limit")
+            } else {
+                let smtpDestination = req.data.smtpDestination;
+                let mailTo = req.data.mailTo;
+                let mailSubject = req.data.mailSubject;
+                let mailContent = req.data.mailContent;
+                let oResult = OTPService.sendEmailOTP(pID, smtpDestination, mailTo, mailSubject, mailContent);
+                return oResult;
+            }
         }),
 
         service.on("checkOTP", async (req) => {
@@ -263,7 +278,7 @@ module.exports = cds.service.impl(async (service) => {
                         "Content-Type": "application/json",
                         "Authorization": oAuthToken.token
                     },
-                    body: JSON.stringify({"vbipRequestId": oCardInfo.vbipRequestId})
+                    body: JSON.stringify({ "vbipRequestId": oCardInfo.vbipRequestId })
                 })
             } else {
                 oCardInfo = {}

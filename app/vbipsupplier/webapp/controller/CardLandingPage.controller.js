@@ -47,8 +47,14 @@ sap.ui.define([
             if (oToken.error && oToken.error.code != "900") { 
                 this.getView().getModel("PageModel").setProperty("/pageFlow/landing", true);
             } else {
-                this.getOwnerComponent().getModel("AuthModel").setProperty("/authToken", oToken.value)
-                sAuthToken = oToken.value
+                //For production
+                // this.getOwnerComponent().getModel("AuthModel").setProperty("/authToken", oToken.value)
+                // sAuthToken = oToken.value
+                //For production
+                //For local test
+                this.getOwnerComponent().getModel("AuthModel").setProperty("/authToken", "")
+                sAuthToken = ""
+                //For local test
                 let oDecrypt = await Models.decryptID(oParameter1, sAuthToken);
                 let oParameter = {
                     "buyerID": oDecrypt.response.value.split("_")[0],
@@ -112,7 +118,12 @@ sap.ui.define([
             if (oResult.response.ok === true) {
                 MessageToast.show("Sent OTP");
             } else {
-                MessageToast.show("Failed to send OTP");
+                let error = await oResult.response.json()
+                    if (error.error.code == "900") {
+                        MessageToast.show("Reach OTP limit");
+                    } else{ 
+                        MessageToast.show("Failed to send OTP");
+                    }
             }
         },
         onContinueButtonPress: async function () {
