@@ -24,6 +24,7 @@ sap.ui.define([
                 // let oResult = await Models.getSupplier(oParameter);
 
                 let oMail = {
+                    "bCardInfoOTP": false,
                     "pID": this._GUID,
                     "smtpDestination": oVBIP.smtpDestination,
                     "mailTo": vEmail,
@@ -48,6 +49,7 @@ sap.ui.define([
                 let sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken")
                 let inputOTP = this.getView().byId("idOTP.Input").getValue();
                 let oParameter = {
+                    "bCardInfoOTP": false,
                     "pID": this._GUID,
                     "pOTP": inputOTP
                 };

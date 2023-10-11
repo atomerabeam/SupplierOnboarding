@@ -27,6 +27,7 @@ sap.ui.define([
 			if (oSupplier !== undefined) {
 				sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken")
 				let oParameter = { "vbipRequestID": oSupplier.buyerID.concat(oSupplier.supplierID) }
+				console.log(oParameter)
 				let oCardInfo = await Models.getCardInfo(oParameter, sAuthToken)
 				if (oCardInfo.response) {
 					let oCardInfoModel = new JSONModel(Object.assign({"btnIcon": "sap-icon://hide"},oCardInfo.response))

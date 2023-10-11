@@ -10,8 +10,8 @@ service Supplier  {
     action updateSupplier(buyerID : String, supplierID : String, oSupplier : sp.typeSupplier) returns String;
     action checkService() returns String;
     action sendMail(smtpDestination : String, mailTo : String, mailSubject : String, mailContent : String) returns String;
-    action sendMailOTP(pID : String, smtpDestination : String, mailTo : String, mailSubject : String, mailContent : String) returns String;
-    action checkOTP(pID : String, pOTP : String) returns String;
+    action sendMailOTP(bCardInfoOTP: Boolean, pID : String, smtpDestination : String, mailTo : String, mailSubject : String, mailContent : String) returns String;
+    action checkOTP(bCardInfoOTP: Boolean, pID : String, pOTP : String) returns String;
     action decryptID(pID : String) returns String;
     action encryptFile(ID : String, fileContent : LargeBinary) returns LargeBinary;
     action decryptFile(ID : String, fileContent : LargeBinary) returns LargeBinary;

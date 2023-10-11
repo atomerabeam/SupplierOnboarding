@@ -1,6 +1,7 @@
 const mailClient = require("@sap-cloud-sdk/mail-client");
 const oConnect = require('@sap-cloud-sdk/connectivity');
-let aOTP = [];
+let aSupplierOTP = [];
+let aCardOTP = [];
 let aVerified = [];
 
 async function sendEmail(destinationName, mailTo, subject, htmlBody) {
@@ -16,8 +17,8 @@ async function sendEmail(destinationName, mailTo, subject, htmlBody) {
     mailClient.sendMail({ destinationName: destinationName }, [mailConfig]);
 }
 
-async function sendEmailOTP(pID, destinationName, mailTo, subject, htmlBody) {
-    let vOTP = await genOTPNew(pID);
+async function sendEmailOTP(bCardInfoOTP, pID, destinationName, mailTo, subject, htmlBody) {
+    let vOTP = await genOTPNew(bCardInfoOTP, pID);
     let vContentOTP = htmlBody.replace("[OTP]", vOTP);
     let oDestinationInf = await oConnect.getDestination({ destinationName: destinationName })
     const mailConfig = {
@@ -34,42 +35,43 @@ async function sendEmailOTP(pID, destinationName, mailTo, subject, htmlBody) {
     return oResult;
 }
 
-async function genOTP(pID) {
-    const expireIn = 30000; // miliseconds
-    let vDigits = "0123456789";
-    let vOTP = "";
-    for (let i = 0; i < 6; i++) {
-        vOTP += vDigits[Math.floor(Math.random() * 10)];
-    }
-    let vExpiredTime = Date.now() + expireIn;
+// async function genOTP(pID) {
+//     const expireIn = 30000; // miliseconds
+//     let vDigits = "0123456789";
+//     let vOTP = "";
+//     for (let i = 0; i < 6; i++) {
+//         vOTP += vDigits[Math.floor(Math.random() * 10)];
+//     }
+//     let vExpiredTime = Date.now() + expireIn;
 
-    console.log("pID: " + pID);
-    let index = aOTP.findIndex(item => item.uID === pID);
-    console.log("index " + index);
-    console.log(aOTP);
-    // increse current OTP by supplier ID
-    if (index >= 0) {
-        console.log("splice " + pID);
-        aOTP.splice(index, 1);
-    }
-    console.log(aOTP);
+//     console.log("pID: " + pID);
+//     let index = aSupplierOTP.findIndex(item => item.uID === pID);
+//     console.log("index " + index);
+//     console.log(aSupplierOTP);
+//     // increse current OTP by supplier ID
+//     if (index >= 0) {
+//         console.log("splice " + pID);
+//         aSupplierOTP.splice(index, 1);
+//     }
+//     console.log(aSupplierOTP);
 
-    aOTP.push({
-        "uID": pID,
-        "OTP": vOTP,
-        "expiredTime": vExpiredTime
-    });
-    console.log(aOTP);
+//     aSupplierOTP.push({
+//         "uID": pID,
+//         "OTP": vOTP,
+//         "expiredTime": vExpiredTime
+//     });
+//     console.log(aSupplierOTP);
 
-    return vOTP;
-}
+//     return vOTP;
+// }
+
 
 /**
  * Generate new OTP and set OTP limit
  * @param {*} pID 
  * @returns OTP
  */
-async function genOTPNew(pID) {
+async function genOTPNew(bCardInfoOTP, pID) {
     const expireIn = 30000; // miliseconds
     const nOTPLimit = 2
     let vDigits = "0123456789";
@@ -78,7 +80,12 @@ async function genOTPNew(pID) {
         vOTP += vDigits[Math.floor(Math.random() * 10)];
     }
     let vExpiredTime = Date.now() + expireIn;
-
+    let aOTP
+    if (bCardInfoOTP) {
+        aOTP = aCardOTP
+    } else {
+        aOTP = aSupplierOTP
+    }
     console.log("pID: " + pID);
     let oOTP = aOTP.find(item => item.uID === pID);
     console.log(aOTP);
@@ -99,8 +106,15 @@ async function genOTPNew(pID) {
     return vOTP;
 }
 
-async function checkOTP(pID, inputOTP) {
-    let oValidOTP = aOTP.find(item => item.uID === pID && item.OTP === inputOTP);
+async function checkOTP(bCardInfoOTP, pID, inputOTP) {
+    let aOTP, oValidOTP
+    if (bCardInfoOTP) {
+        aOTP = aCardOTP
+    } else {
+        aOTP = aSupplierOTP
+    }
+    oValidOTP = aOTP.find(item => item.uID === pID && item.OTP === inputOTP);
+
     console.log(oValidOTP);
     if (oValidOTP === undefined) {
         return "Invalid";
@@ -118,8 +132,13 @@ async function checkOTP(pID, inputOTP) {
     }
 }
 
-async function isOTPAvailable(pID) {
-    let oOTP = aOTP.find(item => item.uID === pID);
+async function isOTPAvailable(bCardInfoOTP, pID) {
+    let oOTP
+    if (bCardInfoOTP) {
+        oOTP = aCardOTP.find(item => item.uID === pID);
+    } else {
+        oOTP = aSupplierOTP.find(item => item.uID === pID);
+    }
     if (oOTP) {
         if (oOTP.OTPRemain <= 0) {
             return false

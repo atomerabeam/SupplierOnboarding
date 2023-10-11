@@ -153,25 +153,28 @@ module.exports = cds.service.impl(async (service) => {
         // }),
 
         service.on("sendMailOTP", async (req) => {
+            const bCardInfoOTP = req.data.bCardInfoOTP
+            const pID = req.data.pID;
+            const smtpDestination = req.data.smtpDestination;
+            const mailTo = req.data.mailTo;
+            const mailSubject = req.data.mailSubject;
+            const mailContent = req.data.mailContent;
             // send mail
-            let pID = req.data.pID;
-            if (! await OTPService.isOTPAvailable(pID)) {
+            
+            if (! await OTPService.isOTPAvailable(bCardInfoOTP, pID)) {
                 req.error(900, "Reach OTP generation limit")
             } else {
-                let smtpDestination = req.data.smtpDestination;
-                let mailTo = req.data.mailTo;
-                let mailSubject = req.data.mailSubject;
-                let mailContent = req.data.mailContent;
-                let oResult = OTPService.sendEmailOTP(pID, smtpDestination, mailTo, mailSubject, mailContent);
+                
+                let oResult = OTPService.sendEmailOTP(bCardInfoOTP, pID, smtpDestination, mailTo, mailSubject, mailContent);
                 return oResult;
             }
         }),
 
         service.on("checkOTP", async (req) => {
-            // send mail
-            let pID = req.data.pID;
-            let pOTP = req.data.pOTP;
-            let result = OTPService.checkOTP(pID, pOTP);
+            const bCardInfoOTP = req.data.bCardInfoOTP
+            const pID = req.data.pID;
+            const pOTP = req.data.pOTP;
+            let result = OTPService.checkOTP(bCardInfoOTP, pID, pOTP);
             return result;
         }),
 
@@ -265,6 +268,7 @@ module.exports = cds.service.impl(async (service) => {
             });
             let oJsonResponse = await response.json()
             let oCardInfo = oJsonResponse.value[0]
+            console.log(oCardInfo)
             if (oCardInfo) {
                 oCardInfo.cardNumber = await vbipService.decryptData(sVbipRequestID, oCardInfo.cardNumber)
                 oCardInfo.cvv2 = await vbipService.decryptData(sVbipRequestID, oCardInfo.cvv2)
