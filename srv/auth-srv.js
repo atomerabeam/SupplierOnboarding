@@ -8,8 +8,7 @@ module.exports = cds.service.impl(async (service) => {
                 req.error(401)
             }
             let sRequestID = await vbipService.decryptID(sEncryptedUrl)
-            let sBuyerID = sRequestID.split("_")[0]
-            let sSupplierID = sRequestID.split("_")[1]
+            const [sBuyerID, sSupplierID, sInviteDate] = sRequestID.split("_")
             if (sBuyerID && sSupplierID) {
                 let oBuyerService = await vbipService.getToken("VBIP-API");
                 const response = await fetch(`${oBuyerService.url}/odata/v4/supplier-onboarding/SupplierInfo(buyerID='${sBuyerID}',supplierID='${sSupplierID}')`, {
@@ -20,22 +19,28 @@ module.exports = cds.service.impl(async (service) => {
                     }
                 });
                 const oSupplierInfo = await response.json()
-                if(oSupplierInfo.error){
+                console.log(oSupplierInfo)
+                if (oSupplierInfo.error) {
                     req.error(oSupplierInfo.error)
-                } else { 
-                    const sInviteDate = new Date(oSupplierInfo.inviteDate).getTime()
-                    // Check valid day for URL
-                    if(sInviteDate < Date.now() - 259200000 ){//259200000ms = 3days
+                } else {
+                    // console.log(oSupplierInfo)
+                    const sSupplierInviteDate = new Date(oSupplierInfo.inviteDate).getTime()
+                    if (sInviteDate == sSupplierInviteDate) {
+                        console.log(sSupplierInviteDate)
+                        // Check valid day for URL
+                        if (sSupplierInviteDate < Date.now() - 259200000) {//259200000ms = 3days
+                            req.error(900, "URL has expired")
+                        }
+                        let oSupplierService = await vbipService.getToken("VBIPSupplier-srv");
+                        return oSupplierService.token
+                    } else {
                         req.error(900, "URL has expired")
-                    } 
-                    let oSupplierService = await vbipService.getToken("VBIPSupplier-srv");
-                    return oSupplierService.token
-                } 
-            
+                    }
+                }
             } else {
                 req.error(404)
             }
-            
+
         } catch (error) {
             req.error(error)
         }
