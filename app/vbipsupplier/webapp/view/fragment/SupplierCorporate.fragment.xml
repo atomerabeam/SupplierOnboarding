@@ -101,41 +101,41 @@
 								<!-- @ui5ignore-patterns -->
                                 <Text id="idReview3.Text" text="{i18n>reviewDetails}" class="customText"/>
 								<!-- @ui5ignore-patterns -->
-                                <CheckBox id="idDocument1.CheckBox" text="{i18n>copyOfBusinessReg}" 
+                                <!-- <CheckBox id="idDocument1.CheckBox" text="{i18n>copyOfBusinessReg}" 
                                           visible="{DocumentModel>/doc1/visible}"
-                                          class="customRoundCheckbox" wrapping="true"/>
+                                          class="customRoundCheckbox" wrapping="true"/> -->
                                 <!-- @ui5ignore-patterns -->
-                                <CheckBox id="idDocument2.CheckBox" text="{i18n>certOfIncorporation}"
+                                <!-- <CheckBox id="idDocument2.CheckBox" text="{i18n>certOfIncorporation}"
                                           visible="{DocumentModel>/doc2/visible}"
-                                          class="customRoundCheckbox" wrapping="true"/>
+                                          class="customRoundCheckbox" wrapping="true"/> -->
                                 <!-- @ui5ignore-patterns -->
-                                <CheckBox id="idDocument3.CheckBox" text="{i18n>memorandum}"
+                                <!-- <CheckBox id="idDocument3.CheckBox" text="{i18n>memorandum}"
                                           visible="{DocumentModel>/doc3/visible}"
-                                          class="customRoundCheckbox" wrapping="true"/>
+                                          class="customRoundCheckbox" wrapping="true"/> -->
                                 <!-- @ui5ignore-patterns -->
-                                <CheckBox id="idDocument4.CheckBox" text="{i18n>boardResolution}"
+                                <!-- <CheckBox id="idDocument4.CheckBox" text="{i18n>boardResolution}"
                                           visible="{DocumentModel>/doc4/visible}"
-                                          class="customRoundCheckbox" wrapping="true"/>
+                                          class="customRoundCheckbox" wrapping="true"/> -->
                                 <!-- @ui5ignore-patterns -->
-                                <CheckBox id="idDocument6.CheckBox" text="{i18n>certOfRegistration}"
+                                <!-- <CheckBox id="idDocument6.CheckBox" text="{i18n>certOfRegistration}"
                                           visible="{DocumentModel>/doc6/visible}"
-                                          class="customRoundCheckbox" wrapping="true"/>
+                                          class="customRoundCheckbox" wrapping="true"/> -->
                                 <!-- @ui5ignore-patterns -->
-                                <CheckBox id="idDocument5.CheckBox" text="{i18n>identificationDocument}"
+                                <!-- <CheckBox id="idDocument5.CheckBox" text="{i18n>identificationDocument}"
                                           visible="{DocumentModel>/doc5/visible}"
-                                          class="customRoundCheckbox" wrapping="true"/>
+                                          class="customRoundCheckbox" wrapping="true"/> -->
                                 <!-- @ui5ignore-patterns -->
-                                <CheckBox id="idDocument7.CheckBox" text="{i18n>recentPhotograph}"
+                                <!-- <CheckBox id="idDocument7.CheckBox" text="{i18n>recentPhotograph}"
                                           visible="{DocumentModel>/doc7/visible}"
-                                          class="customRoundCheckbox" wrapping="true"/>
+                                          class="customRoundCheckbox" wrapping="true"/> -->
                                 <!-- @ui5ignore-patterns -->
-                                <CheckBox id="idDocument8.CheckBox" text="{i18n>copyOfIDAndAddress}"
+                                <!-- <CheckBox id="idDocument8.CheckBox" text="{i18n>copyOfIDAndAddress}"
                                           visible="{DocumentModel>/doc8/visible}"
-                                          class="customRoundCheckbox" wrapping="true"/>
+                                          class="customRoundCheckbox" wrapping="true"/> -->
                                 <!-- @ui5ignore-patterns -->
-                                <CheckBox id="idDocument9.CheckBox" text="{i18n>documentsPertaining}"
+                                <!-- <CheckBox id="idDocument9.CheckBox" text="{i18n>documentsPertaining}"
                                           visible="{DocumentModel>/doc9/visible}"
-                                          class="customRoundCheckbox" wrapping="true"/>
+                                          class="customRoundCheckbox" wrapping="true"/> -->
                             </VBox>
                             <VBox id="idSpaceP3S3.VBox" width="24px"/>
                             
@@ -300,7 +300,7 @@
                                     </HBox>
                                 </VBox>
                                 
-                                <VBox id="idDocument4.VBox" visible="{DocumentModel>/doc4/visible}"
+                                <VBox id="idDocument4.VBox" visible="false"
                                       class="customBoxDocument">
                                     <!-- @ui5ignore-patterns -->
                                     <Text id="idDocument4.Text" text="{i18n>boardResolution}" 
@@ -406,7 +406,7 @@
                                     </HBox>
                                 </VBox>
 
-                                <VBox id="idDocument5.VBox" visible="{DocumentModel>/doc5/visible}"
+                                <VBox id="idDocument5.VBox" visible="false"
                                       class="customBoxDocument">
                                     <!-- @ui5ignore-patterns -->
                                     <Text id="idDocument5.Text" text="{i18n>identificationDocument}" 
@@ -629,7 +629,7 @@
                             <!-- @ui5ignore-patterns -->
                             <Button id="idSaveAndExit1.Button" text="{i18n>saveAndExit}" class="sapUiSmallMarginEnd" 
                                     type="Transparent" press="onSaveAndExit"/>
-                            <Label id="idLastAutosaved1.Label" text="{i18n>lastAutoSaved}" class="sapUiTinyMarginTop"/>
+                            <!-- <Label id="idLastAutosaved1.Label" text="{i18n>lastAutoSaved}" class="sapUiTinyMarginTop"/> -->
                         </HBox>
                     </VBox>
                 </form:content>
