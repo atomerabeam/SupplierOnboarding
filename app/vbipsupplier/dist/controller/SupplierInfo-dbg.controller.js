@@ -2,15 +2,17 @@ sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/model/json/JSONModel",
     "../model/models",
-    "sap/m/MessageToast"
+    "sap/m/MessageToast",
+    "../model/formatter"
 ],
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller, JSONModel, Models, MessageToast) {
+    function (Controller, JSONModel, Models, MessageToast, formatter) {
         "use strict";
 
         return Controller.extend("vbipsupplier.controller.SupplierInfo", {
+            formatter: formatter,
             onInit: function () {
                 // this._onInit();
                 let oRouter = sap.ui.core.UIComponent.getRouterFor(this);
@@ -35,9 +37,10 @@ sap.ui.define([
                 this.getView().getModel("PageModel").setProperty("/pageFlow/shareholder", true);
             },
             onContinueStep2: function () {
+                this._updateSupplier("noMessage");
+                this._submitSupplier("noMessage");
                 this.getView().getModel("PageModel").setProperty("/pageFlow/shareholder", false);
                 this.getView().getModel("PageModel").setProperty("/pageFlow/complete", true);
-                this._updateSupplier("noMessage");
             },
             onReportInfo: function () {
 
@@ -501,8 +504,28 @@ sap.ui.define([
                 let sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken")
                 let oSupplier = this.getOwnerComponent().getModel("SupplierInfo").getProperty("/supplier");
 
-                let aShareholder = this.getView().getModel("ShareholderModel").getProperty("/item");
-                aShareholder.forEach((element) => element.sharePercentage = parseInt(element.sharePercentage));
+                // Document
+                let aDocument = this.getView().getModel("DocumentModel").getProperty("/docKeys");
+                let aSupplierDocument = [];
+
+                for (let i = 0; i <= (aDocument.length - 1); i++) {
+                    let oDocumentItem = this.getView().getModel("DocumentModel").getProperty("/doc" + aDocument[i]);
+
+                    let oFile = {
+                        "ID": oSupplier.supplierID,
+                        "fileContent": oDocumentItem.fileData
+                    };
+                    let oFileEncrypt = await Models.encryptFile(oFile, sAuthToken);
+
+                    aSupplierDocument.push({
+                        "documentName": "doc" + aDocument[i],
+                        "nameOnDocument": oDocumentItem.nameOnDocument,
+                        "documentNumber": oDocumentItem.documentNumber,
+                        "fileName": oDocumentItem.fileName,
+                        "encodedContent": oFileEncrypt.response.value
+                    });
+                }
+
                 let oSupplierOnboarding = {
                     "vbipRequestId": oSupplier.buyerID + oSupplier.supplierID,
                     "businessNature": oSupplier.businessNature_selectKey,
@@ -533,16 +556,7 @@ sap.ui.define([
                             "fileName": "",
                             "encodedContent": ""
                         },
-                        "businessProof": [
-                            {
-                                "expiryDate": "",
-                                "documentName": "copyOfBusinessReg",
-                                "nameOnDocument": this.getView().byId("idNameDoc1.Input").getValue(),
-                                "documentNumber": this.getView().byId("idDocNum1.Input").getValue(),
-                                "fileName": this.getView().getModel("DocumentModel").getProperty("/doc1/fileName"),
-                                "encodedContent": this.getView().getModel("DocumentModel").getProperty("/doc1/fileData"),
-                            }
-                        ],
+                        "businessProof": aSupplierDocument,
                         // "identityProof": {
                         //     "documentName": "Passport",
                         //     "nameOnDocument": "Xavier",
@@ -587,12 +601,12 @@ sap.ui.define([
                 let oParameter = {
                     "oSupplier": oSupplierOnboarding
                 };
-                let oSupplierUpdate = await Models.submitSupplier(oParameter, sAuthToken);
-                if (Object.keys(oSupplierUpdate.catchError).length === 0 &&
-                    oSupplierUpdate.catchError.constructor === Object) {
-                    if (oSupplierUpdate.response.error) {
+                let oSupplierSubmit = await Models.submitSupplier(oParameter, sAuthToken);
+                if (Object.keys(oSupplierSubmit.catchError).length === 0 &&
+                    oSupplierSubmit.catchError.constructor === Object) {
+                    if (oSupplierSubmit.response.error) {
                         // Error
-                        let msgError = `Operation failed Supplier ${oSupplier.supplierID} \nError code ${oSupplierUpdate.response.error.code}`;
+                        let msgError = `Operation failed Supplier ${oSupplier.supplierID} \nError code ${oSupplierSubmit.response.error.code}`;
                         // MessageToast.show(msgError);
 
                     } else {

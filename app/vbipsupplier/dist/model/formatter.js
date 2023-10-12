@@ -1,0 +1,1 @@
+sap.ui.define([],function(){"use strict";return{countryFormatter:function(t){let e=this.getOwnerComponent().getModel("Countries");if(e){let n=e.getData();let r=n.find(e=>e.code===t);return r?.name}}}});

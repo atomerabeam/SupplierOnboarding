@@ -7,7 +7,7 @@ sap.ui.define([
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller, JSONModel, Models, MessageToast) {
+    function (Controller, JSONModel, Models, MessageToast, formatter) {
         "use strict";
 
         return Controller.extend("vbipsupplier.controller.LandingPage", {
@@ -24,6 +24,7 @@ sap.ui.define([
                 // let oResult = await Models.getSupplier(oParameter);
 
                 let oMail = {
+                    "bCardInfoOTP": false,
                     "pID": this._GUID,
                     "smtpDestination": oVBIP.smtpDestination,
                     "mailTo": vEmail,
@@ -36,13 +37,19 @@ sap.ui.define([
                 if (oResult.response.ok === true) {
                     MessageToast.show("Sent OTP");
                 } else {
-                    MessageToast.show("Failed to send OTP");
+                    let error = await oResult.response.json()
+                    if (error.error.code == "900") {
+                        MessageToast.show("Reach OTP limit");
+                    } else{ 
+                        MessageToast.show("Failed to send OTP");
+                    }
                 }
             },
             onContinueButtonPress: async function () {
                 let sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken")
                 let inputOTP = this.getView().byId("idOTP.Input").getValue();
                 let oParameter = {
+                    "bCardInfoOTP": false,
                     "pID": this._GUID,
                     "pOTP": inputOTP
                 };
@@ -83,65 +90,90 @@ sap.ui.define([
 
             _onInit: async function () {
                 // Auth  Model
-                this.getOwnerComponent().setModel(new JSONModel({"authToken": ""}), "AuthModel")
+                this.getOwnerComponent().setModel(new JSONModel({ "authToken": "" }), "AuthModel")
                 let sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken")
                 // Page flow
                 let oPageModel = new JSONModel();
                 let oPageFlow = {
                     "otp": false,
-                    "landing": false
+                    "landing": false,
+                    "landingText": {
+                        "invalid": true,
+                        "expire": false
+                    }
                 };
                 oPageModel.setProperty("/pageFlow", oPageFlow);
                 this.getView().setModel(oPageModel, "PageModel");
-
+                //Countries Model
+                this.getOwnerComponent().setModel(new JSONModel(), "Countries")
                 let oRouter = sap.ui.core.UIComponent.getRouterFor(this);
                 oRouter.getRoute("Supplier").attachPatternMatched(this._onObjectMatched, this);
                 await Models.checkService();
                 let oParameter1 = {
                     "pID": this._GUID
                 };
-                //Authorize session
+
                 let oToken = await Models.authorize({
                     "encryptedUrl": this._GUID
                 })
-                if (oToken) {
+                if (oToken.error) {
+                    if (oToken.error.code == "900") {
+                        this.getView().getModel("PageModel").setProperty("/pageFlow/landingText/expire", true);
+                        this.getView().getModel("PageModel").setProperty("/pageFlow/landingText/invalid", false);
+                    }
+                    this.getView().getModel("PageModel").setProperty("/pageFlow/landing", true);
+                } else {
+                    //Authorize Success
+                    // For production
                     this.getOwnerComponent().getModel("AuthModel").setProperty("/authToken", oToken.value)
                     sAuthToken = oToken.value
-                }
-                let oDecrypt = await Models.decryptID(oParameter1,sAuthToken);
-                let oParameter = {
-                    "buyerID": oDecrypt.response.value.split("_")[0],
-                    "supplierID": oDecrypt.response.value.split("_")[1]
-                };
+                    //For production
+                    //For local test
+                    // this.getOwnerComponent().getModel("AuthModel").setProperty("/authToken", "")
+                    // sAuthToken = ""
+                    //For local test
+                    
+                    let oDecrypt = await Models.decryptID(oParameter1, sAuthToken);
+                    let oParameter = {
+                        "buyerID": oDecrypt.response.value.split("_")[0],
+                        "supplierID": oDecrypt.response.value.split("_")[1]
+                    };
 
-                let oSupplierRead = await Models.getSupplier(oParameter,sAuthToken);
-                // if (Object.keys(oSupplierRead.catchError).length === 0 &&
-                //     oSupplierRead.catchError.constructor === Object) {
-                if (oSupplierRead.response) {
-                    if (oSupplierRead.response.error) {
-                        // Error
-                        let msgError = `Failed to get Supplier information \nError code ${oSupplierRead.response.error.code}`;
-                        // MessageToast.show(msgError);
-                        this.getView().getModel("PageModel").setProperty("/pageFlow/landing", true);
-
-                    } else {
-                        if (oSupplierRead.response.supplier.error) {
+                    let oSupplierRead = await Models.getSupplier(oParameter, sAuthToken);
+                    // if (Object.keys(oSupplierRead.catchError).length === 0 &&
+                    //     oSupplierRead.catchError.constructor === Object) {
+                    if (oSupplierRead.response) {
+                        if (oSupplierRead.response.error) {
+                            // Error
+                            let msgError = `Failed to get Supplier information \nError code ${oSupplierRead.response.error.code}`;
+                            // MessageToast.show(msgError);
                             this.getView().getModel("PageModel").setProperty("/pageFlow/landing", true);
 
-                        } else if (oSupplierRead.response.supplier) {
-                            // Success
-                            this.getOwnerComponent().getModel("SupplierInfo").setProperty("/supplier", oSupplierRead.response.supplier);
-                            await this._getBuyerInfo(oSupplierRead.response.supplier.buyerID);
-                            this.onResendOTPLinkPress();
-                            this.getView().getModel("PageModel").setProperty("/pageFlow/otp", true);
+                        } else {
+                            if (oSupplierRead.response.supplier.error) {
+                                this.getView().getModel("PageModel").setProperty("/pageFlow/landing", true);
+
+                            } else if (oSupplierRead.response.supplier) {
+                                // Success
+                                this.getOwnerComponent().getModel("SupplierInfo").setProperty("/supplier", oSupplierRead.response.supplier);
+                                let oCountriesModel = this.getOwnerComponent().getModel("Countries")
+                                Models.getCountries(oCountriesModel, sAuthToken)
+                                await this._getBuyerInfo(oSupplierRead.response.supplier.buyerID);
+                                this.onResendOTPLinkPress();
+                                this.getView().getModel("PageModel").setProperty("/pageFlow/otp", true);
+
+                            }
                         }
+                    } else {
+                        // Catch error
+                        let msgError = `Failed to get Supplier information \nError catched`;
+                        // MessageToast.show(msgError);
+                        this.getView().getModel("PageModel").setProperty("/pageFlow/landing", true);
                     }
-                } else {
-                    // Catch error
-                    let msgError = `Failed to get Supplier information \nError catched`;
-                    // MessageToast.show(msgError);
-                    this.getView().getModel("PageModel").setProperty("/pageFlow/landing", true);
                 }
+
+
+
             },
 
             _getBuyerInfo: async function (pID) {

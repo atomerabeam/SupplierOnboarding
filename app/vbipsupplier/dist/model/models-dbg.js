@@ -29,7 +29,7 @@ sap.ui.define([
                     });
                     return await response.json()
                 } catch (error) {
-                    return null
+                    return error
                 }
             },
             getSupplier: async function (oParameter, sAuthToken) {
@@ -310,6 +310,21 @@ sap.ui.define([
                     oResult.catchError = error;
                 }
                 return oResult;
+            },
+            getCountries: async function(oModel, sAuthToken){
+                try {
+                    const response = await fetch("/odata/v4/supplier/getCountries()", {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": sAuthToken
+                        }
+                    });
+                    let oJsonResponse = await response.json()
+                    oModel.setData(oJsonResponse.value)
+                } catch (error) {
+                    return null
+                }
             }
         };
     });

@@ -25,8 +25,10 @@ module.exports = cds.service.impl(async (service) => {
                 } else {
                     // console.log(oSupplierInfo)
                     const sSupplierInviteDate = new Date(oSupplierInfo.inviteDate).getTime()
+                    console.log(sSupplierInviteDate)
+                    console.log(sInviteDate)
                     if (sInviteDate == sSupplierInviteDate) {
-                        console.log(sSupplierInviteDate)
+                        
                         // Check valid day for URL
                         if (sSupplierInviteDate < Date.now() - 259200000) {//259200000ms = 3days
                             req.error(900, "URL has expired")

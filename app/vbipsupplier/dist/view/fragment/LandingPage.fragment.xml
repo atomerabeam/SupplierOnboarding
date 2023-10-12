@@ -6,7 +6,9 @@
 		<VBox id="idItemP1.VBox" class="customBoxContent" width="65%">
 			<!-- @ui5ignore-patterns -->
 			<Text id="idTitleP1.Text" text="Invalid URL, please access correct URL from your email" 
-				  class="customSubtitle1"/>
+				  class="customSubtitle1" visible="{PageModel>/pageFlow/landingText/invalid}"/>
+			<Text id="idTitleP2.Text" text="Invalid URL, your URL has expired" 
+				  class="customSubtitle1" visible="{PageModel>/pageFlow/landingText/expire}"/>	  
 		</VBox>
         
     </VBox>

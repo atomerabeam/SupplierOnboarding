@@ -1,20 +1,20 @@
 sap.ui.define([
-	"sap/ui/core/mvc/Controller",
+    "sap/ui/core/mvc/Controller",
     'sap/ui/model/json/JSONModel',
     "../model/models",
     "sap/m/MessageToast"
-], function(
-	Controller, JSONModel, Models, MessageToast
+], function (
+    Controller, JSONModel, Models, MessageToast
 ) {
-	"use strict";
+    "use strict";
 
-	return Controller.extend("vbipsupplier.controller.CardLandingPage", {
+    return Controller.extend("vbipsupplier.controller.CardLandingPage", {
         /**
          * @override
          */
-        onInit: async function() {
+        onInit: async function () {
             //Auth Model
-            this.getOwnerComponent().setModel(new JSONModel({"authToken": ""}), "AuthModel")
+            this.getOwnerComponent().setModel(new JSONModel({ "authToken": "" }), "AuthModel")
             let sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken")
             // Reset SupplierInfo Model
             this.getOwnerComponent().getModel("SupplierInfo").setProperty("/supplier", {})
@@ -24,7 +24,11 @@ sap.ui.define([
             let oPageModel = new JSONModel();
             let oPageFlow = {
                 "otp": false,
-                "landing": false
+                "landing": false,
+                "landingText": {
+                    "invalid": true,
+                    "expire": false
+                }
             };
             oPageModel.setProperty("/pageFlow", oPageFlow);
             this.getView().setModel(oPageModel, "PageModel");
@@ -40,18 +44,24 @@ sap.ui.define([
             let oToken = await Models.authorize({
                 "encryptedUrl": this._GUID
             })
-            if (oToken) {
+            if (oToken.error && oToken.error.code != "900") { 
+                this.getView().getModel("PageModel").setProperty("/pageFlow/landing", true);
+            } else {
+                //For production
                 this.getOwnerComponent().getModel("AuthModel").setProperty("/authToken", oToken.value)
                 sAuthToken = oToken.value
-            }
-
-            let oDecrypt = await Models.decryptID(oParameter1, sAuthToken);
+                //For production
+                //For local test
+                // this.getOwnerComponent().getModel("AuthModel").setProperty("/authToken", "")
+                // sAuthToken = ""
+                //For local test
+                let oDecrypt = await Models.decryptID(oParameter1, sAuthToken);
                 let oParameter = {
                     "buyerID": oDecrypt.response.value.split("_")[0],
                     "supplierID": oDecrypt.response.value.split("_")[1]
                 };
 
-                let oSupplierRead = await Models.getSupplier(oParameter,sAuthToken);
+                let oSupplierRead = await Models.getSupplier(oParameter, sAuthToken);
                 // if (Object.keys(oSupplierRead.catchError).length === 0 &&
                 //     oSupplierRead.catchError.constructor === Object) {
                 if (oSupplierRead.response) {
@@ -81,7 +91,11 @@ sap.ui.define([
                     // MessageToast.show(msgError);
                     this.getView().getModel("PageModel").setProperty("/pageFlow/landing", true);
                 }
-        
+            }
+
+
+
+
         },
         onResendOTPLinkPress: async function () {
             let sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken")
@@ -92,6 +106,7 @@ sap.ui.define([
             // let oResult = await Models.getSupplier(oParameter);
 
             let oMail = {
+                "bCardInfoOTP": true,
                 "pID": this._GUID,
                 "smtpDestination": oVBIP.smtpDestination,
                 "mailTo": vEmail,
@@ -104,13 +119,19 @@ sap.ui.define([
             if (oResult.response.ok === true) {
                 MessageToast.show("Sent OTP");
             } else {
-                MessageToast.show("Failed to send OTP");
+                let error = await oResult.response.json()
+                    if (error.error.code == "900") {
+                        MessageToast.show("Reach OTP limit");
+                    } else{ 
+                        MessageToast.show("Failed to send OTP");
+                    }
             }
         },
         onContinueButtonPress: async function () {
             let sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken")
             let inputOTP = this.getView().byId("idOTP.Input").getValue();
             let oParameter = {
+                "bCardInfoOTP": true,
                 "pID": this._GUID,
                 "pOTP": inputOTP
             };
@@ -177,5 +198,5 @@ sap.ui.define([
             this._GUID = oEvent.getParameter("arguments").token;
         },
 
-	});
+    });
 });
