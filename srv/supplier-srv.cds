@@ -19,4 +19,5 @@ service Supplier  {
     action submitSupplier(oSupplier : sp.typeSupplierOnboarding) returns String;
     action getCardInfo(vbipRequestID : String) returns sp.typeCardInfo;
     function getCountries() returns sp.typeCountries;
+    function reportInfo(buyerID: String, supplierID: String) returns Boolean;
 }

@@ -3,12 +3,13 @@ sap.ui.define([
     "sap/ui/model/json/JSONModel",
     "../model/models",
     "sap/m/MessageToast",
-    "../model/formatter"
+    "../model/formatter",
+    "sap/m/MessageBox"
 ],
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller, JSONModel, Models, MessageToast, formatter) {
+    function (Controller, JSONModel, Models, MessageToast, formatter, MessageBox) {
         "use strict";
 
         return Controller.extend("vbipsupplier.controller.SupplierInfo", {
@@ -43,6 +44,25 @@ sap.ui.define([
                 this.getView().getModel("PageModel").setProperty("/pageFlow/complete", true);
             },
             onReportInfo: function () {
+                const sMessageTitle = this.getOwnerComponent().getModel("i18n").getProperty("reportInfoMessageTitle")
+                const sMessage = this.getOwnerComponent().getModel("i18n").getProperty("reportInfoMessage")
+                let oSupplier = this.getOwnerComponent().getModel("SupplierInfo").getProperty("/supplier");
+                let oParameter = {
+                    "sBuyerID": oSupplier.buyerID,
+                    "sSupplierID": oSupplier.supplierID
+                }
+                let sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken")
+                let callback = async function (oAction) {
+                    if (oAction == "OK") {
+                        let oResponse = await Models.reportInfo(oParameter, sAuthToken)
+                        if (oResponse.ok) {
+                            MessageToast.show("Successful report information error to [Buyer]")
+                        } else {
+                            MessageToast.show("Failed report information error to [Buyer]")
+                        }
+                    }
+                }
+                this.showErrorMessageBox(sMessageTitle, sMessage, callback)
 
             },
             onSaveAndExit: async function () {
@@ -52,6 +72,13 @@ sap.ui.define([
                 this.getView().getModel("PageModel").setProperty("/pageFlow/infoRequest", true);
             },
 
+            showErrorMessageBox: function (title, errorMessage, callback) {
+                MessageBox.error(errorMessage, {
+                    title: title,
+                    actions: [sap.m.MessageBox.Action.OK],
+                    onClose: callback
+                });
+            },
 
             onChangeBusinessNature: function () {
                 let vBusinessNature = parseInt(this.getView().byId("idBusinessNature.Select").getSelectedKey());

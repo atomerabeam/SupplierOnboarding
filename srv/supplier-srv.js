@@ -293,6 +293,27 @@ module.exports = cds.service.impl(async (service) => {
         }
     })
 
+    service.on("reportInfo", async (req) => {
+        let oAuthToken = await vbipService.getToken("VBIP-API");
+        const sBuyerID = req.data.buyerID
+        const sSupplierID = req.data.supplierID
+        try {
+            const response = await fetch(`${oAuthToken.url}/odata/v4/catalog/SupplierInfo(buyerID='${sBuyerID}',supplierID='${sSupplierID}')`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": oAuthToken.token
+                },
+                body: JSON.stringify({status: "InfoError"})
+            });
+            let oJsonResponse = await response.json()
+            console.log(oJsonResponse)
+            return oJsonResponse.value
+        } catch (error) {
+            req.error(error)
+        }
+    })
+
     service.on('getCountries', async (req) => {
         let oAuthToken = await vbipService.getToken("VBIP-API");
         try {
