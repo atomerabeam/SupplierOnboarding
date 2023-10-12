@@ -45,8 +45,10 @@ sap.ui.define([
             },
             onReportInfo: function () {
                 const sMessageTitle = this.getOwnerComponent().getModel("i18n").getProperty("reportInfoMessageTitle")
-                const sMessage = this.getOwnerComponent().getModel("i18n").getProperty("reportInfoMessage")
+                let sBuyerName = this.getOwnerComponent().getModel("SupplierInfo").getProperty("/buyer/legalName")
+                const sMessage = this.getOwnerComponent().getModel("i18n").getProperty("reportInfoMessage").replaceAll("[Buyer]", sBuyerName)
                 let oSupplier = this.getOwnerComponent().getModel("SupplierInfo").getProperty("/supplier");
+                
                 let oParameter = {
                     "sBuyerID": oSupplier.buyerID,
                     "sSupplierID": oSupplier.supplierID
@@ -56,9 +58,9 @@ sap.ui.define([
                     if (oAction == "OK") {
                         let oResponse = await Models.reportInfo(oParameter, sAuthToken)
                         if (oResponse.ok) {
-                            MessageToast.show("Successful report information error to [Buyer]")
+                            MessageToast.show(`Successful report information error to ${sBuyerName}`)
                         } else {
-                            MessageToast.show("Failed report information error to [Buyer]")
+                            MessageToast.show(`Failed report information error to ${sBuyerName}`)
                         }
                     }
                 }
