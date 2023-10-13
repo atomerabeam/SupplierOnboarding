@@ -349,6 +349,27 @@ sap.ui.define([
             onCancel: function () {
                 this.onDialogAfterClose();
             },
+            onBackButtonPress: function(oEvent){
+                const btnId = oEvent.getSource().getId()
+                const onPage = btnId.split(".")[2]
+                console.log(onPage)
+                switch (onPage) {
+                    case "InfoConfirm":
+                        this.getView().getModel("PageModel").setProperty("/pageFlow/infoConfirm", false);
+                        this.getView().getModel("PageModel").setProperty("/pageFlow/infoRequest", true);
+                        break;
+                    case "Corporate":
+                        this.getView().getModel("PageModel").setProperty("/pageFlow/corporate", false);
+                        this.getView().getModel("PageModel").setProperty("/pageFlow/infoConfirm", true);
+                        break;
+                    case "Shareholder": 
+                        this.getView().getModel("PageModel").setProperty("/pageFlow/shareholder", false);
+                        this.getView().getModel("PageModel").setProperty("/pageFlow/corporate", true);
+                        break;
+                    default:
+                        break;
+                }
+            },
             _onInit: async function () {
                 let sAuthToken = ""
                 // Page flow
