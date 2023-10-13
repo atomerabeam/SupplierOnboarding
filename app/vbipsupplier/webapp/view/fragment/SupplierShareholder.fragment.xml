@@ -152,12 +152,12 @@
                         <HBox id="idButton2.HBox" width="100%">
                             <!-- <Button text="{i18n>previousStep}" class="sapUiSmallMarginEnd" type="Emphasized" press="onNavigateTOPreviousStep"/> -->
                             <!-- @ui5ignore-patterns -->
-                            <Button id="idContinueStep2.Button" text="{i18n>continue}" class="sapUiSmallMarginEnd" 
-                                    type="Emphasized" press="onContinueStep2"/>
+                            <Button id="idContinueStep2.Button" text="{i18n>submit}" class="sapUiSmallMarginEnd" 
+                                    type="Emphasized" press="onSubmit"/>
                             <!-- @ui5ignore-patterns -->
                             <Button id="idSaveAndExit2.Button" text="{i18n>saveAndExit}" class="sapUiSmallMarginEnd" 
                                     type="Transparent" press="onSaveAndExit"/>
-                            <Label id="idLastAutosaved2.Label" text="{i18n>lastAutoSaved}" class="sapUiTinyMarginTop"/>
+                            <!-- <Label id="idLastAutosaved2.Label" text="{i18n>lastAutoSaved}" class="sapUiTinyMarginTop"/> -->
                         </HBox>
                     </VBox>
                 </form:content>

@@ -23,6 +23,7 @@ sap.ui.define([
                 this.getView().getModel("PageModel").setProperty("/pageFlow/infoRequest", false);
                 let vAcceptCard = this.getView().byId("idAcceptCard.Select").getSelectedKey();
                 if (vAcceptCard === "true") {
+                    this._updateSupplier("message", "CAC");
                     this.getView().getModel("PageModel").setProperty("/pageFlow/complete", true);
                 } else {
                     this.getView().getModel("PageModel").setProperty("/pageFlow/infoConfirm", true);
@@ -37,9 +38,9 @@ sap.ui.define([
                 this.getView().getModel("PageModel").setProperty("/pageFlow/corporate", false);
                 this.getView().getModel("PageModel").setProperty("/pageFlow/shareholder", true);
             },
-            onContinueStep2: function () {
-                this._updateSupplier("noMessage");
-                this._submitSupplier("noMessage");
+            onSubmit: function () {
+                this._updateSupplier("noMessage", "SUB");
+                this._submitSupplier("message");
                 this.getView().getModel("PageModel").setProperty("/pageFlow/shareholder", false);
                 this.getView().getModel("PageModel").setProperty("/pageFlow/complete", true);
             },
@@ -68,7 +69,7 @@ sap.ui.define([
 
             },
             onSaveAndExit: async function () {
-                this._updateSupplier("message");
+                this._updateSupplier("message", "Saved");
                 this.getView().getModel("PageModel").setProperty("/pageFlow/corporate", false);
                 this.getView().getModel("PageModel").setProperty("/pageFlow/shareholder", false);
                 this.getView().getModel("PageModel").setProperty("/pageFlow/infoRequest", true);
@@ -80,6 +81,15 @@ sap.ui.define([
                     actions: [sap.m.MessageBox.Action.OK],
                     onClose: callback
                 });
+            },
+            onChangeAcceptCard: function () {
+                let vAcceptCard = this.getView().byId("idAcceptCard.Select").getSelectedKey();
+                
+                if ( vAcceptCard.toLowerCase() === "true") {
+                    this.getView().getModel("RequestInfo").setProperty("/requestInfo/infoBoxVisible", false);
+                } else {
+                    this.getView().getModel("RequestInfo").setProperty("/requestInfo/infoBoxVisible", true);
+                }
             },
 
             onChangeBusinessNature: function () {
@@ -344,11 +354,6 @@ sap.ui.define([
                 oPageModel.setProperty("/pageFlow", oPageFlow);
                 this.getView().setModel(oPageModel, "PageModel");
 
-                //F4
-                let oF4Model = new JSONModel();
-                oF4Model.setProperty("/shareholderCount", 1);
-                this.getView().setModel(oF4Model, "F4");
-
                 //Document
                 let oDocumentModel = new JSONModel();
                 for (let i = 1; i <= 9; i++) {
@@ -368,10 +373,17 @@ sap.ui.define([
                 //Set model
                 this.getView().setModel(oDocumentModel, "DocumentModel");
 
+                let oSupplier = this.getOwnerComponent().getModel("SupplierInfo").getProperty("/supplier");
+
                 // Get select key request info
                 let oPageInfoModel = new JSONModel();
-                let vSAPCustomer, vAcceptCard;
-                let oSupplier = this.getOwnerComponent().getModel("SupplierInfo").getProperty("/supplier");
+                
+                //F4
+                let oF4Model = new JSONModel();
+                oF4Model.setProperty("/shareholderCount", oSupplier.shareholderCount);
+                this.getView().setModel(oF4Model, "F4");
+                
+                let vSAPCustomer, vAcceptCard, vInfoBoxVisible;
                 if (oSupplier !== undefined) {
                     sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken")
                     let oBusinessNatureRead = await Models.getBusinessNature(sAuthToken);
@@ -388,20 +400,18 @@ sap.ui.define([
                         vSAPCustomer = "true";
                     }
 
-                    if (oSupplier.status === "CardAccepted") {
+                    if (oSupplier.status === "CAC") {
                         vAcceptCard = "true";
+                        vInfoBoxVisible = false;
                     } else {
                         vAcceptCard = "false";
-                        if(oSupplier.status === "InfoError"){
-                            this.getView().byId("idConfirmInfo.Button").setEnabled(false)
-                        } else {
-                            this.getView().byId("idConfirmInfo.Button").setEnabled(true)
-                        }
+                        vInfoBoxVisible = true;
                     }
 
                     let oSupplierInfo = {
                         "SAPCustomer": vSAPCustomer,
-                        "acceptCard": vAcceptCard
+                        "acceptCard": vAcceptCard,
+                        "infoBoxVisible": vInfoBoxVisible,
                     };
                     oPageInfoModel.setProperty("/requestInfo", oSupplierInfo);
                     this.getView().setModel(oPageInfoModel, "RequestInfo");
@@ -430,13 +440,14 @@ sap.ui.define([
                     });
                 }
 
+
                 this.onChangeBusinessNature();
                 this.onChangeShareCount();
             },
             _onObjectMatched: function (oEvent) {
                 this._onInit();
             },
-            _updateSupplier: async function (sMessage) {
+            _updateSupplier: async function (sMessage, vStatus) {
                 let sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken")
                 let oSupplier = this.getOwnerComponent().getModel("SupplierInfo").getProperty("/supplier");
 
@@ -497,7 +508,7 @@ sap.ui.define([
                 }
 
                 let oSupplierData = {
-                    "status": "Saved",
+                    "status": vStatus,
                     "SAPCustomer": (this.getView().byId("idSAPCustomer.Select").getSelectedKey().toLowerCase() === 'true'),
                     "businessNature_selectKey": parseInt(this.getView().byId("idBusinessNature.Select").getSelectedKey()),
                     "shareholderCount": vShareholderCount,
@@ -525,7 +536,6 @@ sap.ui.define([
                         if (sMessage === "message") {
                             MessageToast.show(msgSuccess);
                         }
-                        this._submitSupplier("");
 
                         // Exit
                     }
