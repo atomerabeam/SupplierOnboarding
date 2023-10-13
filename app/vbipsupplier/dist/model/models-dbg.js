@@ -311,6 +311,22 @@ sap.ui.define([
                 }
                 return oResult;
             },
+
+            reportInfo: async function(oParameter, sAuthToken){
+
+                try {
+                    const response = await fetch(`/odata/v4/supplier/reportInfo(buyerID='${oParameter.sBuyerID}',supplierID='${oParameter.sSupplierID}')`, {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": sAuthToken
+                        }
+                    });
+                    return response
+                } catch (error) {
+                    return error
+                }
+            },
             getCountries: async function(oModel, sAuthToken){
                 try {
                     const response = await fetch("/odata/v4/supplier/getCountries()", {

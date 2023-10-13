@@ -150,7 +150,7 @@ sap.ui.define([
                 let sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken")
                 let strID = oEvent.getParameter("id");
                 let docID = strID.split("idUploadFile")[1].split(".Button")[0];
-
+                let allowedTypes = ['image/png', 'application/pdf', 'image/jpeg', 'image/gif'];
                 let input = document.createElement("input"); // Create input element
                 input.type = "file"; // Important to be type File
                 input.multiple = true // Alow only one file at a time
@@ -160,6 +160,7 @@ sap.ui.define([
                     let file = input.files; // get the file
                     fileInfo = file;
                     for (let i = 0; i < file.length; i++) {
+                        
                         let data = file[i]
                         let dataArr = await data.arrayBuffer()
                         let textData = await data.text()
@@ -391,6 +392,11 @@ sap.ui.define([
                         vAcceptCard = "true";
                     } else {
                         vAcceptCard = "false";
+                        if(oSupplier.status === "InfoError"){
+                            this.getView().byId("idConfirmInfo.Button").setEnabled(false)
+                        } else {
+                            this.getView().byId("idConfirmInfo.Button").setEnabled(true)
+                        }
                     }
 
                     let oSupplierInfo = {
