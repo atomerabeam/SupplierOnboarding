@@ -163,7 +163,7 @@ sap.ui.define([
                 let allowedTypes = ['image/png', 'application/pdf', 'image/jpeg', 'image/gif'];
                 let input = document.createElement("input"); // Create input element
                 input.type = "file"; // Important to be type File
-                input.multiple = true // Alow only one file at a time
+                input.multiple = false // Alow only one file at a time
                 input.accept = "image/*" // Only accept image file
                 let fileInfo;
                 input.onchange = async function () {
@@ -243,7 +243,7 @@ sap.ui.define([
                 let allowedTypes = ['image/png', 'application/pdf', 'image/jpeg', 'image/gif'];
                 let input = document.createElement("input"); // Create input element
                 input.type = "file"; // Important to be type File
-                input.multiple = true // Alow only one file at a time
+                input.multiple = false // Alow only one file at a time
                 input.accept = "image/*" // Only accept image file
                 let fileInfo;
                 let base64;
