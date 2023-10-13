@@ -160,11 +160,11 @@ module.exports = cds.service.impl(async (service) => {
             const mailSubject = req.data.mailSubject;
             const mailContent = req.data.mailContent;
             // send mail
-            
+
             if (! await OTPService.isOTPAvailable(bCardInfoOTP, pID)) {
                 req.error(900, "Reach OTP generation limit")
             } else {
-                
+
                 let oResult = OTPService.sendEmailOTP(bCardInfoOTP, pID, smtpDestination, mailTo, mailSubject, mailContent);
                 return oResult;
             }
@@ -174,8 +174,13 @@ module.exports = cds.service.impl(async (service) => {
             const bCardInfoOTP = req.data.bCardInfoOTP
             const pID = req.data.pID;
             const pOTP = req.data.pOTP;
-            let result = OTPService.checkOTP(bCardInfoOTP, pID, pOTP);
-            return result;
+            try {
+                let result = OTPService.checkOTP(bCardInfoOTP, pID, pOTP);
+                return result;
+            } catch (error) {
+                throw error
+            }
+
         }),
 
         service.on("decryptID", async (req) => {
@@ -304,7 +309,7 @@ module.exports = cds.service.impl(async (service) => {
                     "Content-Type": "application/json",
                     "Authorization": oAuthToken.token
                 },
-                body: JSON.stringify({status: "InfoError"})
+                body: JSON.stringify({ status: "InfoError" })
             });
             let oJsonResponse = await response.json()
             console.log(oJsonResponse)
