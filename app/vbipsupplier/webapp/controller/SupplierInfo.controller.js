@@ -379,8 +379,6 @@ sap.ui.define([
                 
                 //F4
                 let oF4Model = new JSONModel();
-                oF4Model.setProperty("/shareholderCount", oSupplier.shareholderCount);
-                this.getView().setModel(oF4Model, "F4");
                 
                 let vSAPCustomer, vAcceptCard, vInfoBoxVisible;
                 if (oSupplier !== undefined) {
@@ -398,6 +396,9 @@ sap.ui.define([
                     } else if (oSupplier.SAPCustomer === null) {
                         vSAPCustomer = "true";
                     }
+                    
+                    oF4Model.setProperty("/shareholderCount", oSupplier.shareholderCount);
+                    this.getView().setModel(oF4Model, "F4");
 
                     if (oSupplier.status === "CAC") {
                         vAcceptCard = "true";
