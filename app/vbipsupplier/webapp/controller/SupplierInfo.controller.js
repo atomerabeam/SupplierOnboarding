@@ -11,7 +11,7 @@ sap.ui.define([
      */
     function (Controller, JSONModel, Models, MessageToast, formatter, MessageBox) {
         "use strict";
-
+ 
         return Controller.extend("vbipsupplier.controller.SupplierInfo", {
             formatter: formatter,
             onInit: function () {
