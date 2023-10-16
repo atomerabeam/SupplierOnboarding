@@ -668,6 +668,13 @@ sap.ui.define([
                     let msgError = `Operation failed Supplier ${oSupplier.supplierID} \nError catched`;
                     // MessageToast.show(msgError);
                 }
+            },
+            _reportError: function () {
+                this.getView().getModel("PageModel").setProperty("/pageFlow/landingText/report", true);
+                let oRouter = this.getOwnerComponent().getRouter();
+                oRouter.navTo("Supplier", {
+                    GUID: "NotFound"
+                });
             }
         });
     });

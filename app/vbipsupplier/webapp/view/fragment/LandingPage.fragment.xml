@@ -8,7 +8,9 @@
 			<Text id="idTitleP1.Text" text="Invalid URL, please access correct URL from your email" 
 				  class="customSubtitle1" visible="{PageModel>/pageFlow/landingText/invalid}"/>
 			<Text id="idTitleP2.Text" text="Invalid URL, your URL has expired" 
-				  class="customSubtitle1" visible="{PageModel>/pageFlow/landingText/expire}"/>	  
+				  class="customSubtitle1" visible="{PageModel>/pageFlow/landingText/expire}"/>
+			<Text id="idTitleP3.Text" text="Your information request has been reported, your Buyer will send a new onboarding email" 
+				  class="customSubtitle1" visible="{PageModel>/pageFlow/landingText/report}"/>		  
 		</VBox>
         
     </VBox>
