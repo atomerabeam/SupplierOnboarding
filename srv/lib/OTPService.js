@@ -115,9 +115,8 @@ async function checkOTP(bCardInfoOTP, pID, inputOTP) {
     }
     oValidOTP = aOTP.find(item => item.uID === pID && item.OTP === inputOTP);
 
-    console.log(oValidOTP);
     if (oValidOTP === undefined) {
-        return "Invalid";
+        throw new Error("Invalid" )
     } else {
         if (Date.now() < oValidOTP.expiredTime) {
             let index = aOTP.findIndex(item => item.uID === pID && item.OTP === inputOTP);
@@ -127,7 +126,7 @@ async function checkOTP(bCardInfoOTP, pID, inputOTP) {
             });
             return "OK";
         } else {
-            return "Expired";
+            throw new Error("Expired")
         }
     }
 }

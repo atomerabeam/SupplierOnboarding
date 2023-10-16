@@ -11,7 +11,7 @@ sap.ui.define([
      */
     function (Controller, JSONModel, Models, MessageToast, formatter, MessageBox) {
         "use strict";
- 
+
         return Controller.extend("vbipsupplier.controller.SupplierInfo", {
             formatter: formatter,
             onInit: function () {
@@ -49,7 +49,7 @@ sap.ui.define([
                 let sBuyerName = this.getOwnerComponent().getModel("SupplierInfo").getProperty("/buyer/legalName")
                 const sMessage = this.getOwnerComponent().getModel("i18n").getProperty("reportInfoMessage").replaceAll("[Buyer]", sBuyerName)
                 let oSupplier = this.getOwnerComponent().getModel("SupplierInfo").getProperty("/supplier");
-                
+
                 let oParameter = {
                     "sBuyerID": oSupplier.buyerID,
                     "sSupplierID": oSupplier.supplierID
@@ -84,8 +84,8 @@ sap.ui.define([
             },
             onChangeAcceptCard: function () {
                 let vAcceptCard = this.getView().byId("idAcceptCard.Select").getSelectedKey();
-                
-                if ( vAcceptCard.toLowerCase() === "true") {
+
+                if (vAcceptCard.toLowerCase() === "true") {
                     this.getView().getModel("RequestInfo").setProperty("/requestInfo/infoBoxVisible", false);
                 } else {
                     this.getView().getModel("RequestInfo").setProperty("/requestInfo/infoBoxVisible", true);
@@ -160,44 +160,49 @@ sap.ui.define([
                 let sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken")
                 let strID = oEvent.getParameter("id");
                 let docID = strID.split("idUploadFile")[1].split(".Button")[0];
-
+                let allowedTypes = ['image/png', 'application/pdf', 'image/jpeg', 'image/gif'];
                 let input = document.createElement("input"); // Create input element
                 input.type = "file"; // Important to be type File
-                input.multiple = true // Alow only one file at a time
+                input.multiple = false // Alow only one file at a time
                 input.accept = "image/*" // Only accept image file
                 let fileInfo;
                 input.onchange = async function () {
                     let file = input.files; // get the file
                     fileInfo = file;
                     for (let i = 0; i < file.length; i++) {
-                        let data = file[i]
-                        let dataArr = await data.arrayBuffer()
-                        let textData = await data.text()
-                        var bytes = new Uint8Array(dataArr);
-                        var len = bytes.byteLength;
-                        var base64 = "";
-                        for (let i = 0; i < len; i++) {
-                            base64 += String.fromCharCode(bytes[i]);
+                        if (allowedTypes.includes(file[i].type)) {
+                            let data = file[i]
+                            let dataArr = await data.arrayBuffer()
+                            let textData = await data.text()
+                            var bytes = new Uint8Array(dataArr);
+                            var len = bytes.byteLength;
+                            var base64 = "";
+                            for (let i = 0; i < len; i++) {
+                                base64 += String.fromCharCode(bytes[i]);
+                            }
+                            base64 = btoa(base64);
+                            // console.log(dataArr)
+                            // console.log(textData)
+                            // console.log(base64)
+                            let oFileCheck = { "fileContent": base64 };
+                            let isMalwareDetected = await Models.checkMalware(oFileCheck, sAuthToken);
+                            if (isMalwareDetected === "true") {
+                                let msgError = "Malware is detected";
+                                MessageToast.show(msgError);
+                            } else {
+                                let oDocument = this.getView().getModel("DocumentModel").getProperty("/doc" + docID);
+                                oDocument.fileName = fileInfo[0].name;
+                                oDocument.fileType = fileInfo[0].type;
+                                oDocument.fileData = base64;
+                                oDocument.uploadVisible = false;
+                                oDocument.fileVisible = true;
+                                this.getView().getModel("DocumentModel").setProperty("/doc" + docID, oDocument);
+                            }
+                        } else {
+                            this.showErrorMessageBox('Error', 'Invalid file type. Please select a PNG, PDF, or JPEG file.', null);
                         }
-                        base64 = btoa(base64);
-                        // console.log(dataArr)
-                        // console.log(textData)
-                        // console.log(base64)
                     }
-                    let oFileCheck = { "fileContent": base64 };
-                    let isMalwareDetected = await Models.checkMalware(oFileCheck, sAuthToken);
-                    if (isMalwareDetected === "true") {
-                        let msgError = "Malware is detected";
-                        MessageToast.show(msgError);
-                    } else {
-                        let oDocument = this.getView().getModel("DocumentModel").getProperty("/doc" + docID);
-                        oDocument.fileName = fileInfo[0].name;
-                        oDocument.fileType = fileInfo[0].type;
-                        oDocument.fileData = base64;
-                        oDocument.uploadVisible = false;
-                        oDocument.fileVisible = true;
-                        this.getView().getModel("DocumentModel").setProperty("/doc" + docID, oDocument);
-                    }
+
                 }.bind(this)
 
                 input.click();
@@ -235,10 +240,10 @@ sap.ui.define([
             onUploadFileSH: async function (oEvent) {
                 let sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken")
                 let oShareholderPopup = this.getView().getModel("ShareholderPopupModel").getProperty("/popup");
-
+                let allowedTypes = ['image/png', 'application/pdf', 'image/jpeg', 'image/gif'];
                 let input = document.createElement("input"); // Create input element
                 input.type = "file"; // Important to be type File
-                input.multiple = true // Alow only one file at a time
+                input.multiple = false // Alow only one file at a time
                 input.accept = "image/*" // Only accept image file
                 let fileInfo;
                 let base64;
@@ -246,29 +251,34 @@ sap.ui.define([
                     let file = input.files; // get the file
                     fileInfo = file;
                     for (let i = 0; i < file.length; i++) {
-                        let data = file[i]
-                        let dataArr = await data.arrayBuffer()
-                        let textData = await data.text()
-                        let bytes = new Uint8Array(dataArr);
-                        let len = bytes.byteLength;
-                        for (let i = 0; i < len; i++) {
-                            base64 += String.fromCharCode(bytes[i]);
+                        if (allowedTypes.includes(file[i].type)) {
+                            let data = file[i]
+                            let dataArr = await data.arrayBuffer()
+                            let textData = await data.text()
+                            let bytes = new Uint8Array(dataArr);
+                            let len = bytes.byteLength;
+                            for (let i = 0; i < len; i++) {
+                                base64 += String.fromCharCode(bytes[i]);
+                            }
+                            base64 = btoa(base64);
+                            let oFileCheck = { "fileContent": base64 };
+                            let isMalwareDetected = await Models.checkMalware(oFileCheck, sAuthToken);
+                            if (isMalwareDetected === "true") {
+                                let msgError = "Malware is detected";
+                                MessageToast.show(msgError);
+                            } else {
+                                oShareholderPopup.fileName = fileInfo[0].name;
+                                oShareholderPopup.fileType = fileInfo[0].type;
+                                oShareholderPopup.fileData = base64;
+                                oShareholderPopup.uploadVisible = false;
+                                oShareholderPopup.fileVisible = true;
+                                this.getView().getModel("ShareholderPopupModel").setProperty("/popup", oShareholderPopup);
+                            }
+                        } else {
+                            this.showErrorMessageBox('Error', 'Invalid file type. Please select a PNG, PDF, or JPEG file.', null);
                         }
-                        base64 = btoa(base64);
                     }
-                    let oFileCheck = { "fileContent": base64 };
-                    let isMalwareDetected = await Models.checkMalware(oFileCheck, sAuthToken);
-                    if (isMalwareDetected === "true") {
-                        let msgError = "Malware is detected";
-                        MessageToast.show(msgError);
-                    } else {
-                        oShareholderPopup.fileName = fileInfo[0].name;
-                        oShareholderPopup.fileType = fileInfo[0].type;
-                        oShareholderPopup.fileData = base64;
-                        oShareholderPopup.uploadVisible = false;
-                        oShareholderPopup.fileVisible = true;
-                        this.getView().getModel("ShareholderPopupModel").setProperty("/popup", oShareholderPopup);
-                    }
+
                 }.bind(this)
 
                 input.click();
@@ -339,6 +349,27 @@ sap.ui.define([
             onCancel: function () {
                 this.onDialogAfterClose();
             },
+            onBackButtonPress: function (oEvent) {
+                const btnId = oEvent.getSource().getId()
+                const onPage = btnId.split(".")[2]
+                console.log(onPage)
+                switch (onPage) {
+                    case "InfoConfirm":
+                        this.getView().getModel("PageModel").setProperty("/pageFlow/infoConfirm", false);
+                        this.getView().getModel("PageModel").setProperty("/pageFlow/infoRequest", true);
+                        break;
+                    case "Corporate":
+                        this.getView().getModel("PageModel").setProperty("/pageFlow/corporate", false);
+                        this.getView().getModel("PageModel").setProperty("/pageFlow/infoConfirm", true);
+                        break;
+                    case "Shareholder":
+                        this.getView().getModel("PageModel").setProperty("/pageFlow/shareholder", false);
+                        this.getView().getModel("PageModel").setProperty("/pageFlow/corporate", true);
+                        break;
+                    default:
+                        break;
+                }
+            },
             _onInit: async function () {
                 let sAuthToken = ""
                 // Page flow
@@ -376,10 +407,12 @@ sap.ui.define([
 
                 // Get select key request info
                 let oPageInfoModel = new JSONModel();
-                
+
                 //F4
                 let oF4Model = new JSONModel();
-                
+                oF4Model.setProperty("/shareholderCount", oSupplier.shareholderCount);
+                this.getView().setModel(oF4Model, "F4");
+
                 let vSAPCustomer, vAcceptCard, vInfoBoxVisible;
                 if (oSupplier !== undefined) {
                     sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken")
@@ -396,9 +429,6 @@ sap.ui.define([
                     } else if (oSupplier.SAPCustomer === null) {
                         vSAPCustomer = "true";
                     }
-                    
-                    oF4Model.setProperty("/shareholderCount", oSupplier.shareholderCount);
-                    this.getView().setModel(oF4Model, "F4");
 
                     if (oSupplier.status === "CAC") {
                         vAcceptCard = "true";
@@ -482,29 +512,31 @@ sap.ui.define([
                 let aShareholder = [];
                 for (let i = 0; i <= (vShareholderCount - 1); i++) {
                     let oShareholder = this.getView().getModel("ShareholderModel").getProperty("/item/" + i);
+                    if (oShareholder) {
+                        let oFile = {
+                            "ID": oSupplier.supplierID,
+                            "fileContent": oShareholder.fileData
+                        };
+                        let oFileEncrypt = await Models.encryptFile(oFile, sAuthToken);
+                        aShareholder.push({
+                            "shareholderName": oShareholder.name,
+                            "sharePercentage": parseInt(oShareholder.sharePercentage),
+                            "shareholderDocuments":
+                                [
+                                    {
+                                        "documentType": oShareholder.docType,
+                                        "nameOnDocument": oShareholder.nameOnDoc,
+                                        "documentNumber": oShareholder.docNum,
+                                        "fileName": oShareholder.fileName,
+                                        "fileType": oShareholder.fileType,
+                                        "encodedContent": oFileEncrypt.response.value,
+                                        // "dateOfIssue": oShareholder.dateOfIssue,
+                                        "expiryDate": oShareholder.expiryDate,
+                                    }
+                                ]
+                        });
+                    }
 
-                    let oFile = {
-                        "ID": oSupplier.supplierID,
-                        "fileContent": oShareholder.fileData
-                    };
-                    let oFileEncrypt = await Models.encryptFile(oFile, sAuthToken);
-                    aShareholder.push({
-                        "shareholderName": oShareholder.name,
-                        "sharePercentage": parseInt(oShareholder.sharePercentage),
-                        "shareholderDocuments":
-                            [
-                                {
-                                    "documentType": oShareholder.docType,
-                                    "nameOnDocument": oShareholder.nameOnDoc,
-                                    "documentNumber": oShareholder.docNum,
-                                    "fileName": oShareholder.fileName,
-                                    "fileType": oShareholder.fileType,
-                                    "encodedContent": oFileEncrypt.response.value,
-                                    // "dateOfIssue": oShareholder.dateOfIssue,
-                                    "expiryDate": oShareholder.expiryDate,
-                                }
-                            ]
-                    });
                 }
 
                 let oSupplierData = {

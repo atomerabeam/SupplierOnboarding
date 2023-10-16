@@ -5,6 +5,8 @@
     <VBox id="idMainPage4.VBox" class="sapUiSmallMargin" 
           alignItems="Center" visible="{PageModel>/pageFlow/shareholder}">
 		<VBox id="idContentPage4.VBox" class="customBoxContent" width="65%">
+        <Button id="idBack.Button.Shareholder" type="Transparent" icon="sap-icon://nav-back" text="{i18n>back}"
+								press="onBackButtonPress"/>
 			<form:SimpleForm id="idMainP4.SimpleForm" editable="true" singleContainerFullSize="false">
                 <form:content>
                     <VBox id="idMainP4.VBox">

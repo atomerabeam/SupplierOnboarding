@@ -3,6 +3,7 @@
     xmlns:core="sap.ui.core">
     <VBox id="idMainPage1.VBox" class="sapUiSmallMargin" alignItems="Center" visible="{PageModel>/pageFlow/infoRequest}">
 		<VBox id="idContentPage1.VBox" class="customBoxContent" width="50%">
+			
 			<!-- @ui5ignore-patterns -->
 			<Text id="idRequestInfo.Text" text="{i18n>requestInfo}" class="mainTitle"/>
 			<!-- @ui5ignore-patterns -->
