@@ -4,8 +4,6 @@
 	xmlns:form="sap.ui.layout.form">
     <VBox id="idMainPage3.VBox" class="sapUiSmallMargin" alignItems="Center" visible="{PageModel>/pageFlow/corporate}">
 		<VBox id="idContentPage3.VBox" class="customBoxContent1">
-        <Button id="idBack.Button.Corporate" type="Transparent" icon="sap-icon://nav-back" text="{i18n>back}"
-								press="onBackButtonPress"/>
 			<form:SimpleForm id="idMainP3.SimpleForm" editable="true" singleContainerFullSize="false">
                 <form:content>
                     <VBox id="idMainP3.VBox">

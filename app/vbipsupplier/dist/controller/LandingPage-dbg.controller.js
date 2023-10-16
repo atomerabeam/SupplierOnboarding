@@ -40,7 +40,7 @@ sap.ui.define([
                     let error = await oResult.response.json()
                     if (error.error.code == "900") {
                         MessageToast.show("Reach OTP limit");
-                    } else {
+                    } else{ 
                         MessageToast.show("Failed to send OTP");
                     }
                 }
@@ -53,56 +53,36 @@ sap.ui.define([
                     "pID": this._GUID,
                     "pOTP": inputOTP
                 };
-                try {
-                    let oResult = await Models.checkOTP(oParameter, sAuthToken);
-                    if (oResult) {
-                        let oRouter = this.getOwnerComponent().getRouter();
-                        oRouter.navTo("SupplierInfo");
-                    }
-                } catch (error) {
-                    debugger
-                    // let oResult = await Models.checkOTP(oParameter, sAuthToken);
-                    let vResult = error.message;
-                    let vMessage;
-                    if (vResult === "Error: Invalid") {
-                        vMessage = "Invalid OTP";
-                        MessageToast.show(vMessage);
-                    } else {
-                        vMessage = "Your OTP is expired";
-                        MessageToast.show(vMessage)
-                        
-                    }
-                }
-                // let oResult = await Models.checkOTP(oParameter, sAuthToken);
-                // if (Object.keys(oResult.catchError).length === 0 &&
-                //     oResult.catchError.constructor === Object) {
-                //     if (oResult.response.error) {
-                //         // Error
-                //         let msgError = `Failed to process \nError code ${oResult.response.error.code}`;
-                //         MessageToast.show(msgError);
+                let oResult = await Models.checkOTP(oParameter, sAuthToken);
+                if (Object.keys(oResult.catchError).length === 0 &&
+                    oResult.catchError.constructor === Object) {
+                    if (oResult.response.error) {
+                        // Error
+                        let msgError = `Failed to process \nError code ${oResult.response.error.code}`;
+                        MessageToast.show(msgError);
 
-                //     } else {
-                //         // Success
-                //         let vResult = oResult.response.value;
-                //         let vMessage;
-                //         if (vResult === "Invalid") {
-                //             vMessage = "Invalid OTP";
-                //             MessageToast.show(vMessage);
-                //         } else if (vResult === "Expired") {
-                //             vMessage = "Your OTP is expired";
-                //             MessageToast.show(vMessage);
-                //         } else if (vResult === "OK") {
-                //             // vMessage = "Correct OTP !!!";
-                //             // MessageToast.show(vMessage);
-                //             let oRouter = this.getOwnerComponent().getRouter();
-                //             oRouter.navTo("SupplierInfo");
-                //         }
-                //     }
-                // } else {
-                //     // Catch error
-                //     let msgError = `Failed to process \nError catched`;
-                //     MessageToast.show(msgError);
-                // }
+                    } else {
+                        // Success
+                        let vResult = oResult.response.value;
+                        let vMessage;
+                        if (vResult === "Invalid") {
+                            vMessage = "Invalid OTP";
+                            MessageToast.show(vMessage);
+                        } else if (vResult === "Expired") {
+                            vMessage = "Your OTP is expired";
+                            MessageToast.show(vMessage);
+                        } else if (vResult === "OK") {
+                            // vMessage = "Correct OTP !!!";
+                            // MessageToast.show(vMessage);
+                            let oRouter = this.getOwnerComponent().getRouter();
+                            oRouter.navTo("SupplierInfo");
+                        }
+                    }
+                } else {
+                    // Catch error
+                    let msgError = `Failed to process \nError catched`;
+                    MessageToast.show(msgError);
+                }
             },
             _onObjectMatched: function (oEvent) {
                 this._GUID = oEvent.getParameter("arguments").GUID;
@@ -152,7 +132,7 @@ sap.ui.define([
                     // this.getOwnerComponent().getModel("AuthModel").setProperty("/authToken", "")
                     // sAuthToken = ""
                     //For local test
-
+                    
                     let oDecrypt = await Models.decryptID(oParameter1, sAuthToken);
                     let oParameter = {
                         "buyerID": oDecrypt.response.value.split("_")[0],

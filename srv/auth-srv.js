@@ -24,12 +24,11 @@ module.exports = cds.service.impl(async (service) => {
                     req.error(oSupplierInfo.error)
                 } else {
                     // console.log(oSupplierInfo)
-                    // Get unix time of inviteDate in database
                     const sSupplierInviteDate = new Date(oSupplierInfo.inviteDate).getTime()
                     console.log(sSupplierInviteDate)
                     console.log(sInviteDate)
                     if (sInviteDate == sSupplierInviteDate && 
-                        (oSupplierInfo.status === "INV" || oSupplierInfo.status === "SAV" ) ) {
+                        (oSupplierInfo.status === "Mail sent" || oSupplierInfo.status === "Saved" ) ) {
                         
                         // Check valid day for URL
                         if (sSupplierInviteDate < Date.now() - 259200000) {//259200000ms = 3days
