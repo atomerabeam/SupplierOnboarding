@@ -44,16 +44,16 @@ sap.ui.define([
             let oToken = await Models.authorize({
                 "encryptedUrl": this._GUID
             })
-            if (oToken.error && oToken.error.code != "900") { 
+            if (oToken.error && oToken.error.code != "900") {
                 this.getView().getModel("PageModel").setProperty("/pageFlow/landing", true);
             } else {
                 //For production
-                // this.getOwnerComponent().getModel("AuthModel").setProperty("/authToken", oToken.value)
-                // sAuthToken = oToken.value
+                this.getOwnerComponent().getModel("AuthModel").setProperty("/authToken", oToken.value)
+                sAuthToken = oToken.value
                 //For production
                 //For local test
-                this.getOwnerComponent().getModel("AuthModel").setProperty("/authToken", "")
-                sAuthToken = ""
+                // this.getOwnerComponent().getModel("AuthModel").setProperty("/authToken", "")
+                // sAuthToken = ""
                 //For local test
                 let oDecrypt = await Models.decryptID(oParameter1, sAuthToken);
                 let oParameter = {
@@ -120,11 +120,11 @@ sap.ui.define([
                 MessageToast.show("Sent OTP");
             } else {
                 let error = await oResult.response.json()
-                    if (error.error.code == "900") {
-                        MessageToast.show("Reach OTP limit");
-                    } else{ 
-                        MessageToast.show("Failed to send OTP");
-                    }
+                if (error.error.code == "900") {
+                    MessageToast.show("Reach OTP limit");
+                } else {
+                    MessageToast.show("Failed to send OTP");
+                }
             }
         },
         onContinueButtonPress: async function () {
@@ -135,35 +135,23 @@ sap.ui.define([
                 "pID": this._GUID,
                 "pOTP": inputOTP
             };
-            let oResult = await Models.checkOTP(oParameter, sAuthToken);
-            if (Object.keys(oResult.catchError).length === 0 &&
-                oResult.catchError.constructor === Object) {
-                if (oResult.response.error) {
-                    // Error
-                    let msgError = `Failed to process \nError code ${oResult.response.error.code}`;
-                    MessageToast.show(msgError);
+            try {
+                await Models.checkOTP(oParameter, sAuthToken);
+                let oRouter = this.getOwnerComponent().getRouter();
+                oRouter.navTo("CardInfo");
 
+            } catch (error) {
+                // let oResult = await Models.checkOTP(oParameter, sAuthToken);
+                let vResult = error.message;
+                let vMessage;
+                if (vResult === "Error: Invalid") {
+                    vMessage = "Invalid OTP";
+                    MessageToast.show(vMessage);
                 } else {
-                    // Success
-                    let vResult = oResult.response.value;
-                    let vMessage;
-                    if (vResult === "Invalid") {
-                        vMessage = "Invalid OTP";
-                        MessageToast.show(vMessage);
-                    } else if (vResult === "Expired") {
-                        vMessage = "Your OTP is expired";
-                        MessageToast.show(vMessage);
-                    } else if (vResult === "OK") {
-                        // vMessage = "Correct OTP !!!";
-                        // MessageToast.show(vMessage);
-                        let oRouter = this.getOwnerComponent().getRouter();
-                        oRouter.navTo("CardInfo");
-                    }
+                    vMessage = "Your OTP is expired";
+                    MessageToast.show(vMessage)
+
                 }
-            } else {
-                // Catch error
-                let msgError = `Failed to process \nError catched`;
-                MessageToast.show(msgError);
             }
         },
         _getBuyerInfo: async function (pID) {

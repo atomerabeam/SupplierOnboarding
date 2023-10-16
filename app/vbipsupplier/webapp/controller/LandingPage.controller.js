@@ -145,12 +145,12 @@ sap.ui.define([
                 } else {
                     //Authorize Success
                     // For production
-                    this.getOwnerComponent().getModel("AuthModel").setProperty("/authToken", oToken.value)
-                    sAuthToken = oToken.value
+                    // this.getOwnerComponent().getModel("AuthModel").setProperty("/authToken", oToken.value)
+                    // sAuthToken = oToken.value
                     //For production
                     //For local test
-                    // this.getOwnerComponent().getModel("AuthModel").setProperty("/authToken", "")
-                    // sAuthToken = ""
+                    this.getOwnerComponent().getModel("AuthModel").setProperty("/authToken", "")
+                    sAuthToken = ""
                     //For local test
 
                     let oDecrypt = await Models.decryptID(oParameter1, sAuthToken);

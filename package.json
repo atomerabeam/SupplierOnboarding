@@ -60,6 +60,20 @@
           "name": "destinations"
         }
       },
+      "VBIP-API": {
+        "kind": "odata",
+        "[hybrid]": {
+          "credentials": {
+            "destination": "VBIP-API",
+            "path": "/odata/v4/catalog"
+          }
+        },
+        "[production]": {
+          "credentials": {
+            "destination": "VBIP-API"
+          }
+        }
+      },
       "[production]": {
         "auth": "jwt"
       },

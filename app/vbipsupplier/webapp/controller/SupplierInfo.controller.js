@@ -349,7 +349,7 @@ sap.ui.define([
             onCancel: function () {
                 this.onDialogAfterClose();
             },
-            onBackButtonPress: function(oEvent){
+            onBackButtonPress: function (oEvent) {
                 const btnId = oEvent.getSource().getId()
                 const onPage = btnId.split(".")[2]
                 console.log(onPage)
@@ -362,7 +362,7 @@ sap.ui.define([
                         this.getView().getModel("PageModel").setProperty("/pageFlow/corporate", false);
                         this.getView().getModel("PageModel").setProperty("/pageFlow/infoConfirm", true);
                         break;
-                    case "Shareholder": 
+                    case "Shareholder":
                         this.getView().getModel("PageModel").setProperty("/pageFlow/shareholder", false);
                         this.getView().getModel("PageModel").setProperty("/pageFlow/corporate", true);
                         break;
@@ -512,29 +512,31 @@ sap.ui.define([
                 let aShareholder = [];
                 for (let i = 0; i <= (vShareholderCount - 1); i++) {
                     let oShareholder = this.getView().getModel("ShareholderModel").getProperty("/item/" + i);
+                    if (oShareholder) {
+                        let oFile = {
+                            "ID": oSupplier.supplierID,
+                            "fileContent": oShareholder.fileData
+                        };
+                        let oFileEncrypt = await Models.encryptFile(oFile, sAuthToken);
+                        aShareholder.push({
+                            "shareholderName": oShareholder.name,
+                            "sharePercentage": parseInt(oShareholder.sharePercentage),
+                            "shareholderDocuments":
+                                [
+                                    {
+                                        "documentType": oShareholder.docType,
+                                        "nameOnDocument": oShareholder.nameOnDoc,
+                                        "documentNumber": oShareholder.docNum,
+                                        "fileName": oShareholder.fileName,
+                                        "fileType": oShareholder.fileType,
+                                        "encodedContent": oFileEncrypt.response.value,
+                                        // "dateOfIssue": oShareholder.dateOfIssue,
+                                        "expiryDate": oShareholder.expiryDate,
+                                    }
+                                ]
+                        });
+                    }
 
-                    let oFile = {
-                        "ID": oSupplier.supplierID,
-                        "fileContent": oShareholder.fileData
-                    };
-                    let oFileEncrypt = await Models.encryptFile(oFile, sAuthToken);
-                    aShareholder.push({
-                        "shareholderName": oShareholder.name,
-                        "sharePercentage": parseInt(oShareholder.sharePercentage),
-                        "shareholderDocuments":
-                            [
-                                {
-                                    "documentType": oShareholder.docType,
-                                    "nameOnDocument": oShareholder.nameOnDoc,
-                                    "documentNumber": oShareholder.docNum,
-                                    "fileName": oShareholder.fileName,
-                                    "fileType": oShareholder.fileType,
-                                    "encodedContent": oFileEncrypt.response.value,
-                                    // "dateOfIssue": oShareholder.dateOfIssue,
-                                    "expiryDate": oShareholder.expiryDate,
-                                }
-                            ]
-                    });
                 }
 
                 let oSupplierData = {
