@@ -312,7 +312,7 @@ module.exports = cds.service.impl(async (service) => {
                     "Content-Type": "application/json",
                     "Authorization": oAuthToken.token
                 },
-                body: JSON.stringify({ status: "OBE" })
+                body: JSON.stringify({ status: "REP" })
             });
             let oJsonResponse = await response.json()
             console.log(oJsonResponse)
