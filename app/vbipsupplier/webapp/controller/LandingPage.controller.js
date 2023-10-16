@@ -9,7 +9,7 @@ sap.ui.define([
      */
     function (Controller, JSONModel, Models, MessageToast, formatter) {
         "use strict";
-
+ 
         return Controller.extend("vbipsupplier.controller.LandingPage", {
             onInit: function () {
                 this._onInit();

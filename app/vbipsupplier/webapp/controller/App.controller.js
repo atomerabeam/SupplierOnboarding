@@ -4,7 +4,7 @@ sap.ui.define(
     ],
     function(BaseController) {
       "use strict";
-  
+   
       return BaseController.extend("vbipsupplier.controller.App", {
         onInit() {
         }
