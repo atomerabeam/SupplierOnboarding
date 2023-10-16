@@ -60,7 +60,12 @@
           "name": "destinations"
         }
       },
-      "auth": "dummy"
+      "[production]": {
+        "auth": "jwt"
+      },
+      "[hybrid]":{
+        "auth": "dummy"
+      }
     }
   }
 }
