@@ -46,7 +46,7 @@ sap.ui.define([
                 } else {
                     let error = await oResult.response.json()
                     if (error.error.code == "900") {
-                        this._updateSupplier("noMessage", "FTS");
+                        this._updateSupplier("noMessage", "ROL");
                         MessageToast.show("Reach OTP limit");
                     } else {
                         MessageToast.show("Failed to send OTP");
