@@ -78,6 +78,16 @@
                     "autoExpandSelect": true,
                     "earlyRequests": true
                 }
+            },
+            "LandingText": {
+                "type": "sap.ui.model.json.JSONModel",
+                "preload": true,
+                "settings": {
+                    "defaultBindingMode": "TwoWay",
+                    "operationMode": "Server",
+                    "autoExpandSelect": true,
+                    "earlyRequests": true
+                }
             }
         },
         "resources": {

@@ -3,6 +3,8 @@
     xmlns:core="sap.ui.core">
     <VBox id="idMainPage2.VBox" class="sapUiSmallMargin" alignItems="Center" visible="{PageModel>/pageFlow/infoConfirm}">
 		<VBox id="idContentPage2.VBox" class="customBoxContent" width="65%">
+			<Button id="idBack.Button.InfoConfirm" type="Transparent" icon="sap-icon://nav-back" text="{i18n>back}"
+								press="onBackButtonPress"/>
 			<!-- @ui5ignore-patterns -->
 			<Text id="idGetStarted.Text" text="{i18n>getStarted}" class="mainTitle"/>
 			<!-- @ui5ignore-patterns -->
@@ -50,7 +52,7 @@
 			<Label id="idBusinessRegNumP2.Label" class="customLabel" text="{i18n>businessRegNum}"/>
 			<!-- @ui5ignore-patterns -->
 			<Input id="idBusinessRegNumP2.Input" class="customInputSolid" 
-				   editable="false" value="{SupplierInfo>/supplier/businessRegNum}"/>
+				   editable="true" value="{SupplierInfo>/supplier/businessRegNum}"/>
 			<VBox id="idSpaceP2S11.VBox" height="32px"/>
 
 			<HBox id="idButtonP2.HBox">

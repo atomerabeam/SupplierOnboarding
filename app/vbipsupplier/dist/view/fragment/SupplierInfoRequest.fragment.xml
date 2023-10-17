@@ -3,6 +3,7 @@
     xmlns:core="sap.ui.core">
     <VBox id="idMainPage1.VBox" class="sapUiSmallMargin" alignItems="Center" visible="{PageModel>/pageFlow/infoRequest}">
 		<VBox id="idContentPage1.VBox" class="customBoxContent" width="50%">
+			
 			<!-- @ui5ignore-patterns -->
 			<Text id="idRequestInfo.Text" text="{i18n>requestInfo}" class="mainTitle"/>
 			<!-- @ui5ignore-patterns -->
@@ -31,14 +32,15 @@
 			<!-- @ui5ignore-patterns -->
 			<Label id="idAcceptCard.Label" class="customLabel" 
 				   text="{i18n>acceptCard}  {SupplierInfo>/buyer/legalName}{i18n>acceptCardP2}"/>
-			<Select id="idAcceptCard.Select" forceSelection="false" 
+			<Select id="idAcceptCard.Select" forceSelection="false" change="onChangeAcceptCard"
 					selectedKey="{RequestInfo>/requestInfo/acceptCard}" width="60%">
 				<core:Item id="idYesCard.Item" key="true" text="Yes"/>
 				<core:Item id="idNoCard.Item" key="false" text="No"/>
 			</Select>
 			<VBox id="idSpaceP1S5.VBox" height="16px"/>
 
-			<HBox id="idInformation.HBox" width="60%" class="customInfoBox">
+			<HBox id="idInformation.HBox" width="60%" class="customInfoBox"
+				  visible="{RequestInfo>/requestInfo/infoBoxVisible}">
 				<core:Icon id="idInfo.Icon" src="sap-icon://hint" size="22px" color="#1434CB">
 				</core:Icon>
 				<VBox id="idSpaceP1S6.VBox" width="12px"/>

@@ -7,7 +7,7 @@ sap.ui.define([
 	Controller, JSONModel, Models, MessageToast
 ) {
 	"use strict";
-
+ 
 	return Controller.extend("vbipsupplier.controller.CardInfo", {
 		/**
 		 * @override

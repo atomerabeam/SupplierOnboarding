@@ -18,7 +18,7 @@ sap.ui.define([
                 oModel.setDefaultBindingMode("OneWay");
                 return oModel;
             },
-            authorize: async function(oParameter){
+            authorize: async function (oParameter) {
                 try {
                     const response = await fetch("/odata/v4/auth/Authorize", {
                         method: "POST",
@@ -150,7 +150,7 @@ sap.ui.define([
                 }
                 return oResult;
             },
-            
+
             sendMailOTP: async function (oParameter, sAuthToken) {
                 let oResult = { "response": {}, "catchError": {} };
                 try {
@@ -169,7 +169,7 @@ sap.ui.define([
                 }
                 return oResult;
             },
-            
+
             checkOTP: async function (oParameter, sAuthToken) {
                 let oResult = { "response": {}, "catchError": {} };
                 try {
@@ -182,11 +182,15 @@ sap.ui.define([
                         body: JSON.stringify(oParameter),
                     });
 
-                    oResult.response = await response.json();;
+                    oResult.response = await response.json();
+                    if(response.ok){
+                        return oResult.response;
+                    } else {
+                        throw new Error(oResult.response.error.message)
+                    }
                 } catch (error) {
-                    oResult.catchError = error;
+                    throw new Error(error)
                 }
-                return oResult;
             },
 
             decryptID: async function (oParameter, sAuthToken) {
@@ -293,7 +297,7 @@ sap.ui.define([
                 } catch (error) {
                 }
             },
-            getCardInfo: async function(oParameter, sAuthToken){
+            getCardInfo: async function (oParameter, sAuthToken) {
                 let oResult = {}
                 try {
                     const response = await fetch("/odata/v4/supplier/getCardInfo", {
@@ -304,14 +308,30 @@ sap.ui.define([
                         },
                         body: JSON.stringify(oParameter),
                     });
-                    
-                    oResult.response =  await response.json()
+
+                    oResult.response = await response.json()
                 } catch (error) {
                     oResult.catchError = error;
                 }
                 return oResult;
             },
-            getCountries: async function(oModel, sAuthToken){
+
+            reportInfo: async function (oParameter, sAuthToken) {
+
+                try {
+                    const response = await fetch(`/odata/v4/supplier/reportInfo(buyerID='${oParameter.sBuyerID}',supplierID='${oParameter.sSupplierID}')`, {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": sAuthToken
+                        }
+                    });
+                    return response
+                } catch (error) {
+                    return error
+                }
+            },
+            getCountries: async function (oModel, sAuthToken) {
                 try {
                     const response = await fetch("/odata/v4/supplier/getCountries()", {
                         method: "GET",

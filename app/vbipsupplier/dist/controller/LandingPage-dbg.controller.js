@@ -13,6 +13,13 @@ sap.ui.define([
         return Controller.extend("vbipsupplier.controller.LandingPage", {
             onInit: function () {
                 this._onInit();
+                this.getView().addEventDelegate({
+                    onBeforeShow: this.onBeforeShow,
+                }, this);
+            },
+
+            onBeforeShow: function () {
+                this._onInit();
             },
 
             onResendOTPLinkPress: async function () {
@@ -40,7 +47,7 @@ sap.ui.define([
                     let error = await oResult.response.json()
                     if (error.error.code == "900") {
                         MessageToast.show("Reach OTP limit");
-                    } else{ 
+                    } else {
                         MessageToast.show("Failed to send OTP");
                     }
                 }
@@ -53,36 +60,56 @@ sap.ui.define([
                     "pID": this._GUID,
                     "pOTP": inputOTP
                 };
-                let oResult = await Models.checkOTP(oParameter, sAuthToken);
-                if (Object.keys(oResult.catchError).length === 0 &&
-                    oResult.catchError.constructor === Object) {
-                    if (oResult.response.error) {
-                        // Error
-                        let msgError = `Failed to process \nError code ${oResult.response.error.code}`;
-                        MessageToast.show(msgError);
-
-                    } else {
-                        // Success
-                        let vResult = oResult.response.value;
-                        let vMessage;
-                        if (vResult === "Invalid") {
-                            vMessage = "Invalid OTP";
-                            MessageToast.show(vMessage);
-                        } else if (vResult === "Expired") {
-                            vMessage = "Your OTP is expired";
-                            MessageToast.show(vMessage);
-                        } else if (vResult === "OK") {
-                            // vMessage = "Correct OTP !!!";
-                            // MessageToast.show(vMessage);
-                            let oRouter = this.getOwnerComponent().getRouter();
-                            oRouter.navTo("SupplierInfo");
-                        }
+                try {
+                    let oResult = await Models.checkOTP(oParameter, sAuthToken);
+                    if (oResult) {
+                        let oRouter = this.getOwnerComponent().getRouter();
+                        oRouter.navTo("SupplierInfo");
                     }
-                } else {
-                    // Catch error
-                    let msgError = `Failed to process \nError catched`;
-                    MessageToast.show(msgError);
+                } catch (error) {
+                    debugger
+                    // let oResult = await Models.checkOTP(oParameter, sAuthToken);
+                    let vResult = error.message;
+                    let vMessage;
+                    if (vResult === "Error: Invalid") {
+                        vMessage = "Invalid OTP";
+                        MessageToast.show(vMessage);
+                    } else {
+                        vMessage = "Your OTP is expired";
+                        MessageToast.show(vMessage)
+
+                    }
                 }
+                // let oResult = await Models.checkOTP(oParameter, sAuthToken);
+                // if (Object.keys(oResult.catchError).length === 0 &&
+                //     oResult.catchError.constructor === Object) {
+                //     if (oResult.response.error) {
+                //         // Error
+                //         let msgError = `Failed to process \nError code ${oResult.response.error.code}`;
+                //         MessageToast.show(msgError);
+
+                //     } else {
+                //         // Success
+                //         let vResult = oResult.response.value;
+                //         let vMessage;
+                //         if (vResult === "Invalid") {
+                //             vMessage = "Invalid OTP";
+                //             MessageToast.show(vMessage);
+                //         } else if (vResult === "Expired") {
+                //             vMessage = "Your OTP is expired";
+                //             MessageToast.show(vMessage);
+                //         } else if (vResult === "OK") {
+                //             // vMessage = "Correct OTP !!!";
+                //             // MessageToast.show(vMessage);
+                //             let oRouter = this.getOwnerComponent().getRouter();
+                //             oRouter.navTo("SupplierInfo");
+                //         }
+                //     }
+                // } else {
+                //     // Catch error
+                //     let msgError = `Failed to process \nError catched`;
+                //     MessageToast.show(msgError);
+                // }
             },
             _onObjectMatched: function (oEvent) {
                 this._GUID = oEvent.getParameter("arguments").GUID;
@@ -102,6 +129,11 @@ sap.ui.define([
                         "expire": false
                     }
                 };
+
+                this.getOwnerComponent().getModel("LandingText").setProperty("/expire", false);
+                this.getOwnerComponent().getModel("LandingText").setProperty("/invalid", false);
+                this.getOwnerComponent().getModel("LandingText").setProperty("/report", false);
+
                 oPageModel.setProperty("/pageFlow", oPageFlow);
                 this.getView().setModel(oPageModel, "PageModel");
                 //Countries Model
@@ -109,6 +141,15 @@ sap.ui.define([
                 let oRouter = sap.ui.core.UIComponent.getRouterFor(this);
                 oRouter.getRoute("Supplier").attachPatternMatched(this._onObjectMatched, this);
                 await Models.checkService();
+
+                if (this._GUID === "ReportInfo") {
+                    this.getOwnerComponent().getModel("LandingText").setProperty("/expire", false);
+                    this.getOwnerComponent().getModel("LandingText").setProperty("/invalid", false);
+                    this.getOwnerComponent().getModel("LandingText").setProperty("/report", true);
+                    this.getView().getModel("PageModel").setProperty("/pageFlow/landing", true);
+                    return;
+                }
+
                 let oParameter1 = {
                     "pID": this._GUID
                 };
@@ -116,23 +157,28 @@ sap.ui.define([
                 let oToken = await Models.authorize({
                     "encryptedUrl": this._GUID
                 })
+
                 if (oToken.error) {
                     if (oToken.error.code == "900") {
-                        this.getView().getModel("PageModel").setProperty("/pageFlow/landingText/expire", true);
-                        this.getView().getModel("PageModel").setProperty("/pageFlow/landingText/invalid", false);
+                        this.getOwnerComponent().getModel("LandingText").setProperty("/expire", true);
+                        this.getOwnerComponent().getModel("LandingText").setProperty("/invalid", false);
+                    }
+                    else {
+                        this.getOwnerComponent().getModel("LandingText").setProperty("/expire", false);
+                        this.getOwnerComponent().getModel("LandingText").setProperty("/invalid", true);
                     }
                     this.getView().getModel("PageModel").setProperty("/pageFlow/landing", true);
                 } else {
                     //Authorize Success
                     // For production
-                    this.getOwnerComponent().getModel("AuthModel").setProperty("/authToken", oToken.value)
-                    sAuthToken = oToken.value
+                    // this.getOwnerComponent().getModel("AuthModel").setProperty("/authToken", oToken.value)
+                    // sAuthToken = oToken.value
                     //For production
                     //For local test
-                    // this.getOwnerComponent().getModel("AuthModel").setProperty("/authToken", "")
-                    // sAuthToken = ""
+                    this.getOwnerComponent().getModel("AuthModel").setProperty("/authToken", "")
+                    sAuthToken = ""
                     //For local test
-                    
+
                     let oDecrypt = await Models.decryptID(oParameter1, sAuthToken);
                     let oParameter = {
                         "buyerID": oDecrypt.response.value.split("_")[0],
@@ -171,7 +217,6 @@ sap.ui.define([
                         this.getView().getModel("PageModel").setProperty("/pageFlow/landing", true);
                     }
                 }
-
 
 
             },
