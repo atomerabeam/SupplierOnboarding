@@ -147,6 +147,9 @@ sap.ui.define([
                 this.getView().setModel(oShareholderModel, "ShareholderModel");
 
                 let vShareholderCount = this.getView().getModel("F4").getProperty("/shareholderCount");
+                if (vShareholderCount === null) {
+                    vShareholderCount = 1;
+                }
                 let aShareholder = [];
                 for (let i = 1; i <= vShareholderCount; i++) {
                     aShareholder.push({
