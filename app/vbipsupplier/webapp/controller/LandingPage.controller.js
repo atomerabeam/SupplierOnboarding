@@ -13,6 +13,13 @@ sap.ui.define([
         return Controller.extend("vbipsupplier.controller.LandingPage", {
             onInit: function () {
                 this._onInit();
+                this.getView().addEventDelegate({
+                    onBeforeShow: this.onBeforeShow,
+                }, this);
+            },
+
+            onBeforeShow: function () {
+                this._onInit();
             },
 
             onResendOTPLinkPress: async function () {
@@ -70,7 +77,7 @@ sap.ui.define([
                     } else {
                         vMessage = "Your OTP is expired";
                         MessageToast.show(vMessage)
-                        
+
                     }
                 }
                 // let oResult = await Models.checkOTP(oParameter, sAuthToken);
@@ -122,6 +129,11 @@ sap.ui.define([
                         "expire": false
                     }
                 };
+
+                this.getOwnerComponent().getModel("LandingText").setProperty("/expire", false);
+                this.getOwnerComponent().getModel("LandingText").setProperty("/invalid", false);
+                this.getOwnerComponent().getModel("LandingText").setProperty("/report", false);
+
                 oPageModel.setProperty("/pageFlow", oPageFlow);
                 this.getView().setModel(oPageModel, "PageModel");
                 //Countries Model
@@ -129,6 +141,15 @@ sap.ui.define([
                 let oRouter = sap.ui.core.UIComponent.getRouterFor(this);
                 oRouter.getRoute("Supplier").attachPatternMatched(this._onObjectMatched, this);
                 await Models.checkService();
+
+                if (this._GUID === "ReportInfo") {
+                    this.getOwnerComponent().getModel("LandingText").setProperty("/expire", false);
+                    this.getOwnerComponent().getModel("LandingText").setProperty("/invalid", false);
+                    this.getOwnerComponent().getModel("LandingText").setProperty("/report", true);
+                    this.getView().getModel("PageModel").setProperty("/pageFlow/landing", true);
+                    return;
+                }
+
                 let oParameter1 = {
                     "pID": this._GUID
                 };
@@ -136,10 +157,15 @@ sap.ui.define([
                 let oToken = await Models.authorize({
                     "encryptedUrl": this._GUID
                 })
+
                 if (oToken.error) {
                     if (oToken.error.code == "900") {
-                        this.getView().getModel("PageModel").setProperty("/pageFlow/landingText/expire", true);
-                        this.getView().getModel("PageModel").setProperty("/pageFlow/landingText/invalid", false);
+                        this.getOwnerComponent().getModel("LandingText").setProperty("/expire", true);
+                        this.getOwnerComponent().getModel("LandingText").setProperty("/invalid", false);
+                    }
+                    else {
+                        this.getOwnerComponent().getModel("LandingText").setProperty("/expire", false);
+                        this.getOwnerComponent().getModel("LandingText").setProperty("/invalid", true);
                     }
                     this.getView().getModel("PageModel").setProperty("/pageFlow/landing", true);
                 } else {
@@ -191,7 +217,6 @@ sap.ui.define([
                         this.getView().getModel("PageModel").setProperty("/pageFlow/landing", true);
                     }
                 }
-
 
 
             },

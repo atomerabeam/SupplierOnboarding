@@ -20,13 +20,23 @@ sap.ui.define([
                 oRouter.getRoute("SupplierInfo").attachPatternMatched(this._onObjectMatched, this);
             },
             onContinue: function () {
-                this.getView().getModel("PageModel").setProperty("/pageFlow/infoRequest", false);
                 let vAcceptCard = this.getView().byId("idAcceptCard.Select").getSelectedKey();
                 if (vAcceptCard === "true") {
                     this._updateSupplier("message", "CAC");
                     this.getView().getModel("PageModel").setProperty("/pageFlow/complete", true);
+                    this.getView().getModel("PageModel").setProperty("/pageFlow/infoRequest", false);
                 } else {
-                    this.getView().getModel("PageModel").setProperty("/pageFlow/infoConfirm", true);
+                    let oSupplier = this.getOwnerComponent().getModel("SupplierInfo").getProperty("/supplier");
+                    let oBuyer = this.getOwnerComponent().getModel("SupplierInfo").getProperty("/buyer");
+                    if (oSupplier.countryCode_code === oBuyer.countryCode_code) {
+                        this.getView().getModel("PageModel").setProperty("/pageFlow/infoConfirm", true);
+                        this.getView().getModel("PageModel").setProperty("/pageFlow/infoRequest", false);
+                    } else {
+                        const sMessageTitle = "Cannot be onboarded";
+                        const sMessage = `As your country is different from Buyer's country, and you are not accepting card payments.\n
+                                          Cannot continue the process, please contact to VISA about this case`;
+                        this.showErrorMessageBox(sMessageTitle, sMessage, null)
+                    }
                 }
 
             },
@@ -54,18 +64,20 @@ sap.ui.define([
                     "sBuyerID": oSupplier.buyerID,
                     "sSupplierID": oSupplier.supplierID
                 }
-                let sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken")
+                let sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken");
+
                 let callback = async function (oAction) {
                     if (oAction == "OK") {
                         let oResponse = await Models.reportInfo(oParameter, sAuthToken)
                         if (oResponse.ok) {
-                            MessageToast.show(`Successful report information error to ${sBuyerName}`)
+                            this._reportError();
+                            // MessageToast.show(`Successful report information error to ${sBuyerName}`)
                         } else {
-                            MessageToast.show(`Failed report information error to ${sBuyerName}`)
+                            MessageToast.show(`Action is cancelled by user`)
                         }
                     }
-                }
-                this.showErrorMessageBox(sMessageTitle, sMessage, callback)
+                }.bind(this)
+                this.showErrorMessageBox(sMessageTitle, sMessage, callback);
 
             },
             onSaveAndExit: async function () {
@@ -197,6 +209,7 @@ sap.ui.define([
                                 oDocument.uploadVisible = false;
                                 oDocument.fileVisible = true;
                                 this.getView().getModel("DocumentModel").setProperty("/doc" + docID, oDocument);
+                                this.onCheckComplete();
                             }
                         } else {
                             this.showErrorMessageBox('Error', 'Invalid file type. Please select a PNG, PDF, or JPEG file.', null);
@@ -220,6 +233,7 @@ sap.ui.define([
                 oDocument.fileVisible = false;
 
                 this.getView().getModel("DocumentModel").setProperty("/doc" + docID, oDocument);
+                this.onCheckComplete();
 
             },
             onDownloadFileButton: async function (oEvent) {
@@ -370,6 +384,20 @@ sap.ui.define([
                         break;
                 }
             },
+            onCheckComplete: function () {
+                for (let i = 1; i <= 9; i++) {
+                    let oDocument = this.getView().getModel("DocumentModel").getProperty("/doc" + i);
+                    if (oDocument.nameOnDocument !== "" &&
+                        oDocument.documentNumber !== "" &&
+                        oDocument.fileName !== null) {
+                        //Set true if these fields have values
+                        this.getView().getModel("DocumentModel").setProperty("/doc" + i + "/checked", true);
+                    } else {
+                        this.getView().getModel("DocumentModel").setProperty("/doc" + i + "/checked", false);
+                    }
+                }
+            },
+
             _onInit: async function () {
                 let sAuthToken = ""
                 // Page flow
@@ -410,8 +438,6 @@ sap.ui.define([
 
                 //F4
                 let oF4Model = new JSONModel();
-                oF4Model.setProperty("/shareholderCount", oSupplier.shareholderCount);
-                this.getView().setModel(oF4Model, "F4");
 
                 let vSAPCustomer, vAcceptCard, vInfoBoxVisible;
                 if (oSupplier !== undefined) {
@@ -429,6 +455,9 @@ sap.ui.define([
                     } else if (oSupplier.SAPCustomer === null) {
                         vSAPCustomer = "true";
                     }
+
+                    oF4Model.setProperty("/shareholderCount", oSupplier.shareholderCount);
+                    this.getView().setModel(oF4Model, "F4");
 
                     if (oSupplier.status === "CAC") {
                         vAcceptCard = "true";
@@ -702,10 +731,11 @@ sap.ui.define([
                 }
             },
             _reportError: function () {
-                this.getView().getModel("PageModel").setProperty("/pageFlow/landingText/report", true);
+                // this.getOwnerComponent().getModel("LandingText").setProperty("/expire", false);
+                this.getOwnerComponent().getModel("LandingText").setProperty("/report", true);
                 let oRouter = this.getOwnerComponent().getRouter();
                 oRouter.navTo("Supplier", {
-                    GUID: "NotFound"
+                    GUID: "ReportInfo"
                 });
             }
         });
