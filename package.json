@@ -70,7 +70,8 @@
         },
         "[production]": {
           "credentials": {
-            "destination": "VBIP-API"
+            "destination": "VBIP-API",
+            "path": "/odata/v4/catalog"
           }
         }
       },

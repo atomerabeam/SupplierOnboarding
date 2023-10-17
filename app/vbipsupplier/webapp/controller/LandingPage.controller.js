@@ -174,7 +174,8 @@ sap.ui.define([
                     // this.getOwnerComponent().getModel("AuthModel").setProperty("/authToken", oToken.value)
                     // sAuthToken = oToken.value
                     //For production
-                    //For local test
+
+                    // For local test
                     this.getOwnerComponent().getModel("AuthModel").setProperty("/authToken", "")
                     sAuthToken = ""
                     //For local test

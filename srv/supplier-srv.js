@@ -6,13 +6,13 @@ const malwareScanner = require("./lib/malwareScan")
 
 module.exports = cds.service.impl(async (service) => {
     service.on("getSupplier", async (req) => {
-        const vbipSrv = await cds.connect.to("VBIP-API")
+        // const vbipSrv = await cds.connect.to("VBIP-API")
         let oAuthToken = await vbipService.getToken("VBIP-API");
         let buyerID = req.data.buyerID;
         let supplierID = req.data.supplierID;
         let oResult = {};
         try {
-            console.log(await vbipSrv.read('SupplierInfo'))
+            // console.log(await vbipSrv.read('SupplierInfo'))
             // console.log(await vbipSrv.get())
             const response = await fetch(`${oAuthToken.url}/odata/v4/supplier-onboarding/SupplierInfo(buyerID='${buyerID}',supplierID='${supplierID}')?$expand=supplierDocuments,shareholderDetails`, {
                 method: "GET",
