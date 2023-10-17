@@ -12,7 +12,7 @@ sap.ui.define([
 
         return Controller.extend("vbipsupplier.controller.LandingPage", {
             onInit: function () {
-                this._onInit();
+                // this._onInit();
                 this.getView().addEventDelegate({
                     onBeforeShow: this.onBeforeShow,
                 }, this);
@@ -46,6 +46,7 @@ sap.ui.define([
                 } else {
                     let error = await oResult.response.json()
                     if (error.error.code == "900") {
+                        this._updateSupplier("noMessage", "ROL");
                         MessageToast.show("Reach OTP limit");
                     } else {
                         MessageToast.show("Failed to send OTP");
@@ -142,7 +143,7 @@ sap.ui.define([
                 oRouter.getRoute("Supplier").attachPatternMatched(this._onObjectMatched, this);
                 await Models.checkService();
 
-                if (this._GUID === "ReportInfo") {
+                if (this._GUID === "Info") {
                     this.getOwnerComponent().getModel("LandingText").setProperty("/expire", false);
                     this.getOwnerComponent().getModel("LandingText").setProperty("/invalid", false);
                     this.getOwnerComponent().getModel("LandingText").setProperty("/report", true);
@@ -171,13 +172,13 @@ sap.ui.define([
                 } else {
                     //Authorize Success
                     // For production
-                    this.getOwnerComponent().getModel("AuthModel").setProperty("/authToken", oToken.value)
-                    sAuthToken = oToken.value
+                    // this.getOwnerComponent().getModel("AuthModel").setProperty("/authToken", oToken.value)
+                    // sAuthToken = oToken.value
                     //For production
 
                     // For local test
-                    // this.getOwnerComponent().getModel("AuthModel").setProperty("/authToken", "")
-                    // sAuthToken = ""
+                    this.getOwnerComponent().getModel("AuthModel").setProperty("/authToken", "")
+                    sAuthToken = ""
                     //For local test
 
                     let oDecrypt = await Models.decryptID(oParameter1, sAuthToken);
@@ -249,6 +250,53 @@ sap.ui.define([
                         this.getOwnerComponent().getModel("SupplierInfo").setProperty("/VBIP", oVBIP.response.value.vbip);
                     }
                 }
-            }
+            },
+
+            _updateSupplier: async function (sMessage, vStatus) {
+                let sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken")
+                let oSupplier = this.getOwnerComponent().getModel("SupplierInfo").getProperty("/supplier");
+
+                // let aSupplierDocument = [];
+                // let aShareholder = [];
+                
+
+                let oSupplierData = {
+                    "status": vStatus,
+                    "SAPCustomer": null,
+                    "businessNature_selectKey": null,
+                    "shareholderCount": null,
+                    "supplierDocuments": [],
+                    "shareholderDetails": []
+                };
+
+                let oParameter = {
+                    "buyerID": oSupplier.buyerID,
+                    "supplierID": oSupplier.supplierID,
+                    "oSupplier": oSupplierData
+                };
+
+                let oSupplierUpdate = await Models.updateSupplier(oParameter, sAuthToken);
+                if (Object.keys(oSupplierUpdate.catchError).length === 0 &&
+                    oSupplierUpdate.catchError.constructor === Object) {
+                    if (oSupplierUpdate.response.error) {
+                        // Error
+                        // let msgError = `Operation failed Supplier ${oSupplier.supplierID} \nError code ${oSupplierUpdate.response.error.code}`;
+                        // MessageToast.show(msgError);
+
+                    } else {
+                        // Success
+                        let msgSuccess = `Supplier ${oSupplier.supplierID} information is update`;
+                        if (sMessage === "message") {
+                            MessageToast.show(msgSuccess);
+                        }
+
+                        // Exit
+                    }
+                } else {
+                    // Catch error
+                    // let msgError = `Operation failed Supplier ${oSupplier.supplierID} \nError catched`;
+                    // MessageToast.show(msgError);
+                }
+            },
         });
     });
