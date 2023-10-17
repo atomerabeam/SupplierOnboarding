@@ -9,7 +9,7 @@
 				  class="customSubtitle1" visible="{LandingText>/invalid}"/>
 			<Text id="idTitleP2.Text" text="Invalid URL, your URL has expired" 
 				  class="customSubtitle1" visible="{LandingText>/expire}"/>
-			<Text id="idTitleP3.Text" text="Your information request has been reported, your Buyer will send a new onboarding email" 
+			<Text id="idTitleP3.Text" text="Your session is ended, please contact to Buyer for more information." 
 				  class="customSubtitle1" visible="{LandingText>/report}"/>		  
 		</VBox>
         

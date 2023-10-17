@@ -165,6 +165,7 @@ module.exports = cds.service.impl(async (service) => {
             // send mail
 
             if (! await OTPService.isOTPAvailable(bCardInfoOTP, pID)) {
+                
                 req.error(900, "Reach OTP generation limit")
             } else {
 

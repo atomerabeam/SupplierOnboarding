@@ -18,11 +18,38 @@ sap.ui.define([
                 // this._onInit();
                 let oRouter = sap.ui.core.UIComponent.getRouterFor(this);
                 oRouter.getRoute("SupplierInfo").attachPatternMatched(this._onObjectMatched, this);
+
+                this.getView().addEventDelegate({
+                    onBeforeShow: this.onBeforeShow,
+                }, this);
             },
+
+            onBeforeShow: function () {
+                // Page flow
+                let oPageModel = new JSONModel();
+                let oPageFlow = {
+                    "infoRequest": false,
+                    "infoConfirm": false,
+                    "corporate": false,
+                    "shareholder": false,
+                    "complete": false
+                };
+                oPageModel.setProperty("/pageFlow", oPageFlow);
+                this.getView().setModel(oPageModel, "PageModel");
+
+                let oSupplier = this.getOwnerComponent().getModel("SupplierInfo").getProperty("/supplier");
+                if (!oSupplier) {
+                    let oRouter = this.getOwnerComponent().getRouter();
+                    oRouter.navTo("Supplier", {
+                        GUID: "NotFound"
+                    });
+                }
+            },
+
             onContinue: function () {
                 let vAcceptCard = this.getView().byId("idAcceptCard.Select").getSelectedKey();
                 if (vAcceptCard === "true") {
-                    this._updateSupplier("message", "CAC");
+                    this._updateSupplier("message", "CAC", false, false);
                     this.getView().getModel("PageModel").setProperty("/pageFlow/complete", true);
                     this.getView().getModel("PageModel").setProperty("/pageFlow/infoRequest", false);
                 } else {
@@ -35,7 +62,13 @@ sap.ui.define([
                         const sMessageTitle = "Cannot be onboarded";
                         const sMessage = `As your country is different from Buyer's country, and you are not accepting card payments.\n
                                           Cannot continue the process, please contact to VISA about this case`;
-                        this.showErrorMessageBox(sMessageTitle, sMessage, null)
+
+                        let callback = async function (oAction) {
+
+                            this.getOwnerComponent().getModel("SupplierInfo").destroy();
+                            this._endSession();
+                        }.bind(this)
+                        this.showErrorMessageBox(sMessageTitle, sMessage, callback)
                     }
                 }
 
@@ -49,7 +82,7 @@ sap.ui.define([
                 this.getView().getModel("PageModel").setProperty("/pageFlow/shareholder", true);
             },
             onSubmit: function () {
-                this._updateSupplier("noMessage", "SUB");
+                this._updateSupplier("noMessage", "SUB", true, true);
                 this._submitSupplier("message");
                 this.getView().getModel("PageModel").setProperty("/pageFlow/shareholder", false);
                 this.getView().getModel("PageModel").setProperty("/pageFlow/complete", true);
@@ -70,18 +103,19 @@ sap.ui.define([
                     if (oAction == "OK") {
                         let oResponse = await Models.reportInfo(oParameter, sAuthToken)
                         if (oResponse.ok) {
-                            this._reportError();
-                            // MessageToast.show(`Successful report information error to ${sBuyerName}`)
+                            this._endSession();
                         } else {
-                            MessageToast.show(`Action is cancelled by user`)
+                            MessageToast.show(`Failed to update, please try again`)
                         }
+                    } else {
+                        MessageToast.show(`Action is cancelled by user`)
                     }
                 }.bind(this)
                 this.showErrorMessageBox(sMessageTitle, sMessage, callback);
 
             },
             onSaveAndExit: async function () {
-                this._updateSupplier("message", "Saved");
+                this._updateSupplier("message", "SAV", true, true);
                 this.getView().getModel("PageModel").setProperty("/pageFlow/corporate", false);
                 this.getView().getModel("PageModel").setProperty("/pageFlow/shareholder", false);
                 this.getView().getModel("PageModel").setProperty("/pageFlow/infoRequest", true);
@@ -509,7 +543,7 @@ sap.ui.define([
             _onObjectMatched: function (oEvent) {
                 this._onInit();
             },
-            _updateSupplier: async function (sMessage, vStatus) {
+            _updateSupplier: async function (sMessage, vStatus, vBizNature, vSHCount) {
                 let sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken")
                 let oSupplier = this.getOwnerComponent().getModel("SupplierInfo").getProperty("/supplier");
 
@@ -540,41 +574,52 @@ sap.ui.define([
                     });
                 }
 
-                let vShareholderCount = parseInt(this.getView().byId("idShareholderCount.Select").getSelectedKey());
+                let vBusinessNature, vShareholderCount;
                 let aShareholder = [];
-                for (let i = 0; i <= (vShareholderCount - 1); i++) {
-                    let oShareholder = this.getView().getModel("ShareholderModel").getProperty("/item/" + i);
-                    if (oShareholder) {
-                        let oFile = {
-                            "ID": oSupplier.supplierID,
-                            "fileContent": oShareholder.fileData
-                        };
-                        let oFileEncrypt = await Models.encryptFile(oFile, sAuthToken);
-                        aShareholder.push({
-                            "shareholderName": oShareholder.name,
-                            "sharePercentage": parseInt(oShareholder.sharePercentage),
-                            "shareholderDocuments":
-                                [
-                                    {
-                                        "documentType": oShareholder.docType,
-                                        "nameOnDocument": oShareholder.nameOnDoc,
-                                        "documentNumber": oShareholder.docNum,
-                                        "fileName": oShareholder.fileName,
-                                        "fileType": oShareholder.fileType,
-                                        "encodedContent": oFileEncrypt.response.value,
-                                        // "dateOfIssue": oShareholder.dateOfIssue,
-                                        "expiryDate": oShareholder.expiryDate,
-                                    }
-                                ]
-                        });
-                    }
+                
+                if (vBizNature === true) {
+                    vBusinessNature = parseInt(this.getView().byId("idBusinessNature.Select").getSelectedKey());
+                } else {
+                    vBusinessNature = null;
+                }
 
+                if (vSHCount === true) {
+                    vShareholderCount = parseInt(this.getView().byId("idShareholderCount.Select").getSelectedKey());
+                    for (let i = 0; i <= (vShareholderCount - 1); i++) {
+                        let oShareholder = this.getView().getModel("ShareholderModel").getProperty("/item/" + i);
+                        if (oShareholder) {
+                            let oFile = {
+                                "ID": oSupplier.supplierID,
+                                "fileContent": oShareholder.fileData
+                            };
+                            let oFileEncrypt = await Models.encryptFile(oFile, sAuthToken);
+                            aShareholder.push({
+                                "shareholderName": oShareholder.name,
+                                "sharePercentage": parseInt(oShareholder.sharePercentage),
+                                "shareholderDocuments":
+                                    [
+                                        {
+                                            "documentType": oShareholder.docType,
+                                            "nameOnDocument": oShareholder.nameOnDoc,
+                                            "documentNumber": oShareholder.docNum,
+                                            "fileName": oShareholder.fileName,
+                                            "fileType": oShareholder.fileType,
+                                            "encodedContent": oFileEncrypt.response.value,
+                                            // "dateOfIssue": oShareholder.dateOfIssue,
+                                            "expiryDate": oShareholder.expiryDate,
+                                        }
+                                    ]
+                            });
+                        }
+                    }
+                } else {
+                    vShareholderCount = null;
                 }
 
                 let oSupplierData = {
                     "status": vStatus,
                     "SAPCustomer": (this.getView().byId("idSAPCustomer.Select").getSelectedKey().toLowerCase() === 'true'),
-                    "businessNature_selectKey": parseInt(this.getView().byId("idBusinessNature.Select").getSelectedKey()),
+                    "businessNature_selectKey": vBusinessNature,
                     "shareholderCount": vShareholderCount,
                     "supplierDocuments": aSupplierDocument,
                     "shareholderDetails": aShareholder
@@ -733,12 +778,12 @@ sap.ui.define([
                     // MessageToast.show(msgError);
                 }
             },
-            _reportError: function () {
+            _endSession: function () {
                 // this.getOwnerComponent().getModel("LandingText").setProperty("/expire", false);
                 this.getOwnerComponent().getModel("LandingText").setProperty("/report", true);
                 let oRouter = this.getOwnerComponent().getRouter();
                 oRouter.navTo("Supplier", {
-                    GUID: "ReportInfo"
+                    GUID: "Info"
                 });
             }
         });

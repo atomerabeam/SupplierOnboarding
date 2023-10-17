@@ -72,7 +72,7 @@ async function sendEmailOTP(bCardInfoOTP, pID, destinationName, mailTo, subject,
  * @returns OTP
  */
 async function genOTPNew(bCardInfoOTP, pID) {
-    const expireIn = 30000; // miliseconds
+    const expireIn = 60000; // miliseconds
     const nOTPLimit = 2
     let vDigits = "0123456789";
     let vOTP = "";
