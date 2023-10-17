@@ -529,6 +529,8 @@ sap.ui.define([
 
                         this.getView().getModel("DocumentModel").setProperty("/doc" + aDocument[i].documentType, oDocumentItem);
                     }
+                    
+                    this.onCheckComplete();
                 } else {
                     let oRouter = this.getOwnerComponent().getRouter();
                     oRouter.navTo("Supplier", {
@@ -576,7 +578,7 @@ sap.ui.define([
 
                 let vBusinessNature, vShareholderCount;
                 let aShareholder = [];
-                
+
                 if (vBizNature === true) {
                     vBusinessNature = parseInt(this.getView().byId("idBusinessNature.Select").getSelectedKey());
                 } else {
