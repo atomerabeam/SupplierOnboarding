@@ -85,7 +85,7 @@
                                 <HBox id="idShareholderCount.HBox">
                                     <!-- @ui5ignore-patterns -->
                                     <Select id="idShareholderCount.Select" items="{path:'F4>/shareholderItem'}" 
-                                            class="sapUiSmallMarginEnd" selectedKey="{F4>/shareholderCount}"
+                                            class="sapUiSmallMarginEnd" selectedKey="{SupplierInfo>/supplier/shareholderCount}"
                                             change="onChangeShareCount">
                                         <core:Item id="idCount.Item" key="{F4>count}" text="{F4>count}"/>
                                     </Select>

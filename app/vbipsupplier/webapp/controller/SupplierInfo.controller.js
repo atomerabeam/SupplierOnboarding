@@ -65,6 +65,7 @@ sap.ui.define([
 
                         let callback = async function (oAction) {
 
+                            this._updateSupplier("noMessage", "NOB", false, false);
                             this.getOwnerComponent().getModel("SupplierInfo").destroy();
                             this._endSession();
                         }.bind(this)
@@ -74,6 +75,7 @@ sap.ui.define([
 
             },
             onConfirmInfo: function () {
+                // this._setDefaultF4();
                 this.getView().getModel("PageModel").setProperty("/pageFlow/infoConfirm", false);
                 this.getView().getModel("PageModel").setProperty("/pageFlow/corporate", true);
             },
@@ -493,7 +495,11 @@ sap.ui.define([
                         vSAPCustomer = "true";
                     }
 
-                    oF4Model.setProperty("/shareholderCount", oSupplier.shareholderCount);
+                    let vShareholderCount = oSupplier.shareholderCount;
+                    if (vShareholderCount === null) {
+                        vShareholderCount = 1;
+                    }
+                    oF4Model.setProperty("/shareholderCount", vShareholderCount);
                     this.getView().setModel(oF4Model, "F4");
 
                     if (oSupplier.status === "CAC") {
@@ -538,9 +544,20 @@ sap.ui.define([
                     });
                 }
 
-
                 this.onChangeBusinessNature();
                 this.onChangeShareCount();
+            },
+            _setDefaultF4: async function () {
+                let oSupplier = this.getOwnerComponent().getModel("SupplierInfo").getProperty("/supplier");
+                if (oSupplier !== undefined) {
+
+                    if (oSupplier.shareholderCount === null) {
+                        oSupplier.shareholderCount = 1;
+                    }
+                    if (oSupplier.businessNature_selectKey === null) {
+                        oSupplier.businessNature_selectKey = 1;
+                    }
+                }
             },
             _onObjectMatched: function (oEvent) {
                 this._onInit();
@@ -684,8 +701,8 @@ sap.ui.define([
 
                 let oSupplierOnboarding = {
                     "vbipRequestId": oSupplier.buyerID + oSupplier.supplierID,
-                    "businessNature": oSupplier.businessNature_selectKey,
-                    "shareHolderCount": oSupplier.shareholderCount,
+                    "businessNature": parseInt(oSupplier.businessNature_selectKey),
+                    "shareHolderCount": parseInt(oSupplier.shareholderCount),
                     "isCardAcceptor": (this.getView().byId("idAcceptCard.Select").getSelectedKey().toLowerCase() === 'true'),
                     "buyerId": oSupplier.buyerID,
                     "supplierInfo": {
