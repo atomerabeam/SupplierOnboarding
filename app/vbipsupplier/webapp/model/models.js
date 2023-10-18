@@ -230,13 +230,14 @@ sap.ui.define([
                 return oResult;
             },
 
-            decryptFile: async function (oParameter) {
+            decryptFile: async function (oParameter, sAuthToken) {
                 let oResult = {};
                 try {
                     const response = await fetch("/odata/v4/supplier/decryptFile", {
                         method: "POST",
                         headers: {
-                            "Content-Type": "application/json"
+                            "Content-Type": "application/json",
+                            "Authorization": sAuthToken
                         },
                         body: JSON.stringify(oParameter),
                     });

@@ -528,7 +528,7 @@ sap.ui.define([
                             "documentNumber": aDocument[i].documentNumber,
                             "fileName": aDocument[i].fileName,
                             "fileType": aDocument[i].fileType,
-                            "fileData": null,
+                            "fileData": aDocument[i].fileData,
                             "uploadVisible": false,
                             "fileVisible": true,
                         };
@@ -638,6 +638,7 @@ sap.ui.define([
                 let oSupplierData = {
                     "status": vStatus,
                     "SAPCustomer": (this.getView().byId("idSAPCustomer.Select").getSelectedKey().toLowerCase() === 'true'),
+                    "businessRegNum": oSupplier.businessRegNum,
                     "businessNature_selectKey": vBusinessNature,
                     "shareholderCount": vShareholderCount,
                     "supplierDocuments": aSupplierDocument,
@@ -688,7 +689,7 @@ sap.ui.define([
                         "ID": oSupplier.supplierID,
                         "fileContent": oDocumentItem.fileData
                     };
-                    let oFileEncrypt = await Models.encryptFile(oFile, sAuthToken);
+                    let oFileEncrypt = await Models.decryptFile(oFile, sAuthToken);
 
                     aSupplierDocument.push({
                         "documentName": "doc" + aDocument[i],
@@ -723,11 +724,11 @@ sap.ui.define([
                     },
                     "kycDetails": {
                         "addressProof": {
-                            "documentName": "",
-                            "nameOnDocument": "",
-                            "documentNumber": "",
-                            "fileName": "",
-                            "encodedContent": ""
+                            "documentName": "Test",
+                            "nameOnDocument": "Test",
+                            "documentNumber": "Test",
+                            "fileName": "Test",
+                            "encodedContent": "Test"
                         },
                         "businessProof": aSupplierDocument,
                         // "identityProof": {
