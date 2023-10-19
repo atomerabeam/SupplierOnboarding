@@ -14,7 +14,7 @@ service Supplier  {
     action checkOTP(bCardInfoOTP: Boolean, pID : String, pOTP : String) returns String;
     action decryptID(pID : String) returns String;
     action encryptFile(ID : String, fileContent : LargeBinary) returns LargeBinary;
-    action decryptFile(ID : String, fileContent : LargeBinary) returns LargeBinary;
+    action decryptFile(ID : String, fileContent : LargeBinary) returns LargeString;
     action malwareScanning(fileContent : LargeString) returns Boolean;
     action submitSupplier(oSupplier : sp.typeSupplierOnboarding) returns String;
     action getCardInfo(vbipRequestID : String) returns sp.typeCardInfo;
