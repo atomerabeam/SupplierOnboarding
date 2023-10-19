@@ -52,7 +52,7 @@
 			<Label id="idBusinessRegNumP2.Label" class="customLabel" text="{i18n>businessRegNum}"/>
 			<!-- @ui5ignore-patterns -->
 			<Input id="idBusinessRegNumP2.Input" class="customInputSolid" 
-				   editable="true" value="{SupplierInfo>/supplier/businessRegNum}"/>
+				   editable="true" value="{SupplierInfo>/supplier/businessRegNum}" maxLength="10"/>
 			<VBox id="idSpaceP2S11.VBox" height="32px"/>
 
 			<HBox id="idButtonP2.HBox">

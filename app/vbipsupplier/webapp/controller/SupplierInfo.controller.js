@@ -146,16 +146,16 @@ sap.ui.define([
                 let aDocument = this.getView().getModel("DocumentModel").getProperty("/docKeys");
                 if (vBusinessNature === 1) {
                     vCount = 4;
-                    aDocument = [1, 2, 3, 4, 5];
+                    aDocument = [1, 2, 3];
                 } else if (vBusinessNature === 2) {
                     vCount = 6;
-                    aDocument = [1, 5, 6];
+                    aDocument = [1, 6];
                 } else if (vBusinessNature === 3) {
                     vCount = 1;
                     aDocument = [7, 8, 9];
                 } else {
                     vCount = 4;
-                    aDocument = [1, 2, 3, 4, 5];
+                    aDocument = [1, 2, 3];
                 }
 
                 let aShareholderCount = [];
@@ -522,20 +522,27 @@ sap.ui.define([
 
                     let aDocument = oSupplier.supplierDocuments;
                     for (let i = 0; i <= (aDocument.length - 1); i++) {
+
+                        let oFile = {
+                            "ID": oSupplier.supplierID,
+                            "fileContent": aDocument[i].encodedContent
+                        };
+                        let oFileDecrypt = await Models.decryptFile(oFile, sAuthToken);
+
                         let oDocumentItem = {
                             "visible": true,
                             "nameOnDocument": aDocument[i].nameOnDocument,
                             "documentNumber": aDocument[i].documentNumber,
                             "fileName": aDocument[i].fileName,
                             "fileType": aDocument[i].fileType,
-                            "fileData": aDocument[i].fileData,
+                            "fileData": oFileDecrypt.response.value,
                             "uploadVisible": false,
                             "fileVisible": true,
                         };
 
                         this.getView().getModel("DocumentModel").setProperty("/doc" + aDocument[i].documentType, oDocumentItem);
                     }
-                    
+
                     this.onCheckComplete();
                 } else {
                     let oRouter = this.getOwnerComponent().getRouter();
@@ -563,7 +570,7 @@ sap.ui.define([
                 this._onInit();
             },
             _updateSupplier: async function (sMessage, vStatus, vBizNature, vSHCount) {
-                let sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken")
+                let sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken");
                 let oSupplier = this.getOwnerComponent().getModel("SupplierInfo").getProperty("/supplier");
 
                 // let aShareholder = this.getView().getModel("ShareholderModel").getProperty("/item");
@@ -685,18 +692,18 @@ sap.ui.define([
                 for (let i = 0; i <= (aDocument.length - 1); i++) {
                     let oDocumentItem = this.getView().getModel("DocumentModel").getProperty("/doc" + aDocument[i]);
 
-                    let oFile = {
-                        "ID": oSupplier.supplierID,
-                        "fileContent": oDocumentItem.fileData
-                    };
-                    let oFileEncrypt = await Models.decryptFile(oFile, sAuthToken);
+                    // let oFile = {
+                    //     "ID": oSupplier.supplierID,
+                    //     "fileContent": oDocumentItem.fileData
+                    // };
+                    // let oFileEncrypt = await Models.decryptFile(oFile, sAuthToken);
 
                     aSupplierDocument.push({
                         "documentName": "doc" + aDocument[i],
                         "nameOnDocument": oDocumentItem.nameOnDocument,
                         "documentNumber": oDocumentItem.documentNumber,
                         "fileName": oDocumentItem.fileName,
-                        "encodedContent": oFileEncrypt.response.value
+                        "encodedContent": oDocumentItem.fileData
                     });
                 }
 
@@ -717,7 +724,8 @@ sap.ui.define([
                         // "website": "",
                         "completeAddress": oSupplier.completeAddress,
                         "zipCode": oSupplier.zipCode,
-                        "countryCode": oSupplier.countryCode_code,
+                        // "countryCode": oSupplier.countryCode_code,
+                        "countryCode": "IND",
                         "city": oSupplier.city,
                         "state": oSupplier.state,
                         // "companyAdditionalEmailAddress": ""

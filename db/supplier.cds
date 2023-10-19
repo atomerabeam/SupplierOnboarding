@@ -7,6 +7,7 @@ type typeSupplier {
     supplierName             : String(100);
     status                   : String(20);
     SAPCustomer              : Boolean;
+    businessRegNum           : String(10);
     businessNature_selectKey : Integer;
     shareholderCount         : Integer;
     supplierDocuments        : array of typeSupplierDocument;
