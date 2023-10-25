@@ -151,6 +151,25 @@ sap.ui.define([
                 return oResult;
             },
 
+            updateSupplierB1: async function (oParameter, sAuthToken) {
+                let oResult = {};
+                try {
+                    const response = await fetch("/odata/v4/supplier/updateSupplierB1", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": sAuthToken
+                        },
+                        body: JSON.stringify(oParameter),
+                    });
+
+                    oResult.response = await response.json();
+                } catch (error) {
+                    oResult.catchError = error;
+                }
+                return oResult;
+            },
+
             sendMailOTP: async function (oParameter, sAuthToken) {
                 let oResult = { "response": {}, "catchError": {} };
                 try {

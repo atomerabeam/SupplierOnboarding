@@ -51,6 +51,7 @@ sap.ui.define([
                 if (vAcceptCard === "true") {
                     this._updateSupplier("noMessage", "CAC", false, false);
                     this._submitSupplier("message");
+                    this._updateSupplierB1("noMessage");
                     this.getView().getModel("PageModel").setProperty("/pageFlow/complete", true);
                     this.getView().getModel("PageModel").setProperty("/pageFlow/infoRequest", false);
                 } else {
@@ -660,6 +661,40 @@ sap.ui.define([
                 };
 
                 let oSupplierUpdate = await Models.updateSupplier(oParameter, sAuthToken);
+                if (Object.keys(oSupplierUpdate.catchError).length === 0 &&
+                    oSupplierUpdate.catchError.constructor === Object) {
+                    if (oSupplierUpdate.response.error) {
+                        // Error
+                        let msgError = `Operation failed Supplier ${oSupplier.supplierID} \nError code ${oSupplierUpdate.response.error.code}`;
+                        // MessageToast.show(msgError);
+
+                    } else {
+                        // Success
+                        let msgSuccess = `Supplier ${oSupplier.supplierID} information is update`;
+                        if (sMessage === "message") {
+                            MessageToast.show(msgSuccess);
+                        }
+
+                        // Exit
+                    }
+                } else {
+                    // Catch error
+                    let msgError = `Operation failed Supplier ${oSupplier.supplierID} \nError catched`;
+                    // MessageToast.show(msgError);
+                }
+            },
+            _updateSupplierB1: async function (sMessage) {
+                let sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken");
+                let oSupplier = this.getOwnerComponent().getModel("SupplierInfo").getProperty("/supplier");
+                let oVBIP = this.getOwnerComponent().getModel("SupplierInfo").getProperty("/VBIP");
+
+                let oParameter = {
+                    "supplierID": oSupplier.supplierID,
+                    "vbipID": oVBIP.vbipID,
+                    "companyCode": oVBIP.companyCode
+                };
+
+                let oSupplierUpdate = await Models.updateSupplierB1(oParameter, sAuthToken);
                 if (Object.keys(oSupplierUpdate.catchError).length === 0 &&
                     oSupplierUpdate.catchError.constructor === Object) {
                     if (oSupplierUpdate.response.error) {

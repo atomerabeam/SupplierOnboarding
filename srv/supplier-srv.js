@@ -27,205 +27,262 @@ module.exports = cds.service.impl(async (service) => {
             oResult.error = error;
         }
         return oResult;
-    }),
+    });
 
-        service.on("getBuyer", async (req) => {
-            let oAuthToken = await vbipService.getToken("VBIP-API");
-            let buyerID = req.data.buyerID;
-            let oResult = { "buyer": {}, "catchError": {} }
-            try {
-                const response = await fetch(`${oAuthToken.url}/odata/v4/catalog/BuyerInfo(buyerID='${buyerID}')`, {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": oAuthToken.token
-                    }
-                });
+    service.on("getBuyer", async (req) => {
+        let oAuthToken = await vbipService.getToken("VBIP-API");
+        let buyerID = req.data.buyerID;
+        let oResult = { "buyer": {}, "catchError": {} }
+        try {
+            const response = await fetch(`${oAuthToken.url}/odata/v4/catalog/BuyerInfo(buyerID='${buyerID}')`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": oAuthToken.token
+                }
+            });
 
-                oResult.buyer = await response.json();
-            } catch (error) {
-                oResult.catchError = error;
-            }
+            oResult.buyer = await response.json();
+        } catch (error) {
+            oResult.catchError = error;
+        }
+        return oResult;
+    });
+
+    service.on("getBuyerOnboarding", async (req) => {
+        let oAuthToken = await vbipService.getToken("VBIP-API");
+        let buyerID = req.data.buyerID;
+        let oResult = { "buyerOnboarding": {}, "catchError": {} };
+        try {
+            const response = await fetch(`${oAuthToken.url}/odata/v4/catalog/BuyerOnboarding?$filter=buyerID eq '${buyerID}'`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": oAuthToken.token
+                }
+            });
+
+            oResult.buyerOnboarding = await response.json();
+        } catch (error) {
+            oResult.catchError = error;
+        }
+        return oResult;
+    });
+
+    service.on("getVBIP", async (req) => {
+        let oAuthToken = await vbipService.getToken("VBIP-API");
+        let pID = req.data.pID;
+        let oResult = { "vbip": {}, "catchError": {} };
+        try {
+            const response = await fetch(`${oAuthToken.url}/odata/v4/btponboarding/BTPOnboarding(vbipID='${pID}')`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": oAuthToken.token
+                }
+            });
+
+            oResult.vbip = await response.json();
+        } catch (error) {
+            oResult.catchError = error;
+        }
+        return oResult;
+    });
+
+    service.on("getBusinessNature", async () => {
+        let oAuthToken = await vbipService.getToken("VBIP-API");
+        let oResult = { "businessNature": {}, "catchError": {} };
+        try {
+            const response = await fetch(`${oAuthToken.url}/odata/v4/catalog/BusinessNature`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": oAuthToken.token
+                }
+            });
+
+            oResult.businessNature = await response.json();
+        } catch (error) {
+            oResult.catchError = error;
+        }
+        return oResult;
+    });
+
+    service.on("updateSupplier", async (req) => {
+        let oAuthToken = await vbipService.getToken("VBIP-API");
+        let buyerID = req.data.buyerID;
+        let supplierID = req.data.supplierID;
+        let oSupplier = req.data.oSupplier;
+        let oResult = {}
+        try {
+            const response = await fetch(`${oAuthToken.url}/odata/v4/supplier-onboarding/SupplierInfo(buyerID='${buyerID}',supplierID='${supplierID}')`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": oAuthToken.token
+                },
+                body: JSON.stringify(oSupplier)
+            });
+
+            oResult.response = await response.json();
+        } catch (error) {
+            oResult.catchError = error;
+        }
+        return oResult;
+    });
+
+
+    service.on("updateSupplierB1", async (req) => {
+        let oAuthToken = await vbipService.getToken("VBIP-API");
+        let supplierID = req.data.supplierID;
+        let vbipID = req.data.vbipID;
+        let companyCode = req.data.companyCode;
+        let b1Info;
+        try {
+            const response = await fetch(`${oAuthToken.url}/odata/v4/btponboarding/BTPOnboarding(vbipID='${vbipID}',companyCode='${companyCode}')`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": oAuthToken.token
+                }
+            });
+
+            b1Info = await response.json();
+        } catch (error) {
+
+        }
+
+        let oAuthTokenCPI = await vbipService.getToken("VBIP-CPI");
+        let oSupplier = {
+            "SystemName": b1Info.dbName,
+            "Method": "PATCH",
+            "Payload": [
+                {
+                    "U_PMETH": "Y",
+                    "supplierId": supplierID,
+                    "BPPaymentMethods": [
+                        {
+                            "PaymentMethodCode": "VBIP001"
+                        }
+                    ]
+                }
+            ]
+
+        };
+
+        let oResult = {};
+        try {
+            const response = await fetch(`${oAuthTokenCPI.url}/if3001/router/b1s/v1/BusinessPartners`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": oAuthTokenCPI.token
+                },
+                body: JSON.stringify(oSupplier)
+            });
+
+            oResult.supplier = await response.json();
+        } catch (error) {
+            oResult.error = error;
+        }
+        return oResult;
+    });
+
+    service.on("checkService", async () => {
+        return "OK";
+    });
+
+    service.on("sendMail", async (req) => {
+        // send mail
+        let smtpDestination = req.data.smtpDestination;
+        let mailTo = req.data.mailTo;
+        let mailSubject = req.data.mailSubject;
+        let mailContent = req.data.mailContent;
+        // OTPService.sendEmail(smtpDestination, mailTo, mailSubject, mailContent);
+    });
+
+    // service.on("sendMailOTP", async (req) => {
+    //     // send mail
+    //     let pID = req.data.pID;
+    //     let smtpDestination = req.data.smtpDestination;
+    //     let mailTo = req.data.mailTo;
+    //     let mailSubject = req.data.mailSubject;
+    //     let mailContent = req.data.mailContent;
+    //     let oResult = OTPService.sendEmailOTP(pID, smtpDestination, mailTo, mailSubject, mailContent);
+    //     return oResult;
+    // }),
+
+    service.on("sendMailOTP", async (req) => {
+        const bCardInfoOTP = req.data.bCardInfoOTP
+        const pID = req.data.pID;
+        const smtpDestination = req.data.smtpDestination;
+        const mailTo = req.data.mailTo;
+        const mailSubject = req.data.mailSubject;
+        const mailContent = req.data.mailContent;
+        // send mail
+
+        if (! await OTPService.isOTPAvailable(bCardInfoOTP, pID)) {
+
+            req.error(900, "Reach OTP generation limit")
+        } else {
+
+            let oResult = OTPService.sendEmailOTP(bCardInfoOTP, pID, smtpDestination, mailTo, mailSubject, mailContent);
             return oResult;
-        }),
+        }
+    });
 
-        service.on("getBuyerOnboarding", async (req) => {
-            let oAuthToken = await vbipService.getToken("VBIP-API");
-            let buyerID = req.data.buyerID;
-            let oResult = { "buyerOnboarding": {}, "catchError": {} };
-            try {
-                const response = await fetch(`${oAuthToken.url}/odata/v4/catalog/BuyerOnboarding?$filter=buyerID eq '${buyerID}'`, {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": oAuthToken.token
-                    }
-                });
-
-                oResult.buyerOnboarding = await response.json();
-            } catch (error) {
-                oResult.catchError = error;
-            }
-            return oResult;
-        }),
-
-        service.on("getVBIP", async (req) => {
-            let oAuthToken = await vbipService.getToken("VBIP-API");
-            let pID = req.data.pID;
-            let oResult = { "vbip": {}, "catchError": {} };
-            try {
-                const response = await fetch(`${oAuthToken.url}/odata/v4/btponboarding/BTPOnboarding(vbipID='${pID}')`, {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": oAuthToken.token
-                    }
-                });
-
-                oResult.vbip = await response.json();
-            } catch (error) {
-                oResult.catchError = error;
-            }
-            return oResult;
-        }),
-
-        service.on("getBusinessNature", async () => {
-            let oAuthToken = await vbipService.getToken("VBIP-API");
-            let oResult = { "businessNature": {}, "catchError": {} };
-            try {
-                const response = await fetch(`${oAuthToken.url}/odata/v4/catalog/BusinessNature`, {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": oAuthToken.token
-                    }
-                });
-
-                oResult.businessNature = await response.json();
-            } catch (error) {
-                oResult.catchError = error;
-            }
-            return oResult;
-        }),
-
-        service.on("updateSupplier", async (req) => {
-            let oAuthToken = await vbipService.getToken("VBIP-API");
-            let buyerID = req.data.buyerID;
-            let supplierID = req.data.supplierID;
-            let oSupplier = req.data.oSupplier;
-            let oResult = {}
-            try {
-                const response = await fetch(`${oAuthToken.url}/odata/v4/supplier-onboarding/SupplierInfo(buyerID='${buyerID}',supplierID='${supplierID}')`, {
-                    method: "PATCH",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": oAuthToken.token
-                    },
-                    body: JSON.stringify(oSupplier)
-                });
-
-                oResult.response = await response.json();
-            } catch (error) {
-                oResult.catchError = error;
-            }
-            return oResult;
-        }),
-
-        service.on("checkService", async () => {
-            return "OK";
-        }),
-
-        service.on("sendMail", async (req) => {
-            // send mail
-            let smtpDestination = req.data.smtpDestination;
-            let mailTo = req.data.mailTo;
-            let mailSubject = req.data.mailSubject;
-            let mailContent = req.data.mailContent;
-            // OTPService.sendEmail(smtpDestination, mailTo, mailSubject, mailContent);
-        }),
-
-        // service.on("sendMailOTP", async (req) => {
-        //     // send mail
-        //     let pID = req.data.pID;
-        //     let smtpDestination = req.data.smtpDestination;
-        //     let mailTo = req.data.mailTo;
-        //     let mailSubject = req.data.mailSubject;
-        //     let mailContent = req.data.mailContent;
-        //     let oResult = OTPService.sendEmailOTP(pID, smtpDestination, mailTo, mailSubject, mailContent);
-        //     return oResult;
-        // }),
-
-        service.on("sendMailOTP", async (req) => {
-            const bCardInfoOTP = req.data.bCardInfoOTP
-            const pID = req.data.pID;
-            const smtpDestination = req.data.smtpDestination;
-            const mailTo = req.data.mailTo;
-            const mailSubject = req.data.mailSubject;
-            const mailContent = req.data.mailContent;
-            // send mail
-
-            if (! await OTPService.isOTPAvailable(bCardInfoOTP, pID)) {
-                
-                req.error(900, "Reach OTP generation limit")
-            } else {
-
-                let oResult = OTPService.sendEmailOTP(bCardInfoOTP, pID, smtpDestination, mailTo, mailSubject, mailContent);
-                return oResult;
-            }
-        }),
-
-        service.on("checkOTP", async (req) => {
-            const bCardInfoOTP = req.data.bCardInfoOTP
-            const pID = req.data.pID;
-            const pOTP = req.data.pOTP;
-            try {
-                let result = OTPService.checkOTP(bCardInfoOTP, pID, pOTP);
-                return result;
-            } catch (error) {
-                throw error
-            }
-
-        }),
-
-        service.on("decryptID", async (req) => {
-            let pID = req.data.pID;
-            let result = await vbipService.decryptID(pID);
+    service.on("checkOTP", async (req) => {
+        const bCardInfoOTP = req.data.bCardInfoOTP
+        const pID = req.data.pID;
+        const pOTP = req.data.pOTP;
+        try {
+            let result = OTPService.checkOTP(bCardInfoOTP, pID, pOTP);
             return result;
-        }),
+        } catch (error) {
+            throw error
+        }
 
-        service.on("encryptFile", async (req) => {
-            try {
-                let vID = req.data.ID;
-                let fileContent = req.data.fileContent;
-                if (!fileContent) {
-                    return ""
-                }
-                // Encrypt fileContent
-                let oEncryptResult = await cryptoService.encryptData(vID, fileContent);
-                // Update encrypted Base64 content to Database
-                return oEncryptResult;
-            } catch (error) {
-                req.error(error)
+    });
+
+    service.on("decryptID", async (req) => {
+        let pID = req.data.pID;
+        let result = await vbipService.decryptID(pID);
+        return result;
+    });
+
+    service.on("encryptFile", async (req) => {
+        try {
+            let vID = req.data.ID;
+            let fileContent = req.data.fileContent;
+            if (!fileContent) {
+                return ""
             }
+            // Encrypt fileContent
+            let oEncryptResult = await cryptoService.encryptData(vID, fileContent);
+            // Update encrypted Base64 content to Database
+            return oEncryptResult;
+        } catch (error) {
+            req.error(error)
+        }
 
-        }),
+    });
 
-        service.on("decryptFile", async (req) => {
-            try {
-                let vID = req.data.ID;
-                // Get fileContent from Database
-                // let documentDetails = await service.get(DocumentDetails).where({ ID: vID });
-                let encodedContent = req.data.fileContent;
-                if (!encodedContent) {
-                    return ""
-                }
-                // let encodedContent = await service.run( SELECT.from(DocumentDetails).columns("encodedContent").where({ ID: vID }))
-                let fileContent = await cryptoService.decryptData(vID, encodedContent);
-                return fileContent;
-            } catch (error) {
-                req.error(error);
+    service.on("decryptFile", async (req) => {
+        try {
+            let vID = req.data.ID;
+            // Get fileContent from Database
+            // let documentDetails = await service.get(DocumentDetails).where({ ID: vID });
+            let encodedContent = req.data.fileContent;
+            if (!encodedContent) {
+                return ""
             }
-        })
+            // let encodedContent = await service.run( SELECT.from(DocumentDetails).columns("encodedContent").where({ ID: vID }))
+            let fileContent = await cryptoService.decryptData(vID, encodedContent);
+            return fileContent;
+        } catch (error) {
+            req.error(error);
+        }
+    });
     /**
      * Detect file content contains malware or not
      * Input:
@@ -237,7 +294,7 @@ module.exports = cds.service.impl(async (service) => {
         let { fileContent } = req.data
         let isMalwareDetected = await malwareScanner.mediaMalwareScanner(fileContent)
         return isMalwareDetected
-    })
+    });
 
     service.on("submitSupplier", async (req) => {
         let oAuthToken = await vbipService.getToken("VBIP-CPI");
@@ -258,7 +315,7 @@ module.exports = cds.service.impl(async (service) => {
             oResult.error = error;
         }
         return oResult;
-    })
+    });
 
     service.on("getCardInfo", async (req) => {
         // let encodedRequestID = req.data.vbipRequestID
@@ -300,7 +357,7 @@ module.exports = cds.service.impl(async (service) => {
         } catch (error) {
             req.error(400, error)
         }
-    })
+    });
 
     service.on("reportInfo", async (req) => {
         let oAuthToken = await vbipService.getToken("VBIP-API");
@@ -321,7 +378,7 @@ module.exports = cds.service.impl(async (service) => {
         } catch (error) {
             req.error(error)
         }
-    })
+    });
 
     service.on('getCountries', async (req) => {
         let oAuthToken = await vbipService.getToken("VBIP-API");
@@ -339,6 +396,6 @@ module.exports = cds.service.impl(async (service) => {
         } catch (error) {
             req.error(error)
         }
-    })
+    });
 
 })
