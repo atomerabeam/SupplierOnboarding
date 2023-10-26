@@ -49,7 +49,9 @@ sap.ui.define([
             onContinue: function () {
                 let vAcceptCard = this.getView().byId("idAcceptCard.Select").getSelectedKey();
                 if (vAcceptCard === "true") {
-                    this._updateSupplier("message", "CAC", false, false);
+                    this._updateSupplier("noMessage", "CAC", false, false);
+                    this._submitSupplier("message");
+                    this._updateSupplierB1("noMessage");
                     this.getView().getModel("PageModel").setProperty("/pageFlow/complete", true);
                     this.getView().getModel("PageModel").setProperty("/pageFlow/infoRequest", false);
                 } else {
@@ -681,37 +683,50 @@ sap.ui.define([
                     // MessageToast.show(msgError);
                 }
             },
+            _updateSupplierB1: async function (sMessage) {
+                let sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken");
+                let oSupplier = this.getOwnerComponent().getModel("SupplierInfo").getProperty("/supplier");
+                let oVBIP = this.getOwnerComponent().getModel("SupplierInfo").getProperty("/VBIP");
+
+                let oParameter = {
+                    "supplierID": oSupplier.supplierID,
+                    "vbipID": oVBIP.vbipID,
+                    "companyCode": oVBIP.companyCode
+                };
+
+                let oSupplierUpdate = await Models.updateSupplierB1(oParameter, sAuthToken);
+                if (Object.keys(oSupplierUpdate.catchError).length === 0 &&
+                    oSupplierUpdate.catchError.constructor === Object) {
+                    if (oSupplierUpdate.response.error) {
+                        // Error
+                        let msgError = `Operation failed Supplier ${oSupplier.supplierID} \nError code ${oSupplierUpdate.response.error.code}`;
+                        // MessageToast.show(msgError);
+
+                    } else {
+                        // Success
+                        let msgSuccess = `Supplier ${oSupplier.supplierID} information is update`;
+                        if (sMessage === "message") {
+                            MessageToast.show(msgSuccess);
+                        }
+
+                        // Exit
+                    }
+                } else {
+                    // Catch error
+                    let msgError = `Operation failed Supplier ${oSupplier.supplierID} \nError catched`;
+                    // MessageToast.show(msgError);
+                }
+            },
             _submitSupplier: async function (sMessage) {
                 let sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken")
                 let oSupplier = this.getOwnerComponent().getModel("SupplierInfo").getProperty("/supplier");
 
-                // Document
-                let aDocument = this.getView().getModel("DocumentModel").getProperty("/docKeys");
-                let aSupplierDocument = [];
-
-                for (let i = 0; i <= (aDocument.length - 1); i++) {
-                    let oDocumentItem = this.getView().getModel("DocumentModel").getProperty("/doc" + aDocument[i]);
-
-                    // let oFile = {
-                    //     "ID": oSupplier.supplierID,
-                    //     "fileContent": oDocumentItem.fileData
-                    // };
-                    // let oFileEncrypt = await Models.decryptFile(oFile, sAuthToken);
-
-                    aSupplierDocument.push({
-                        "documentName": "doc" + aDocument[i],
-                        "nameOnDocument": oDocumentItem.nameOnDocument,
-                        "documentNumber": oDocumentItem.documentNumber,
-                        "fileName": oDocumentItem.fileName,
-                        "encodedContent": oDocumentItem.fileData
-                    });
-                }
-
+                let vAcceptCard = (this.getView().byId("idAcceptCard.Select").getSelectedKey().toLowerCase() === 'true');
                 let oSupplierOnboarding = {
                     "vbipRequestId": oSupplier.buyerID + oSupplier.supplierID,
                     "businessNature": parseInt(oSupplier.businessNature_selectKey),
                     "shareHolderCount": parseInt(oSupplier.shareholderCount),
-                    "isCardAcceptor": (this.getView().byId("idAcceptCard.Select").getSelectedKey().toLowerCase() === 'true'),
+                    "isCardAcceptor": vAcceptCard,
                     "buyerId": oSupplier.buyerID,
                     "supplierInfo": {
                         "supplierId": oSupplier.supplierID,
@@ -729,8 +744,34 @@ sap.ui.define([
                         "city": oSupplier.city,
                         "state": oSupplier.state,
                         // "companyAdditionalEmailAddress": ""
-                    },
-                    "kycDetails": {
+                    }
+                }
+
+                if (vAcceptCard === false) {
+
+                    // Document
+                    let aDocument = this.getView().getModel("DocumentModel").getProperty("/docKeys");
+                    let aSupplierDocument = [];
+
+                    for (let i = 0; i <= (aDocument.length - 1); i++) {
+                        let oDocumentItem = this.getView().getModel("DocumentModel").getProperty("/doc" + aDocument[i]);
+
+                        // let oFile = {
+                        //     "ID": oSupplier.supplierID,
+                        //     "fileContent": oDocumentItem.fileData
+                        // };
+                        // let oFileEncrypt = await Models.decryptFile(oFile, sAuthToken);
+
+                        aSupplierDocument.push({
+                            "documentName": "doc" + aDocument[i],
+                            "nameOnDocument": oDocumentItem.nameOnDocument,
+                            "documentNumber": oDocumentItem.documentNumber,
+                            "fileName": oDocumentItem.fileName,
+                            "encodedContent": oDocumentItem.fileData
+                        });
+                    }
+
+                    oSupplierOnboarding.kycDetails = {
                         "addressProof": {
                             "documentName": "Test",
                             "nameOnDocument": "Test",
@@ -772,14 +813,16 @@ sap.ui.define([
                         //         }
                         //     }
                         // ]
-                    },
-                    "supplierBankingInfo": {
+                    };
+
+                    oSupplierOnboarding.supplierBankingInfo = {
                         "accountHolderName": oSupplier.supplierName,
                         "accountNumber": oSupplier.accountNumber,
                         "branchCity": "",
                         "bankCode": oSupplier.bankCode
-                    }
-                };
+                    };
+                }
+
                 let oParameter = {
                     "oSupplier": oSupplierOnboarding
                 };
