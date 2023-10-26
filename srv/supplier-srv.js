@@ -139,7 +139,7 @@ module.exports = cds.service.impl(async (service) => {
         let companyCode = req.data.companyCode;
         let b1Info;
         try {
-            const response = await fetch(`${oAuthToken.url}/odata/v4/btponboarding/BTPOnboarding(vbipID='${vbipID}',companyCode='${companyCode}')`, {
+            const response = await fetch(`${oAuthToken.url}/odata/v4/btponboarding/B1Onboarding(vbipID='${vbipID}',companyCode='${companyCode}')`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -169,11 +169,12 @@ module.exports = cds.service.impl(async (service) => {
             ]
 
         };
-
+        console.log(b1Info.dbName);
+        console.log(oAuthTokenCPI);
         let oResult = {};
         try {
             const response = await fetch(`${oAuthTokenCPI.url}/if3001/router/b1s/v1/BusinessPartners`, {
-                method: "POST",
+                method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": oAuthTokenCPI.token
@@ -181,10 +182,12 @@ module.exports = cds.service.impl(async (service) => {
                 body: JSON.stringify(oSupplier)
             });
 
-            oResult.supplier = await response.json();
+            oResult.supplier = response;
+            
         } catch (error) {
             oResult.error = error;
         }
+        console.log(oResult);
         return oResult;
     });
 

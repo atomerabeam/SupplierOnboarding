@@ -47,6 +47,16 @@ headers:
 }
 
 ####################################################
+POST {{server}}/odata/v4/supplier/updateSupplierB1
+headers: 
+      Content-Type: application/json
+
+{
+      "supplierID": "1000018989",
+      "vbipID": "100001",
+      "companyCode": "1000"
+}
+####################################################
 POST {{server}}/odata/v4/supplier/decryptID
 headers: 
       Content-Type: application/json
