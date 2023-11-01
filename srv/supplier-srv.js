@@ -174,7 +174,7 @@ module.exports = cds.service.impl(async (service) => {
         let oResult = {};
         try {
             const response = await fetch(`${oAuthTokenCPI.url}/if3001/router/b1s/v1/BusinessPartners`, {
-                method: "PATCH",
+                method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": oAuthTokenCPI.token

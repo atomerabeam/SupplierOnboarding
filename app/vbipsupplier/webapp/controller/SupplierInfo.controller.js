@@ -50,7 +50,7 @@ sap.ui.define([
                 let vAcceptCard = this.getView().byId("idAcceptCard.Select").getSelectedKey();
                 if (vAcceptCard === "true") {
                     this._updateSupplier("noMessage", "CAC", false, false);
-                    this._submitSupplier("message");
+                    let vReturnCode = this._submitSupplier("message");
                     this._updateSupplierB1("noMessage");
                     this.getView().getModel("PageModel").setProperty("/pageFlow/complete", true);
                     this.getView().getModel("PageModel").setProperty("/pageFlow/infoRequest", false);
@@ -87,7 +87,8 @@ sap.ui.define([
             },
             onSubmit: function () {
                 this._updateSupplier("noMessage", "SUB", true, true);
-                this._submitSupplier("message");
+                
+                let vReturnCode = this._submitSupplier("message");
                 this.getView().getModel("PageModel").setProperty("/pageFlow/shareholder", false);
                 this.getView().getModel("PageModel").setProperty("/pageFlow/complete", true);
             },
@@ -826,6 +827,7 @@ sap.ui.define([
                 let oParameter = {
                     "oSupplier": oSupplierOnboarding
                 };
+                let vReturnCode;
                 let oSupplierSubmit = await Models.submitSupplier(oParameter, sAuthToken);
                 if (Object.keys(oSupplierSubmit.catchError).length === 0 &&
                     oSupplierSubmit.catchError.constructor === Object) {
@@ -840,7 +842,7 @@ sap.ui.define([
                         if (sMessage === "message") {
                             MessageToast.show(msgSuccess);
                         }
-
+                        vReturnCode = "Success";
                         // Exit
                     }
                 } else {
@@ -848,6 +850,7 @@ sap.ui.define([
                     let msgError = `Operation failed Supplier ${oSupplier.supplierID} \nError catched`;
                     // MessageToast.show(msgError);
                 }
+                return vReturnCode;
             },
             _endSession: function () {
                 // this.getOwnerComponent().getModel("LandingText").setProperty("/expire", false);
