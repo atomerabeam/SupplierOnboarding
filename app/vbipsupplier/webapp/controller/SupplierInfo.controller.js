@@ -52,8 +52,8 @@ sap.ui.define([
                     this._updateSupplier("noMessage", "CAC", false, false);
                     let vReturnCode = this._submitSupplier("message");
                     this._updateSupplierB1("noMessage");
-                    this.getView().getModel("PageModel").setProperty("/pageFlow/complete", true);
-                    this.getView().getModel("PageModel").setProperty("/pageFlow/infoRequest", false);
+                    // this.getView().getModel("PageModel").setProperty("/pageFlow/complete", true);
+                    // this.getView().getModel("PageModel").setProperty("/pageFlow/infoRequest", false);
                 } else {
                     let oSupplier = this.getOwnerComponent().getModel("SupplierInfo").getProperty("/supplier");
                     let oBuyer = this.getOwnerComponent().getModel("SupplierInfo").getProperty("/buyer");
@@ -87,10 +87,8 @@ sap.ui.define([
             },
             onSubmit: function () {
                 this._updateSupplier("noMessage", "SUB", true, true);
-                
+
                 let vReturnCode = this._submitSupplier("message");
-                this.getView().getModel("PageModel").setProperty("/pageFlow/shareholder", false);
-                this.getView().getModel("PageModel").setProperty("/pageFlow/complete", true);
             },
             onReportInfo: function () {
                 const sMessageTitle = this.getOwnerComponent().getModel("i18n").getProperty("reportInfoMessageTitle")
@@ -200,7 +198,9 @@ sap.ui.define([
                         "docType": "",
                         "docNum": "",
                         "nameOnDoc": "",
-                        "dateOfIssue": "",
+                        "dateOfBirth": "",
+                        "issueingDate": "",
+                        "expiryDate": "",
                         "filename": "",
                         "fileType": "",
                         "fileData": "",
@@ -389,7 +389,9 @@ sap.ui.define([
                     "docType": oShareholderPopup.docType,
                     "docNum": oShareholderPopup.docNum,
                     "nameOnDoc": oShareholderPopup.nameOnDoc,
-                    "dateOfIssue": oShareholderPopup.dateOfIssue,
+                    "dateOfBirth": oShareholderPopup.dateOfBirth,
+                    "issueingDate": oShareholderPopup.issueingDate,
+                    "expiryDate": oShareholderPopup.expiryDate,
                     "filename": oShareholderPopup.fileName,
                     "fileType": oShareholderPopup.fileType,
                     "fileData": oShareholderPopup.fileData,
@@ -468,7 +470,7 @@ sap.ui.define([
                         "fileVisible": false,
                     });
                 }
-                oDocumentModel.setProperty("/docKeys", [1, 2, 3, 4, 5, 6, 7, 8, 9]);
+                oDocumentModel.setProperty("/docKeys", []);
 
                 //Set model
                 this.getView().setModel(oDocumentModel, "DocumentModel");
@@ -543,7 +545,7 @@ sap.ui.define([
                             "fileVisible": true,
                         };
 
-                        this.getView().getModel("DocumentModel").setProperty("/doc" + aDocument[i].documentType, oDocumentItem);
+                        this.getView().getModel("DocumentModel").setProperty("/doc" + aDocument[i].documentKey, oDocumentItem);
                     }
 
                     this.onCheckComplete();
@@ -594,7 +596,7 @@ sap.ui.define([
 
                     aSupplierDocument.push({
                         "documentName": "doc" + aDocument[i],
-                        "documentType": aDocument[i].toString(),
+                        "documentKey": aDocument[i].toString(),
                         "nameOnDocument": oDocumentItem.nameOnDocument,
                         "documentNumber": oDocumentItem.documentNumber,
                         "fileName": oDocumentItem.fileName,
@@ -629,6 +631,7 @@ sap.ui.define([
                                     [
                                         {
                                             "documentType": oShareholder.docType,
+                                            "documentKey": i.toString(),
                                             "nameOnDocument": oShareholder.nameOnDoc,
                                             "documentNumber": oShareholder.docNum,
                                             "fileName": oShareholder.fileName,
@@ -723,9 +726,22 @@ sap.ui.define([
                 let oSupplier = this.getOwnerComponent().getModel("SupplierInfo").getProperty("/supplier");
 
                 let vAcceptCard = (this.getView().byId("idAcceptCard.Select").getSelectedKey().toLowerCase() === 'true');
+
+                let vBusinessNature, iAddressDoc;
+                if (oSupplier.businessNature_selectKey == 1) {
+                    vBusinessNature = "COMPANY";
+                    iAddressDoc = 1;
+                } else if (oSupplier.businessNature_selectKey == 2) {
+                    vBusinessNature = "PARTNERSHIP";
+                    iAddressDoc = 6;
+                } else if (oSupplier.businessNature_selectKey == 3) {
+                    vBusinessNature = "INDIVIDUAL";
+                    iAddressDoc = 9;
+                }
+
                 let oSupplierOnboarding = {
                     "vbipRequestId": oSupplier.buyerID + oSupplier.supplierID,
-                    "businessNature": parseInt(oSupplier.businessNature_selectKey),
+                    "businessNature": vBusinessNature,
                     "shareHolderCount": parseInt(oSupplier.shareholderCount),
                     "isCardAcceptor": vAcceptCard,
                     "buyerId": oSupplier.buyerID,
@@ -753,18 +769,22 @@ sap.ui.define([
                     // Document
                     let aDocument = this.getView().getModel("DocumentModel").getProperty("/docKeys");
                     let aSupplierDocument = [];
+                    let oShareholderDocument = {}; // Document proof for shareholder
 
                     for (let i = 0; i <= (aDocument.length - 1); i++) {
                         let oDocumentItem = this.getView().getModel("DocumentModel").getProperty("/doc" + aDocument[i]);
-
+                        if (i == 0) {
+                            oShareholderDocument = oDocumentItem;
+                        }
                         // let oFile = {
                         //     "ID": oSupplier.supplierID,
                         //     "fileContent": oDocumentItem.fileData
                         // };
                         // let oFileEncrypt = await Models.decryptFile(oFile, sAuthToken);
 
+                        let sDocumentName = this.getOwnerComponent().getModel("i18n").getProperty("documentName" + aDocument[i]);
                         aSupplierDocument.push({
-                            "documentName": "doc" + aDocument[i],
+                            "documentName": sDocumentName,
                             "nameOnDocument": oDocumentItem.nameOnDocument,
                             "documentNumber": oDocumentItem.documentNumber,
                             "fileName": oDocumentItem.fileName,
@@ -772,13 +792,45 @@ sap.ui.define([
                         });
                     }
 
+                    let oAddressProof = this.getView().getModel("DocumentModel").getProperty("/doc" + iAddressDoc);
+
+                    let vShareholderCount = parseInt(this.getView().byId("idShareholderCount.Select").getSelectedKey());
+                    let aShareholder = [];
+
+                    for (let i = 0; i <= (vShareholderCount - 1); i++) {
+                        let oShareholder = this.getView().getModel("ShareholderModel").getProperty("/item/" + i);
+                        if (oShareholder) {
+                            aShareholder.push({
+                                "name": oShareholder.name,
+                                "sharePercentage": parseInt(oShareholder.sharePercentage),
+                                "identityProof": {
+                                    "documentName": oShareholder.docType,
+                                    "nameOnDocument": oShareholder.nameOnDoc,
+                                    "documentNumber": oShareholder.docNum,
+                                    "fileName": oShareholder.fileName,
+                                    "encodedContent": oShareholder.fileData,
+                                    "dateofBirth": this.toVisaDateFormat(oShareholder.dateOfBirth),
+                                    "issuingDate": this.toVisaDateFormat(oShareholder.issuingDate),
+                                    "expiryDate": this.toVisaDateFormat(oShareholder.expiryDate)
+                                },
+                                "documentProof": {
+                                    "documentName": "COPY_OF_BUSINESS_REGISTRATION",
+                                    "nameOnDocument": oShareholderDocument.nameOnDocument,
+                                    "documentNumber": oShareholderDocument.documentNumber,
+                                    "fileName": oShareholderDocument.fileName,
+                                    "encodedContent": oShareholderDocument.fileData
+                                }
+
+                            });
+                        }
+                    }
                     oSupplierOnboarding.kycDetails = {
                         "addressProof": {
-                            "documentName": "Test",
-                            "nameOnDocument": "Test",
-                            "documentNumber": "Test",
-                            "fileName": "Test",
-                            "encodedContent": "Test"
+                            "documentName": "COPY_OF_BUSINESS_REGISTRATION",
+                            "nameOnDocument": oAddressProof.nameOnDocument,
+                            "documentNumber": oAddressProof.documentNumber,
+                            "fileName": oAddressProof.fileName,
+                            "encodedContent": oAddressProof.fileData
                         },
                         "businessProof": aSupplierDocument,
                         // "identityProof": {
@@ -834,21 +886,38 @@ sap.ui.define([
                     if (oSupplierSubmit.response.error) {
                         // Error
                         let msgError = `Operation failed Supplier ${oSupplier.supplierID} \nError code ${oSupplierSubmit.response.error.code}`;
-                        // MessageToast.show(msgError);
+                        MessageToast.show(msgError);
 
                     } else {
                         // Success
-                        let msgSuccess = `Supplier ${oSupplier.supplierID} information is submitted`;
-                        if (sMessage === "message") {
-                            MessageToast.show(msgSuccess);
+                        if (oSupplierSubmit.value.errorPayload) {
+                            let errorMessage;
+                            oSupplierSubmit.value.errorPayload.forEach((errorPayload) => {
+                                if (errorMessage) {
+                                    errorMessage += 
+                                        "\n " + errorPayload.errorMessage;
+                                } else {
+                                    errorMessage = errorPayload.errorMessage;
+                                }
+                            })
+                            MessageBox.error(errorMessage);
+                        } else {
+                            let msgSuccess = `Supplier ${oSupplier.supplierID} information is submitted`;
+                            if (sMessage === "message") {
+                                MessageToast.show(msgSuccess);
+                            }
+                            
+                            vReturnCode = "Success";
+                            this.getView().getModel("PageModel").setProperty("/pageFlow/shareholder", false);
+                            this.getView().getModel("PageModel").setProperty("/pageFlow/complete", true);
                         }
-                        vReturnCode = "Success";
+                        
                         // Exit
                     }
                 } else {
                     // Catch error
                     let msgError = `Operation failed Supplier ${oSupplier.supplierID} \nError catched`;
-                    // MessageToast.show(msgError);
+                    MessageToast.show(msgError);
                 }
                 return vReturnCode;
             },
@@ -859,6 +928,20 @@ sap.ui.define([
                 oRouter.navTo("Supplier", {
                     GUID: "Info"
                 });
-            }
+            },
+
+            toVisaDateFormat: function (date) {
+                regex = /^\d{4}-\d{2}-\d{2}$/;
+                if (!isNaN(new Date(date).getDate()) && date !== null && regex.test(date) == true) {
+                    // return  date.substr(8,2) + '-' + date.substr(5,2) + '-' + date.substr(0,4);
+                    return date;
+                } else {
+                    if (date?.length === 10) {
+                        return date.substr(6, 4) + '-' + date.substr(3, 2) + '-' + date.substr(0, 2);
+                    }
+                }
+
+
+            },
         });
     });
