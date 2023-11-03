@@ -843,29 +843,7 @@ sap.ui.define([
                         //     "fileName": "passport.jpg",
                         //     "encodedContent": "HKYT67"
                         // },
-                        // "shareholderProof": [
-                        //     {
-                        //         "name": "",
-                        //         "sharePercentage": 60,
-                        //         "identityProof": {
-                        //             "documentName": "Passport",
-                        //             "nameOnDocument": "Xavier",
-                        //             "documentNumber": "HN789T",
-                        //             "dateofBirth": "22-01-1987",
-                        //             "issuingDate": "22-01-1987",
-                        //             "expiryDate": "22-01-1987",
-                        //             "fileName": "passport.jpg",
-                        //             "encodedContent": "HKYT67"
-                        //         },
-                        //         "documentProof": {
-                        //             "documentName": "Shareholder certificate",
-                        //             "nameOnDocument": "David",
-                        //             "documentNumber": "KTY875VC",
-                        //             "fileName": "Shareholder certificate.jpg",
-                        //             "encodedContent": "HKLVQ"
-                        //         }
-                        //     }
-                        // ]
+                        "shareholderProof": aShareholder
                     };
 
                     oSupplierOnboarding.supplierBankingInfo = {
