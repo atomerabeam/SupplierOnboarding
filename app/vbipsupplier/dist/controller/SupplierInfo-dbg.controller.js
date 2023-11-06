@@ -235,9 +235,6 @@ sap.ui.define([
                                 base64 += String.fromCharCode(bytes[i]);
                             }
                             base64 = btoa(base64);
-                            // console.log(dataArr)
-                            // console.log(textData)
-                            // console.log(base64)
                             let oFileCheck = { "fileContent": base64 };
                             let isMalwareDetected = await Models.checkMalware(oFileCheck, sAuthToken);
                             if (isMalwareDetected === "true") {
@@ -392,7 +389,7 @@ sap.ui.define([
                     "dateOfBirth": oShareholderPopup.dateOfBirth,
                     "issueingDate": oShareholderPopup.issueingDate,
                     "expiryDate": oShareholderPopup.expiryDate,
-                    "filename": oShareholderPopup.fileName,
+                    "fileName": oShareholderPopup.fileName,
                     "fileType": oShareholderPopup.fileType,
                     "fileData": oShareholderPopup.fileData,
                     "uploadVisible": false,
@@ -582,34 +579,35 @@ sap.ui.define([
                 // aShareholder.forEach((element) => element.sharePercentage = parseInt(element.sharePercentage));
 
                 // Document
-                let aDocument = this.getView().getModel("DocumentModel").getProperty("/docKeys");
+                let aDocumentKey = this.getView().getModel("DocumentModel").getProperty("/docKeys");
                 let aSupplierDocument = [];
-
-                for (let i = 0; i <= (aDocument.length - 1); i++) {
-                    let oDocumentItem = this.getView().getModel("DocumentModel").getProperty("/doc" + aDocument[i]);
-
-                    let oFile = {
-                        "ID": oSupplier.supplierID,
-                        "fileContent": oDocumentItem.fileData
-                    };
-                    let oFileEncrypt = await Models.encryptFile(oFile, sAuthToken);
-
-                    aSupplierDocument.push({
-                        "documentName": "doc" + aDocument[i],
-                        "documentKey": aDocument[i].toString(),
-                        "nameOnDocument": oDocumentItem.nameOnDocument,
-                        "documentNumber": oDocumentItem.documentNumber,
-                        "fileName": oDocumentItem.fileName,
-                        "fileType": oDocumentItem.fileType,
-                        "encodedContent": oFileEncrypt.response.value
-                    });
-                }
 
                 let vBusinessNature, vShareholderCount;
                 let aShareholder = [];
 
                 if (vBizNature === true) {
                     vBusinessNature = parseInt(this.getView().byId("idBusinessNature.Select").getSelectedKey());
+
+                    for (let i = 0; i <= (aDocumentKey.length - 1); i++) {
+                        let oDocumentItem = this.getView().getModel("DocumentModel").getProperty("/doc" + aDocumentKey[i]);
+
+                        let oFile = {
+                            "ID": oSupplier.supplierID,
+                            "fileContent": oDocumentItem.fileData
+                        };
+                        let oFileEncrypt = await Models.encryptFile(oFile, sAuthToken);
+
+                        aSupplierDocument.push({
+                            "documentName": "doc" + aDocumentKey[i],
+                            "documentType": aDocumentKey[i].toString(),
+                            "documentKey": aDocumentKey[i].toString(),
+                            "nameOnDocument": oDocumentItem.nameOnDocument,
+                            "documentNumber": oDocumentItem.documentNumber,
+                            "fileName": oDocumentItem.fileName,
+                            "fileType": oDocumentItem.fileType,
+                            "encodedContent": oFileEncrypt.response.value
+                        });
+                    }
                 } else {
                     vBusinessNature = null;
                 }
@@ -868,28 +866,31 @@ sap.ui.define([
 
                     } else {
                         // Success
-                        if (oSupplierSubmit.value.errorPayload) {
+                        if (oSupplierSubmit.response.value.supplier.errorPayload) {
                             let errorMessage;
-                            oSupplierSubmit.value.errorPayload.forEach((errorPayload) => {
+                            let aErrorPayload = oSupplierSubmit.response.value.supplier.errorPayload;
+                            aErrorPayload.forEach((errorPayload) => {
                                 if (errorMessage) {
-                                    errorMessage += 
+                                    errorMessage +=
                                         "\n " + errorPayload.errorMessage;
                                 } else {
                                     errorMessage = errorPayload.errorMessage;
                                 }
                             })
-                            MessageBox.error(errorMessage);
+                            
+                            // MessageBox.error(errorMessage);
+                            this.showErrorMessageBox("Response from VISA", errorMessage, null);
                         } else {
                             let msgSuccess = `Supplier ${oSupplier.supplierID} information is submitted`;
                             if (sMessage === "message") {
                                 MessageToast.show(msgSuccess);
                             }
-                            
+
                             vReturnCode = "Success";
                             this.getView().getModel("PageModel").setProperty("/pageFlow/shareholder", false);
                             this.getView().getModel("PageModel").setProperty("/pageFlow/complete", true);
                         }
-                        
+
                         // Exit
                     }
                 } else {

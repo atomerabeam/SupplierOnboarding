@@ -866,9 +866,10 @@ sap.ui.define([
 
                     } else {
                         // Success
-                        if (oSupplierSubmit.value.errorPayload) {
+                        if (oSupplierSubmit.response.value.supplier.errorPayload) {
                             let errorMessage;
-                            oSupplierSubmit.value.errorPayload.forEach((errorPayload) => {
+                            let aErrorPayload = oSupplierSubmit.response.value.supplier.errorPayload;
+                            aErrorPayload.forEach((errorPayload) => {
                                 if (errorMessage) {
                                     errorMessage +=
                                         "\n " + errorPayload.errorMessage;
@@ -876,7 +877,9 @@ sap.ui.define([
                                     errorMessage = errorPayload.errorMessage;
                                 }
                             })
-                            MessageBox.error(errorMessage);
+                            
+                            // MessageBox.error(errorMessage);
+                            this.showErrorMessageBox("Response from VISA", errorMessage, null);
                         } else {
                             let msgSuccess = `Supplier ${oSupplier.supplierID} information is submitted`;
                             if (sMessage === "message") {
