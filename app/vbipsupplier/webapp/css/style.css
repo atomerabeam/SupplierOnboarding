@@ -279,7 +279,7 @@
     padding: 7px 15px;
     flex-wrap: wrap;
     flex-direction: row;
-    justify-content: normal;
+    justify-content: space-around;
     align-items: flex-start;
     align-self: stretch;
     border-radius: 8px;

@@ -17,6 +17,7 @@ type typeSupplier {
 type typeSupplierDocument {
     documentName   : String(100);
     documentType   : String(100);
+    documentKey    : String(100);
     nameOnDocument : String(100);
     documentNumber : String(20);
     fileName       : String(100);

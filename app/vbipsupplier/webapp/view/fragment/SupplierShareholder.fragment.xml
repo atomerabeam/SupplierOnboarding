@@ -52,7 +52,7 @@
                                                         <Text id="idShareholderDetails.Text" class="customSubtitle2"
                                                             text="{i18n>shareholderDetails}"/>
                                                         <HBox id="idName.HBox" class="customPanelItem1">
-                                                            <VBox id="idName1.VBox" width="35%">
+                                                            <VBox id="idName1.VBox" width="40%">
                                                                 <!-- @ui5ignore-patterns -->
                                                                 <Text id="idName.Text" class="customText" text="{i18n>name}"/>
                                                             </VBox>
@@ -62,7 +62,7 @@
                                                             </VBox>
                                                         </HBox>
                                                         <HBox id="idSharePercentage.HBox" class="customPanelItem1">
-                                                            <VBox id="idSharePercentage1.VBox" width="35%">
+                                                            <VBox id="idSharePercentage1.VBox" width="40%">
                                                                 <!-- @ui5ignore-patterns -->
                                                                 <Text id="idSharePercentage.Text" class="customText" text="{i18n>sharePercentage}"/>
                                                             </VBox>
@@ -73,7 +73,7 @@
                                                             </VBox>
                                                         </HBox>
                                                         <HBox id="idAddress.HBox" class="customPanelItem1">
-                                                            <VBox id="idAddress1.VBox" width="35%">
+                                                            <VBox id="idAddress1.VBox" width="40%">
                                                                 <!-- @ui5ignore-patterns -->
                                                                 <Text id="idAddress.Text" class="customText" text="{i18n>address}"/>
                                                             </VBox>
@@ -87,7 +87,7 @@
                                                             text="{i18n>identityProof}"/>
                                                         
                                                         <HBox id="idDocType.HBox" class="customPanelItem1">
-                                                            <VBox id="idDocType1.VBox" width="35%">
+                                                            <VBox id="idDocType1.VBox" width="40%">
                                                                 <!-- @ui5ignore-patterns -->
                                                                 <Text id="idDocType.Text" class="customText" text="{i18n>documentType}"/>
                                                             </VBox>
@@ -97,7 +97,7 @@
                                                             </VBox>
                                                         </HBox>
                                                         <HBox id="idDocNum.HBox" class="customPanelItem1">
-                                                            <VBox id="idDocNum1.VBox" width="35%">
+                                                            <VBox id="idDocNum1.VBox" width="40%">
                                                                 <!-- @ui5ignore-patterns -->
                                                                 <Text id="idDocNum.Text" class="customText" text="{i18n>documentNumber}"/>
                                                             </VBox>
@@ -107,7 +107,7 @@
                                                             </VBox>
                                                         </HBox>  
                                                         <HBox id="ididNameOnDoc.HBox" class="customPanelItem1">
-                                                            <VBox id="idNameOnDoc1.VBox" width="35%">
+                                                            <VBox id="idNameOnDoc1.VBox" width="40%">
                                                                 <!-- @ui5ignore-patterns -->
                                                                 <Text id="idNameOnDoc.Text" class="customText" text="{i18n>nameOnDocument}"/>
                                                             </VBox>
@@ -117,7 +117,7 @@
                                                             </VBox>
                                                         </HBox>    
                                                         <HBox id="idDateOfIssue.HBox" class="customPanelItem1">
-                                                            <VBox id="idDateOfIssue1.VBox" width="35%">
+                                                            <VBox id="idDateOfIssue1.VBox" width="40%">
                                                                 <!-- @ui5ignore-patterns -->
                                                                 <Text id="idDateOfIssue.Text" class="customText" text="{i18n>dateOfIssue}"/>
                                                             </VBox>
@@ -127,7 +127,7 @@
                                                             </VBox>
                                                         </HBox>  
                                                         <HBox id="idDocUploaded.HBox" class="customPanelItem1">
-                                                            <VBox id="idDocUploaded1.VBox" width="35%">
+                                                            <VBox id="idDocUploaded1.VBox" width="40%">
                                                                 <!-- @ui5ignore-patterns -->
                                                                 <Text id="idDocUploaded.Text" class="customText" text="{i18n>documentUploaded}"/>
                                                             </VBox>

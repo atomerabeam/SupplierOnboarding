@@ -40,7 +40,7 @@
                         <!-- @ui5ignore-patterns -->
                         <Label id="idNameOnDoc.Label" text="{i18n>nameOnDocument}" class="customLabel"/>
                         <Input id="idNameOnDoc.Input" value="{ShareholderPopupModel>/popup/nameOnDoc}"/>
-                        <Label id="idDateOfBirth.Label" text="{i18n>dateOfIssue}" class="customLabel"/>
+                        <Label id="idDateOfBirth.Label" text="{i18n>dateOfBirth}" class="customLabel"/>
                         <DatePicker id="idDateOfBirth.DatePicker" value="{ShareholderPopupModel>/popup/dateOfBirth}"/>
                         <Label id="idDateOfIssue.Label" text="{i18n>dateOfIssue}" class="customLabel"/>
                         <DatePicker id="idDateOfIssue.DatePicker" value="{ShareholderPopupModel>/popup/issueingDate}"/>
