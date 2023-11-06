@@ -40,10 +40,12 @@
                         <!-- @ui5ignore-patterns -->
                         <Label id="idNameOnDoc.Label" text="{i18n>nameOnDocument}" class="customLabel"/>
                         <Input id="idNameOnDoc.Input" value="{ShareholderPopupModel>/popup/nameOnDoc}"/>
+                        <Label id="idDateOfBirth.Label" text="{i18n>dateOfIssue}" class="customLabel"/>
+                        <DatePicker id="idDateOfBirth.DatePicker" value="{ShareholderPopupModel>/popup/dateOfBirth}"/>
                         <Label id="idDateOfIssue.Label" text="{i18n>dateOfIssue}" class="customLabel"/>
-                        <DatePicker id="idDateOfIssue.DatePicker" value="{ShareholderPopupModel>/popup/dateOfIssue}"/>
+                        <DatePicker id="idDateOfIssue.DatePicker" value="{ShareholderPopupModel>/popup/issueingDate}"/>
                         <Label id="idDateOfExpiry.Label" text="{i18n>dateOfExpiry}" class="customLabel"/>
-                        <DatePicker id="idDateOfExpiry.DatePicker" value="{ShareholderPopupModel>/popup/dateOfExpiry}"/>
+                        <DatePicker id="idDateOfExpiry.DatePicker" value="{ShareholderPopupModel>/popup/expiryDate}"/>
 
                         <HBox id="idUploadSH.HBox" class="customUploadBox"
                               visible="{ShareholderPopupModel>/popup/uploadVisible}">

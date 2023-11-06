@@ -36,7 +36,7 @@ type typeSupplierOnboarding {
     vbipRequestId       : String(36);
     isCardAcceptor      : Boolean;
     buyerId             : String(10);
-    businessNature      : Integer;
+    businessNature      : String;
     shareHolderCount    : Integer;
     supplierInfo        : typeSupplierInfo;
     kycDetails          : typeKycDetails;
