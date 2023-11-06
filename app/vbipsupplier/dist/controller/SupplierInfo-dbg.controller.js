@@ -49,9 +49,11 @@ sap.ui.define([
             onContinue: function () {
                 let vAcceptCard = this.getView().byId("idAcceptCard.Select").getSelectedKey();
                 if (vAcceptCard === "true") {
-                    this._updateSupplier("noMessage", "CAC", false, false);
                     let vReturnCode = this._submitSupplier("message");
-                    this._updateSupplierB1("noMessage");
+                    if (vReturnCode === "Success") {
+                        this._updateSupplier("noMessage", "CAC", false, false);
+                        this._updateSupplierB1("noMessage");
+                    }
                     // this.getView().getModel("PageModel").setProperty("/pageFlow/complete", true);
                     // this.getView().getModel("PageModel").setProperty("/pageFlow/infoRequest", false);
                 } else {
