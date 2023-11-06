@@ -5,8 +5,8 @@ headers:
       Content-Type: application/json
 
 {
-      "buyerID" : "1000010002",
-      "supplierID": "1000012345"
+      "buyerID" : "3000000001",
+      "supplierID": "BPPL"
 }
 
 ####################################################

@@ -87,10 +87,12 @@ sap.ui.define([
                 this.getView().getModel("PageModel").setProperty("/pageFlow/corporate", false);
                 this.getView().getModel("PageModel").setProperty("/pageFlow/shareholder", true);
             },
-            onSubmit: function () {
-                this._updateSupplier("noMessage", "SUB", true, true);
-
-                let vReturnCode = this._submitSupplier("message");
+            onSubmit: async function () {
+                
+                let vReturnCode = await this._submitSupplier("message");
+                if (vReturnCode === "Success") {
+                    await this._updateSupplier("noMessage", "SUB", true, true);
+                }
             },
             onReportInfo: function () {
                 const sMessageTitle = this.getOwnerComponent().getModel("i18n").getProperty("reportInfoMessageTitle")
@@ -203,7 +205,7 @@ sap.ui.define([
                         "dateOfBirth": "",
                         "issueingDate": "",
                         "expiryDate": "",
-                        "filename": "",
+                        "fileName": "",
                         "fileType": "",
                         "fileData": "",
                         "uploadVisible": true,
@@ -637,7 +639,8 @@ sap.ui.define([
                                             "fileName": oShareholder.fileName,
                                             "fileType": oShareholder.fileType,
                                             "encodedContent": oFileEncrypt.response.value,
-                                            // "dateOfIssue": oShareholder.dateOfIssue,
+                                            "dateOfBirth": oShareholder.dateOfBirth,
+                                            "issueingDate": oShareholder.issueingDate,
                                             "expiryDate": oShareholder.expiryDate,
                                         }
                                     ]
@@ -912,7 +915,7 @@ sap.ui.define([
             },
 
             toVisaDateFormat: function (date) {
-                regex = /^\d{4}-\d{2}-\d{2}$/;
+                let regex = /^\d{4}-\d{2}-\d{2}$/;
                 if (!isNaN(new Date(date).getDate()) && date !== null && regex.test(date) == true) {
                     // return  date.substr(8,2) + '-' + date.substr(5,2) + '-' + date.substr(0,4);
                     return date;

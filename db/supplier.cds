@@ -23,8 +23,9 @@ type typeSupplierDocument {
     fileName       : String(100);
     fileType       : String(50);
     encodedContent : LargeString;
-    dateOfIssue    : Date;
-    dateOfExpiry   : Date;
+    dateOfBirth    : Date;
+    issueingDate   : Date;
+    expiryDate     : Date;
 }
 
 type typeSupplierShareholder {

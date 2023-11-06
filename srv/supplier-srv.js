@@ -11,6 +11,7 @@ module.exports = cds.service.impl(async (service) => {
         let buyerID = req.data.buyerID;
         let supplierID = req.data.supplierID;
         let oResult = {};
+        // console.log(oAuthToken);
         try {
             // console.log(await vbipSrv.read('SupplierInfo'))
             // console.log(await vbipSrv.get())
