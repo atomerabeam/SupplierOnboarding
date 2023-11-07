@@ -1,6 +1,7 @@
 // const cds = require("@sap/cds");
 const oConnect = require('@sap-cloud-sdk/connectivity');
 const CryptoJS = require('crypto-js');
+const { getBinding, readCredential } = require('./credentialStore')
 
 async function getToken(sDestionation) {
     const oDestination = await oConnect.getDestination({ destinationName: sDestionation });
@@ -16,7 +17,10 @@ async function getToken(sDestionation) {
 }
 
 async function decryptID(pID) {
-    const secretKey = "visaproject";
+    const oBinding = getBinding()
+    const oCredential = await readCredential(oBinding, "VISA-Credentials", "password", "URL_Key")
+    const secretKey = oCredential?.value
+    // const secretKey = "visaproject";
     let data = "1000010004_1000012345_1697374238175";
 
     // Encrypt
