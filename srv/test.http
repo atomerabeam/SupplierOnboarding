@@ -1,4 +1,4 @@
-@server = http://localhost:4004 
+@server = http://localhost:39281 
 
 POST {{server}}/odata/v4/supplier/getSupplier
 headers: 
@@ -62,7 +62,7 @@ headers:
       Content-Type: application/json
 
 {
-      "pID" : "U2FsdGVkX1%2FYYiscrCb1Ey%2BX0JYGGg6vyU8TPXNqcuFuNycaaP8Ur9xDov%2BQ9fj5"
+      "pID" : "U2FsdGVkX18upWO%2BbWaoXftvMxE24hO9CBZz5N4SnC%2BhISFAjuEnL8EWsCI0DFPcOoVDMEPILcQ5BdWXZfFDtQ%3D%3D"
 }
 
 

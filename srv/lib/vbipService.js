@@ -18,6 +18,7 @@ async function getToken(sDestionation) {
 
 async function decryptID(pID) {
     const oBinding = getBinding()
+    console.log(oBinding)
     const oCredential = await readCredential(oBinding, "VISA-Credentials", "password", "URL_Key")
     const secretKey = oCredential?.value
     // const secretKey = "visaproject";
