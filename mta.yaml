@@ -20,6 +20,7 @@ modules:
       - name: VBIPSUPPLIER-destination-service
       - name: credentialStore
       - name: malwareScanner
+      - name: VBIPSUPPLIER-app-log
   - name: VBIPSUPPLIER-app-content
     type: com.sap.application.content
     path: .
@@ -68,6 +69,12 @@ resources:
       service: html5-apps-repo
       service-name: VBIPSUPPLIER-html5-srv
       service-plan: app-host
+  - name: VBIPSUPPLIER-app-log
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service-name: "my-logging-service-instance-name" #optional, can be skipped
+      service-plan: "lite" # set the service plan to use
+      service: application-logs #set the service offering (label)
   - name: VBIPSUPPLIER-destination-service
     type: org.cloudfoundry.managed-service
     parameters:
