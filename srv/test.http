@@ -1,4 +1,4 @@
-@server = http://localhost:39281 
+@server = http://localhost:4004 
 
 POST {{server}}/odata/v4/supplier/getSupplier
 headers: 

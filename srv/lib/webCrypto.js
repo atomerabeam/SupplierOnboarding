@@ -15,6 +15,7 @@ async function encryptData(vkeyID, vDataTobeEncrypted) {
     vDataTobeEncrypted = convertBase64toArrayBuffer(vDataTobeEncrypted)
     const credential = await credentialStore.readCredential(oBinding, "VISA-Credentials", "password", "JWK_Crypto_Key")
     const sJWKKey = credential.value
+    // console.log("sJWKKey: " + sJWKKey)
     // Export to CryptoKey
     const oExportedKeyNoChange = {
         key_ops: ['encrypt', 'decrypt'],
