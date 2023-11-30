@@ -365,6 +365,23 @@ sap.ui.define([
                 } catch (error) {
                     return null
                 }
-            }
+            },
+            
+            get3DigitCountry: async function (oParameter, sAuthToken) {
+
+                try {
+                    const response = await fetch(`/odata/v4/supplier/get3DigitCountry(code2='${oParameter}'`, {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": sAuthToken
+                        }
+                    });
+                    let oJsonResponse = await response.json()
+                    return oJsonResponse.value
+                } catch (error) {
+                    return error
+                }
+            },
         };
     });

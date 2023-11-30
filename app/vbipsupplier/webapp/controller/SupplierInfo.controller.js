@@ -741,7 +741,8 @@ sap.ui.define([
                     vBusinessNature = "INDIVIDUAL";
                     iAddressDoc = 9;
                 }
-
+                
+                let oCountry = await Models.get3DigitCountry(oSupplier.countryCode_code, sAuthToken)
                 let oSupplierOnboarding = {
                     "vbipRequestId": oSupplier.buyerID + oSupplier.supplierID,
                     "businessNature": vBusinessNature,
@@ -759,8 +760,8 @@ sap.ui.define([
                         // "website": "",
                         "completeAddress": oSupplier.completeAddress,
                         "zipCode": oSupplier.zipCode,
-                        // "countryCode": oSupplier.countryCode_code,
-                        "countryCode": "IND",
+                        "countryCode": oCountry.Code3,
+                        // "countryCode": "IND",
                         "city": oSupplier.city,
                         "state": oSupplier.state,
                         // "companyAdditionalEmailAddress": ""

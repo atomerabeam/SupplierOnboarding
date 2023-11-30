@@ -377,7 +377,7 @@ module.exports = cds.service.impl(async (service) => {
                 body: JSON.stringify({ status: "REP" })
             });
             let oJsonResponse = await response.json()
-            console.log(oJsonResponse)
+            // console.log(oJsonResponse)
             return oJsonResponse.value
         } catch (error) {
             req.error(error)
@@ -395,11 +395,29 @@ module.exports = cds.service.impl(async (service) => {
                 }
             });
             let oJsonResponse = await response.json()
-            console.log(oJsonResponse)
+            // console.log(oJsonResponse)
             return oJsonResponse.value
         } catch (error) {
             req.error(error)
         }
     });
 
+
+    service.on('get3DigitCountry', async (req) => {
+        let oAuthToken = await vbipService.getToken("VBIP-API");
+        try {
+            const response = await fetch(`${oAuthToken.url}/odata/v4/catalog/CountryMapping?$filter=Code2 eq '${req.data.code2}'`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": oAuthToken.token
+                }
+            });
+            let oJsonResponse = await response.json()
+            console.log(oJsonResponse)
+            return oJsonResponse.value
+        } catch (error) {
+            req.error(error)
+        }
+    });
 })

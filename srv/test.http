@@ -210,3 +210,9 @@ GET {{server}}/odata/v4/supplier/getCountries()
 headers: 
       Content-Type: application/json
 
+####################################################
+GET {{server}}/odata/v4/supplier/get3DigitCountry(code2='VN')
+headers: 
+      Content-Type: application/json
+
+

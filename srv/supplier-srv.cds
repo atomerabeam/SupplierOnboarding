@@ -23,4 +23,5 @@ service Supplier {
     function getCountries()                                                                                                                           returns sp.typeCountries;
     function reportInfo(buyerID : String, supplierID : String)                                                                                        returns Boolean;
     action   updateSupplierB1(supplierID : String, vbipID : String, companyCode : String)                                                             returns String;
+    function get3DigitCountry(code2 : String)                                                                                                         returns String;
 }
