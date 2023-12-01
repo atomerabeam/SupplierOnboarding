@@ -109,6 +109,28 @@ module.exports = cds.service.impl(async (service) => {
         return oResult;
     });
 
+    service.on("getDocumentType", async () => {
+        let oAuthToken = await vbipService.getToken("VBIP-API");
+        let country = req.data.pCountry;
+        let businessNature = req.data.pBusinessNature;
+        let oResult = { "documentType": {}, "catchError": {} };
+        try {
+            const response = await fetch(`${oAuthToken.url}/odata/v4/catalog/ValidIDProof?$filter=countryCode_code eq '${country}' and businessNature eq '${businessNature}'`, {
+                
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": oAuthToken.token
+                }
+            });
+
+            oResult.documentType = await response.json();
+        } catch (error) {
+            oResult.catchError = error;
+        }
+        return oResult;
+    });
+
     service.on("updateSupplier", async (req) => {
         let oAuthToken = await vbipService.getToken("VBIP-API");
         let buyerID = req.data.buyerID;

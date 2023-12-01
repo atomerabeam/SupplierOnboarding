@@ -9,8 +9,11 @@ module.exports = cds.service.impl(async (service) => {
             }
             let sRequestID = await vbipService.decryptID(sEncryptedUrl)
             const [sBuyerID, sSupplierID, sInviteDate] = sRequestID.split("_")
+            console.log("Test buyer ", sBuyerID)
+            console.log("Test supplier ", sSupplierID)
             if (sBuyerID && sSupplierID) {
                 let oBuyerService = await vbipService.getToken("VBIP-API");
+                console.log("Test des ", oBuyerService.token, " @@ ", oBuyerService.url)
                 const response = await fetch(`${oBuyerService.url}/odata/v4/supplier-onboarding/SupplierInfo(buyerID='${sBuyerID}',supplierID='${sSupplierID}')`, {
                     method: "GET",
                     headers: {

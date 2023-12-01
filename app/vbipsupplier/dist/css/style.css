@@ -1,4 +1,10 @@
 /* Enter your custom styles here */
+@font-face {
+    font-family: "Visa Dialect UI";
+    src: url("./font/VisaDialect-Regular.woff2") format("woff2");
+    /* src: url("./font/VisaDialect-Bold.woff2") format("woff2"); */
+}
+
 .sapMInputBaseContentWrapper {
     background: none;
     border-radius: 0px;
@@ -34,7 +40,7 @@
 
 .mainTitle {
     color: #000000;
-    /* font-family: "Visa Dialect UI"; */
+    font-family: "Visa Dialect UI";
     font-size: 25px;
     font-style: normal;
     font-weight: 500;
@@ -70,7 +76,7 @@
 
 .subTitle {
     /* margin: 1% 0; */
-    /* font-family: "Visa Dialect UI"; */
+    font-family: "Visa Dialect UI";
     color: #000000;
     font-size: 16px;
     font-style: normal;
@@ -80,7 +86,7 @@
 
 .customText {
     /* margin: 1% 0; */
-    /* font-family: "Visa Dialect UI"; */
+    font-family: "Visa Dialect UI";
     color: #000000;
     font-size: 16px;
     font-style: normal;
@@ -331,7 +337,7 @@
 /* Text */
 .customHeadline1 {
     color: #000000;
-    /* font-family: "Visa Dialect UI"; */
+    font-family: "Visa Dialect UI";
     font-size: 25px;
     font-style: normal;
     font-weight: 500;
@@ -342,7 +348,7 @@
 
 .customHeadline3 {
     color: #1434CB;
-    /* font-family: "Visa Dialect UI"; */
+    font-family: "Visa Dialect UI";
     font-size: 20px;
     font-style: normal;
     font-weight: 600;
@@ -354,7 +360,7 @@
 
 .customSubtitle1 {
     color: #000000;
-    /* font-family: "Visa Dialect UI"; */
+    font-family: "Visa Dialect UI";
     font-size: 16px;
     font-style: normal;
     font-weight: 600;
@@ -365,7 +371,7 @@
 
 .customSubtitle2 {
     color: #000000;
-    /* font-family: "Visa Dialect UI"; */
+    font-family: "Visa Dialect UI";
     font-size: 16px;
     font-style: normal;
     font-weight: 500;
@@ -374,7 +380,7 @@
 
 .customSubtitle3 {
     color: #000000;
-    /* font-family: "Visa Dialect UI"; */
+    font-family: "Visa Dialect UI";
     font-size: 14px;
     font-style: normal;
     font-weight: 600;
@@ -383,7 +389,7 @@
 
 .customLabel {
     color: #4A4A4A;
-    /* font-family: "Visa Dialect UI"; */
+    font-family: "Visa Dialect UI";
     font-size: 12px;
     font-style: normal;
     font-weight: 400;
@@ -394,7 +400,7 @@
 .customText {
     color: #4A4A4A;
     /* font-feature-settings: 'clig' off, 'liga' off; */
-    /* font-family: "Visa Dialect UI"; */
+    font-family: "Visa Dialect UI";
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
@@ -406,7 +412,7 @@
     color: #1434CB;
     /* font-feature-settings: 'clig' off, 'liga' off; */
     /* Web/Overline */
-    /* font-family: Visa Dialect UI; */
+    font-family: "Visa Dialect UI";
     font-size: 10px;
     font-style: normal;
     font-weight: 600;
@@ -419,7 +425,7 @@
     color: #ffffff;
     /* font-feature-settings: 'clig' off, 'liga' off; */
     /* Web/Overline */
-    /* font-family: Visa Dialect UI; */
+    font-family: "Visa Dialect UI";
     font-size: 16px;
     font-style: normal;
     font-weight: 500;

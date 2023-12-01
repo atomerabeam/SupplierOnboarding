@@ -32,7 +32,7 @@
                         <!-- @ui5ignore-patterns -->
                         <Label id="idDoctype.Label" text="{i18n>documentType}" class="customLabel"/>
                         <Select id="idDocType.Select" items="{path: 'F4>/docType'}" width="100%">
-                            <core:Item id="idDocType.Item" key="{F4>selectKey}" text="{F4>docType}"/>
+                            <core:Item id="idDocType.Item" key="{F4>validIDDocument}" text="{F4>validIDDocument}"/>
                         </Select>
                         <!-- @ui5ignore-patterns -->
                         <Label id="idDocNum.Label" text="{i18n>documentNumber}" class="customLabel"/>

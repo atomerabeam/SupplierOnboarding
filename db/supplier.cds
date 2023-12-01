@@ -46,7 +46,7 @@ type typeSupplierOnboarding {
 }
 
 type typeSupplierInfo {
-    supplierId                    : String(10);
+    supplierId                    : String(15);
     firstName                     : String(100);
     lastName                      : String(100);
     legalName                     : String(100);

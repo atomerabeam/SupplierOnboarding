@@ -145,7 +145,7 @@ sap.ui.define([
                 }
             },
 
-            onChangeBusinessNature: function () {
+            onChangeBusinessNature: async function () {
                 let vBusinessNature = parseInt(this.getView().byId("idBusinessNature.Select").getSelectedKey());
                 let vCount;
                 let aDocument = this.getView().getModel("DocumentModel").getProperty("/docKeys");
@@ -182,6 +182,21 @@ sap.ui.define([
 
                 this.getView().getModel("DocumentModel").setProperty("/docKeys", aDocument);
                 this.getView().getModel("F4").setProperty("/shareholderItem", aShareholderCount);
+
+                
+                let oSupplier = this.getOwnerComponent().getModel("SupplierInfo").getProperty("/supplier");
+                let sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken");
+                let oParam = {
+                    "pCountry": oSupplier.countryCode_code,
+                    "pBusinessNature": vBusinessNature
+                }
+                let oDocType = await Models.getDocumentType(oParam, sAuthToken);
+                    let aDocType;
+                    if (oDocType.response.value) {
+                        aDocType = oDocType.response.value.documentType.value;
+                    }
+                
+                this.getView().getModel("F4").setProperty("/docType", aDocType);
             },
             onChangeShareCount: function () {
                 let oShareholderModel = new JSONModel;
@@ -741,7 +756,8 @@ sap.ui.define([
                     vBusinessNature = "INDIVIDUAL";
                     iAddressDoc = 9;
                 }
-
+                
+                let oCountry = await Models.get3DigitCountry(oSupplier.countryCode_code, sAuthToken)
                 let oSupplierOnboarding = {
                     "vbipRequestId": oSupplier.buyerID + oSupplier.supplierID,
                     "businessNature": vBusinessNature,
@@ -759,8 +775,8 @@ sap.ui.define([
                         // "website": "",
                         "completeAddress": oSupplier.completeAddress,
                         "zipCode": oSupplier.zipCode,
-                        // "countryCode": oSupplier.countryCode_code,
-                        "countryCode": "IND",
+                        "countryCode": oCountry.Code3,
+                        // "countryCode": "IND",
                         "city": oSupplier.city,
                         "state": oSupplier.state,
                         // "companyAdditionalEmailAddress": ""
