@@ -862,7 +862,7 @@ sap.ui.define([
                         //     "fileName": "passport.jpg",
                         //     "encodedContent": "HKYT67"
                         // },
-                        "shareholderProof": aShareholder
+                        "shareHolderProof": aShareholder
                     };
 
                     oSupplierOnboarding.supplierBankingInfo = {

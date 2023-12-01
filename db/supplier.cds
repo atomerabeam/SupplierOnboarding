@@ -66,7 +66,7 @@ type typeKycDetails {
     identityProof    : typeIdentifyProof;
     addressProof     : typeAddressProof;
     businessProof    : array of typeBusinessProof;
-    shareholderProof : array of typeShareholderProof;
+    shareHolderProof : array of typeShareholderProof;
 }
 
 type typeSupplierBankingInfo {
