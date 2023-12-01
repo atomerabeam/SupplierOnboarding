@@ -3,7 +3,7 @@ using { Country } from '@sap/cds/common';
 
 type typeSupplier {
     buyerID                  : String(10);
-    supplierID               : String(10);
+    supplierID               : String(15);
     supplierName             : String(100);
     status                   : String(20);
     SAPCustomer              : Boolean;
