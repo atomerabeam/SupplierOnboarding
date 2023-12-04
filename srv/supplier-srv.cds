@@ -9,7 +9,7 @@ service Supplier {
     action   getBuyerOnboarding(buyerID : String)                                                                                                     returns String;
     action   getVBIP(pID : String)                                                                                                                    returns String;
     action   getBusinessNature()                                                                                                                    returns String;
-    action   getDocumentType(pCountry : String, pBusinessNatre : String)                                                                                                                        returns String;
+    action   getDocumentType(pCountry : String, pBusinessNature : String)                                                                                                                        returns String;
     action   updateSupplier(buyerID : String, supplierID : String, oSupplier : sp.typeSupplier)                                                       returns String;
     action   checkService()                                                                                                                           returns String;
     action   sendMail(smtpDestination : String, mailTo : String, mailSubject : String, mailContent : String)                                          returns String;

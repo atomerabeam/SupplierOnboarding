@@ -24,6 +24,16 @@ headers:
 
    
 ####################################################
+POST {{server}}/odata/v4/supplier/getDocumentType
+headers: 
+      Content-Type: application/json
+
+{
+	"pCountry": "SG",
+	"pBusinessNature": "1"
+}
+
+####################################################
 POST {{server}}/odata/v4/supplier/getVBIP
 headers: 
       Content-Type: application/json

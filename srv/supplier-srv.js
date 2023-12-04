@@ -109,7 +109,7 @@ module.exports = cds.service.impl(async (service) => {
         return oResult;
     });
 
-    service.on("getDocumentType", async () => {
+    service.on("getDocumentType", async (req) => {
         let oAuthToken = await vbipService.getToken("VBIP-API");
         let country = req.data.pCountry;
         let businessNature = req.data.pBusinessNature;

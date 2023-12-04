@@ -147,6 +147,10 @@ sap.ui.define([
 
             onChangeBusinessNature: async function () {
                 let vBusinessNature = parseInt(this.getView().byId("idBusinessNature.Select").getSelectedKey());
+                if (isNaN(vBusinessNature)) {
+                    vBusinessNature = 1;
+                }
+
                 let vCount;
                 let aDocument = this.getView().getModel("DocumentModel").getProperty("/docKeys");
                 if (vBusinessNature === 1) {
@@ -188,7 +192,7 @@ sap.ui.define([
                 let sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken");
                 let oParam = {
                     "pCountry": oSupplier.countryCode_code,
-                    "pBusinessNature": vBusinessNature
+                    "pBusinessNature": vBusinessNature.toString()
                 }
                 let oDocType = await Models.getDocumentType(oParam, sAuthToken);
                     let aDocType;
@@ -202,7 +206,8 @@ sap.ui.define([
                 let oShareholderModel = new JSONModel;
                 this.getView().setModel(oShareholderModel, "ShareholderModel");
 
-                let vShareholderCount = this.getView().getModel("F4").getProperty("/shareholderCount");
+                // let vShareholderCount = this.getView().getModel("F4").getProperty("/shareholderCount");
+                let vShareholderCount = parseInt(this.getView().byId("idShareholderCount.Select").getSelectedKey());
                 if (vShareholderCount === null) {
                     vShareholderCount = 1;
                 }
@@ -572,8 +577,8 @@ sap.ui.define([
                     });
                 }
 
-                this.onChangeBusinessNature();
-                this.onChangeShareCount();
+                await this.onChangeBusinessNature();
+                await this.onChangeShareCount();
             },
             _setDefaultF4: async function () {
                 let oSupplier = this.getOwnerComponent().getModel("SupplierInfo").getProperty("/supplier");
@@ -828,8 +833,8 @@ sap.ui.define([
                                     "documentNumber": oShareholder.docNum,
                                     "fileName": oShareholder.fileName,
                                     "encodedContent": oShareholder.fileData,
-                                    "dateofBirth": this.toVisaDateFormat(oShareholder.dateOfBirth),
-                                    "issuingDate": this.toVisaDateFormat(oShareholder.issuingDate),
+                                    "dateOfBirth": this.toVisaDateFormat(oShareholder.dateOfBirth),
+                                    "issuingDate": this.toVisaDateFormat(oShareholder.issueingDate),
                                     "expiryDate": this.toVisaDateFormat(oShareholder.expiryDate)
                                 },
                                 "documentProof": {
@@ -887,7 +892,7 @@ sap.ui.define([
 
                     } else {
                         // Success
-                        if (oSupplierSubmit.response.value.supplier.errorPayload) {
+                        if (oSupplierSubmit.response.value?.supplier?.errorPayload.length > 0) {
                             let errorMessage;
                             let aErrorPayload = oSupplierSubmit.response.value.supplier.errorPayload;
                             aErrorPayload.forEach((errorPayload) => {

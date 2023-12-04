@@ -80,7 +80,7 @@ type typeIdentifyProof {
     documentName   : String(100);
     nameOnDocument : String(100);
     documentNumber : String(20);
-    dateofBirth    : String(10);
+    dateOfBirth    : String(10);
     issuingDate    : String(10);
     expiryDate     : String(10);
     fileName       : String(100);
