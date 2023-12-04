@@ -46,10 +46,10 @@ sap.ui.define([
                 }
             },
 
-            onContinue: function () {
+            onContinue: async function () {
                 let vAcceptCard = this.getView().byId("idAcceptCard.Select").getSelectedKey();
                 if (vAcceptCard === "true") {
-                    let vReturnCode = this._submitSupplier("message");
+                    let vReturnCode = await this._submitSupplier("message");
                     if (vReturnCode === "Success") {
                         this._updateSupplier("noMessage", "CAC", false, false);
                         this._updateSupplierB1("noMessage");
@@ -69,9 +69,9 @@ sap.ui.define([
 
                         let callback = async function (oAction) {
 
-                            this._updateSupplier("noMessage", "NOB", false, false);
-                            this.getOwnerComponent().getModel("SupplierInfo").destroy();
-                            this._endSession();
+                            await this._updateSupplier("noMessage", "NOB", false, false);
+                            await this.getOwnerComponent().getModel("SupplierInfo").destroy();
+                            await this._endSession();
                         }.bind(this)
                         this.showErrorMessageBox(sMessageTitle, sMessage, callback)
                     }
@@ -913,6 +913,7 @@ sap.ui.define([
                             }
 
                             vReturnCode = "Success";
+                            this.getView().getModel("PageModel").setProperty("/pageFlow/infoRequest", false);
                             this.getView().getModel("PageModel").setProperty("/pageFlow/shareholder", false);
                             this.getView().getModel("PageModel").setProperty("/pageFlow/complete", true);
                         }
