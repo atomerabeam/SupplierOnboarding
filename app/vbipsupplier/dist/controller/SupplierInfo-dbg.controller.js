@@ -4,13 +4,12 @@ sap.ui.define([
     "../model/models",
     "sap/m/MessageToast",
     "../model/formatter",
-    "sap/m/MessageBox",
-	"sap/ui/model/odata/v4/ODataUtils"
+    "sap/m/MessageBox"
 ],
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller, JSONModel, Models, MessageToast, formatter, MessageBox, ODataUtils) {
+    function (Controller, JSONModel, Models, MessageToast, formatter, MessageBox) {
         "use strict";
 
         return Controller.extend("vbipsupplier.controller.SupplierInfo", {
@@ -89,11 +88,11 @@ sap.ui.define([
                 this.getView().getModel("PageModel").setProperty("/pageFlow/shareholder", true);
             },
             onSubmit: async function () {
-                
                 let vReturnCode = await this._submitSupplier("message");
                 if (vReturnCode === "Success") {
                     await this._updateSupplier("noMessage", "SUB", true, true);
                 }
+                
             },
             onReportInfo: function () {
                 const sMessageTitle = this.getOwnerComponent().getModel("i18n").getProperty("reportInfoMessageTitle")
@@ -129,6 +128,7 @@ sap.ui.define([
                     this.getView().getModel("PageModel").setProperty("/pageFlow/shareholder", false);
                     this.getView().getModel("PageModel").setProperty("/pageFlow/infoRequest", true);
                 }
+                
             },
 
             showErrorMessageBox: function (title, errorMessage, callback) {
@@ -257,6 +257,7 @@ sap.ui.define([
                 this.getView().getModel("ShareholderModel").setProperty("/item", aShareholder);
             },
             onUploadFileButton: async function (oEvent) {
+                
                 let sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken")
                 let strID = oEvent.getParameter("id");
                 let docID = strID.split("idUploadFile")[1].split(".Button")[0];
@@ -267,6 +268,7 @@ sap.ui.define([
                 input.accept = "image/*" // Only accept image file
                 let fileInfo;
                 input.onchange = async function () {
+                    await sap.ui.core.BusyIndicator.show();
                     let file = input.files; // get the file
                     fileInfo = file;
                     for (let i = 0; i < file.length; i++) {
@@ -300,10 +302,11 @@ sap.ui.define([
                             this.showErrorMessageBox('Error', 'Invalid file type. Please select a PNG, PDF, or JPEG file.', null);
                         }
                     }
-
+                    await sap.ui.core.BusyIndicator.hide();
                 }.bind(this)
 
                 input.click();
+                
             },
             onDeleteFileButton: async function (oEvent) {
                 //File Number
@@ -336,7 +339,7 @@ sap.ui.define([
                 // Trigger the download
                 downloadLink.click();
             },
-            onUploadFileSH: async function (oEvent) {
+            onUploadFileSH: async function () {
                 let sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken")
                 let oShareholderPopup = this.getView().getModel("ShareholderPopupModel").getProperty("/popup");
                 let allowedTypes = ['image/png', 'application/pdf', 'image/jpeg', 'image/gif'];
@@ -347,6 +350,7 @@ sap.ui.define([
                 let fileInfo;
                 let base64;
                 input.onchange = async function () {
+                    await sap.ui.core.BusyIndicator.show();
                     let file = input.files; // get the file
                     fileInfo = file;
                     for (let i = 0; i < file.length; i++) {
@@ -377,7 +381,8 @@ sap.ui.define([
                             this.showErrorMessageBox('Error', 'Invalid file type. Please select a PNG, PDF, or JPEG file.', null);
                         }
                     }
-
+                    
+                    await sap.ui.core.BusyIndicator.hide();
                 }.bind(this)
 
                 input.click();
@@ -585,6 +590,15 @@ sap.ui.define([
                         };
                         let oFileDecrypt = await Models.decryptFile(oFile, sAuthToken);
 
+                        let vUploadVisible, vFileVisible;
+                        if (aDocument[i].fileName) {
+                            vUploadVisible = false;
+                            vFileVisible = true;
+                        } else {
+                            vUploadVisible = true;
+                            vFileVisible = false;
+                        }
+
                         let oDocumentItem = {
                             "visible": true,
                             "nameOnDocument": aDocument[i].nameOnDocument,
@@ -592,8 +606,8 @@ sap.ui.define([
                             "fileName": aDocument[i].fileName,
                             "fileType": aDocument[i].fileType,
                             "fileData": oFileDecrypt.response.value,
-                            "uploadVisible": false,
-                            "fileVisible": true,
+                            "uploadVisible": vUploadVisible,
+                            "fileVisible": vFileVisible,
                         };
 
                         this.getView().getModel("DocumentModel").setProperty("/doc" + aDocument[i].documentKey, oDocumentItem);
@@ -689,9 +703,9 @@ sap.ui.define([
                                             "fileName": oShareholder.fileName,
                                             "fileType": oShareholder.fileType,
                                             "encodedContent": oFileEncrypt.response.value,
-                                            "dateOfBirth": oShareholder.dateOfBirth.toISOString().split("T")[0],
-                                            "issuingDate": oShareholder.issuingDate.toISOString().split("T")[0],
-                                            "expiryDate": oShareholder.expiryDate.toISOString().split("T")[0],
+                                            "dateOfBirth": oShareholder?.dateOfBirth?.toISOString()?.split("T")[0],
+                                            "issuingDate": oShareholder?.issuingDate?.toISOString()?.split("T")[0],
+                                            "expiryDate": oShareholder?.expiryDate?.toISOString()?.split("T")[0],
                                         }
                                     ]
                             });
@@ -717,6 +731,7 @@ sap.ui.define([
                     "oSupplier": oSupplierData
                 };
 
+                await sap.ui.core.BusyIndicator.show();
                 let oSupplierUpdate = await Models.updateSupplier(oParameter, sAuthToken);
                 let sShowMessage, vReturnCode;
                 if (Object.keys(oSupplierUpdate.catchError).length === 0 &&
@@ -738,6 +753,8 @@ sap.ui.define([
                 if (sMessage === "message") {
                     MessageToast.show(sShowMessage);
                 }
+                
+                await sap.ui.core.BusyIndicator.hide();
                 return vReturnCode;
             },
             _updateSupplierB1: async function (sMessage) {
@@ -853,9 +870,9 @@ sap.ui.define([
 
                     for (let i = 0; i <= (vShareholderCount - 1); i++) {
                         let oShareholder = this.getView().getModel("ShareholderModel").getProperty("/item/" + i);
-                        let vDateOfBirth = oShareholder.dateOfBirth.toISOString().split("T")[0];
-                        let vIssuingDate = oShareholder.issuingDate.toISOString().split("T")[0];
-                        let vExpireDate = oShareholder.expiryDate.toISOString().split("T")[0];
+                        let vDateOfBirth = oShareholder?.dateOfBirth?.toISOString()?.split("T")[0];
+                        let vIssuingDate = oShareholder?.issuingDate?.toISOString()?.split("T")[0];
+                        let vExpireDate = oShareholder?.expiryDate?.toISOString()?.split("T")[0];
 
                         if (oShareholder) {
                             aShareholder.push({
@@ -916,6 +933,8 @@ sap.ui.define([
                     "oSupplier": oSupplierOnboarding
                 };
                 let vReturnCode;
+                
+                await sap.ui.core.BusyIndicator.show();
                 let oSupplierSubmit = await Models.submitSupplier(oParameter, sAuthToken);
                 if (Object.keys(oSupplierSubmit.catchError).length === 0 &&
                     oSupplierSubmit.catchError.constructor === Object) {
@@ -959,6 +978,8 @@ sap.ui.define([
                     let msgError = `Operation failed Supplier ${oSupplier.supplierID} \nError catched`;
                     MessageToast.show(msgError);
                 }
+                
+                await sap.ui.core.BusyIndicator.hide();
                 return vReturnCode;
             },
             _endSession: function () {

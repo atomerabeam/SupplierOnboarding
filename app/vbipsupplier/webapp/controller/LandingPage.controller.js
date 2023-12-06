@@ -149,14 +149,14 @@ sap.ui.define([
                     //For production
 
                     // For local test
-                    this.getOwnerComponent().getModel("AuthModel").setProperty("/authToken", "")
-                    sAuthToken = ""
+                    // this.getOwnerComponent().getModel("AuthModel").setProperty("/authToken", "")
+                    // sAuthToken = ""
                     //For local test
 
                     let oDecrypt = await Models.decryptID(oParameter1, sAuthToken);
                     let oParameter = {
-                        "buyerID": oDecrypt.response.value.split("_")[0],
-                        "supplierID": oDecrypt.response.value.split("_")[1]
+                        "buyerID": oDecrypt?.response?.value.split("_")[0],
+                        "supplierID": oDecrypt?.response?.value.split("_")[1]
                     };
 
                     let oSupplierRead = await Models.getSupplier(oParameter, sAuthToken);
