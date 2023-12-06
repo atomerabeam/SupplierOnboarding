@@ -24,7 +24,7 @@ type typeSupplierDocument {
     fileType       : String(50);
     encodedContent : LargeString;
     dateOfBirth    : Date;
-    issueingDate   : Date;
+    issuingDate    : Date;
     expiryDate     : Date;
 }
 

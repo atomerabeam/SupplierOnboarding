@@ -15,7 +15,9 @@ module.exports = cds.service.impl(async (service) => {
         try {
             // console.log(await vbipSrv.read('SupplierInfo'))
             // console.log(await vbipSrv.get())
-            const response = await fetch(`${oAuthToken.url}/odata/v4/supplier-onboarding/SupplierInfo(buyerID='${buyerID}',supplierID='${supplierID}')?$expand=supplierDocuments,shareholderDetails`, {
+            let sParam1 = `(buyerID='${buyerID}',supplierID='${supplierID}')`; 
+            let sParam2 = `?$expand=supplierDocuments,shareholderDetails($expand=shareholderDocuments)`;
+            const response = await fetch(`${oAuthToken.url}/odata/v4/supplier-onboarding/SupplierInfo${sParam1}${sParam2}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",

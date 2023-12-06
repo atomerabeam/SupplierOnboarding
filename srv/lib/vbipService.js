@@ -42,6 +42,36 @@ async function decryptID(pID) {
     console.log("decodedURI 2", decryptedData2);
     return decryptedData;
 }
+
+async function encryptString(sValue) {
+
+    const oBinding = getBinding()
+    const oCredential = await readCredential(oBinding, "VISA-Credentials", "password", "URL_Key")
+    const secretKey = oCredential?.value
+    // const secretKey = "visaproject";
+
+    // let data = "1000010002_1000018989"; //buyerID_supplierID => "underscore between them" I will split back when decrypt
+
+    // Encrypt
+    let data = CryptoJS.AES.encrypt(sValue, secretKey).toString();
+
+    return data;
+
+}
+
+
+async function decryptString(sValue) {
+
+    const oBinding = getBinding()
+    const oCredential = await readCredential(oBinding, "VISA-Credentials", "password", "URL_Key")
+    const secretKey = oCredential?.value
+
+    // Decrypt
+    let data = CryptoJS.AES.decrypt(sValue, secretKey).toString();
+
+    return data;
+
+}
 /**
  * Decrypting data with Crypto-JS library
  * @param {*} encryptedData 

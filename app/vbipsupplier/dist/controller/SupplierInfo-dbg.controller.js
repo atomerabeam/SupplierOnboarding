@@ -4,12 +4,13 @@ sap.ui.define([
     "../model/models",
     "sap/m/MessageToast",
     "../model/formatter",
-    "sap/m/MessageBox"
+    "sap/m/MessageBox",
+	"sap/ui/model/odata/v4/ODataUtils"
 ],
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller, JSONModel, Models, MessageToast, formatter, MessageBox) {
+    function (Controller, JSONModel, Models, MessageToast, formatter, MessageBox, ODataUtils) {
         "use strict";
 
         return Controller.extend("vbipsupplier.controller.SupplierInfo", {
@@ -122,10 +123,12 @@ sap.ui.define([
 
             },
             onSaveAndExit: async function () {
-                this._updateSupplier("message", "SAV", true, true);
-                this.getView().getModel("PageModel").setProperty("/pageFlow/corporate", false);
-                this.getView().getModel("PageModel").setProperty("/pageFlow/shareholder", false);
-                this.getView().getModel("PageModel").setProperty("/pageFlow/infoRequest", true);
+                let vReturnCode = await this._updateSupplier("message", "SAV", true, true);
+                if (vReturnCode === "Success") {
+                    this.getView().getModel("PageModel").setProperty("/pageFlow/corporate", false);
+                    this.getView().getModel("PageModel").setProperty("/pageFlow/shareholder", false);
+                    this.getView().getModel("PageModel").setProperty("/pageFlow/infoRequest", true);
+                }
             },
 
             showErrorMessageBox: function (title, errorMessage, callback) {
@@ -205,6 +208,8 @@ sap.ui.define([
             onChangeShareCount: function () {
                 let oShareholderModel = new JSONModel;
                 this.getView().setModel(oShareholderModel, "ShareholderModel");
+                
+                let oSupplier = this.getOwnerComponent().getModel("SupplierInfo").getProperty("/supplier");
 
                 // let vShareholderCount = this.getView().getModel("F4").getProperty("/shareholderCount");
                 let vShareholderCount = parseInt(this.getView().byId("idShareholderCount.Select").getSelectedKey());
@@ -212,22 +217,39 @@ sap.ui.define([
                     vShareholderCount = 1;
                 }
                 let aShareholder = [];
-                for (let i = 1; i <= vShareholderCount; i++) {
+                for (let i = 0; i <= vShareholderCount - 1; i++) {
+                    let vDateOfBirth = oSupplier?.shareholderDetails[i]?.shareholderDocuments[0].dateOfBirth + `T00:00:00.000Z`;
+                    let oDateofBirth = new Date(vDateOfBirth);
+                    
+                    let vIssuingDate = oSupplier?.shareholderDetails[i]?.shareholderDocuments[0].issuingDate + `T00:00:00.000Z`;
+                    let oIssuingDate = new Date(vIssuingDate);
+                    
+                    let vExpireDate = oSupplier?.shareholderDetails[i]?.shareholderDocuments[0].expiryDate + `T00:00:00.000Z`;
+                    let oExpireDate = new Date(vExpireDate);
+
+                    let vEnterInfo, vCompleted;
+                    if (oSupplier?.shareholderDetails[i]) {
+                        vEnterInfo = false;
+                        vCompleted = true;
+                    } else {
+                        vEnterInfo = true;
+                        vCompleted = false;
+                    }
                     aShareholder.push({
-                        "enterInfo": true,
-                        "completed": false,
-                        "name": "",
-                        "sharePercentage": "",
+                        "enterInfo": vEnterInfo,
+                        "completed": vCompleted,
+                        "name": oSupplier?.shareholderDetails[i]?.shareholderName,
+                        "sharePercentage": oSupplier?.shareholderDetails[i]?.sharePercentage,
                         "address": "",
-                        "docType": "",
-                        "docNum": "",
-                        "nameOnDoc": "",
-                        "dateOfBirth": "",
-                        "issueingDate": "",
-                        "expiryDate": "",
-                        "fileName": "",
-                        "fileType": "",
-                        "fileData": "",
+                        "docType": oSupplier?.shareholderDetails[i]?.shareholderDocuments[0]?.documentType,
+                        "docNum": oSupplier?.shareholderDetails[i]?.shareholderDocuments[0]?.documentNumber,
+                        "nameOnDoc": oSupplier?.shareholderDetails[i]?.shareholderDocuments[0]?.nameOnDocument,
+                        "dateOfBirth": oDateofBirth,
+                        "issuingDate": oIssuingDate,
+                        "expiryDate": oExpireDate,
+                        "fileName": oSupplier?.shareholderDetails[i]?.shareholderDocuments[0]?.fileName,
+                        "fileType": oSupplier?.shareholderDetails[i]?.shareholderDocuments[0]?.fileType,
+                        "fileData": oSupplier?.shareholderDetails[i]?.shareholderDocuments[0]?.encodedContent,
                         "uploadVisible": true,
                         "fileVisible": false,
                     });
@@ -400,6 +422,14 @@ sap.ui.define([
             },
             onSave: function () {
                 let oShareholderPopup = this.getView().getModel("ShareholderPopupModel").getProperty("/popup");
+                let vUpload, vFile;
+                if (oShareholderPopup.fileName) {
+                    vUpload = false;
+                    vFile = true;
+                } else {
+                    vUpload = true;
+                    vFile = false;
+                }
                 let oShareholder = {
                     "path": oShareholderPopup.path,
                     "enterInfo": false,
@@ -411,13 +441,13 @@ sap.ui.define([
                     "docNum": oShareholderPopup.docNum,
                     "nameOnDoc": oShareholderPopup.nameOnDoc,
                     "dateOfBirth": oShareholderPopup.dateOfBirth,
-                    "issueingDate": oShareholderPopup.issueingDate,
+                    "issuingDate": oShareholderPopup.issuingDate,
                     "expiryDate": oShareholderPopup.expiryDate,
                     "fileName": oShareholderPopup.fileName,
                     "fileType": oShareholderPopup.fileType,
                     "fileData": oShareholderPopup.fileData,
-                    "uploadVisible": false,
-                    "fileVisible": true,
+                    "uploadVisible": vUpload,
+                    "fileVisible": vFile,
                 };
                 // let sPath = this.getView().getModel("ShareholderPopupModel").getProperty("/popup/path");
 
@@ -659,9 +689,9 @@ sap.ui.define([
                                             "fileName": oShareholder.fileName,
                                             "fileType": oShareholder.fileType,
                                             "encodedContent": oFileEncrypt.response.value,
-                                            "dateOfBirth": oShareholder.dateOfBirth,
-                                            "issueingDate": oShareholder.issueingDate,
-                                            "expiryDate": oShareholder.expiryDate,
+                                            "dateOfBirth": oShareholder.dateOfBirth.toISOString().split("T")[0],
+                                            "issuingDate": oShareholder.issuingDate.toISOString().split("T")[0],
+                                            "expiryDate": oShareholder.expiryDate.toISOString().split("T")[0],
                                         }
                                     ]
                             });
@@ -688,27 +718,27 @@ sap.ui.define([
                 };
 
                 let oSupplierUpdate = await Models.updateSupplier(oParameter, sAuthToken);
+                let sShowMessage, vReturnCode;
                 if (Object.keys(oSupplierUpdate.catchError).length === 0 &&
                     oSupplierUpdate.catchError.constructor === Object) {
                     if (oSupplierUpdate.response.error) {
                         // Error
-                        let msgError = `Operation failed Supplier ${oSupplier.supplierID} \nError code ${oSupplierUpdate.response.error.code}`;
-                        // MessageToast.show(msgError);
-
+                        sShowMessage = `Operation failed Supplier ${oSupplier.supplierID} \nError code ${oSupplierUpdate.response.error.code}`;
+                        
                     } else {
                         // Success
-                        let msgSuccess = `Supplier ${oSupplier.supplierID} information is update`;
-                        if (sMessage === "message") {
-                            MessageToast.show(msgSuccess);
-                        }
-
+                        sShowMessage = `Supplier ${oSupplier.supplierID} information is update`;
+                        vReturnCode = "Success"
                         // Exit
                     }
                 } else {
                     // Catch error
-                    let msgError = `Operation failed Supplier ${oSupplier.supplierID} \nError catched`;
-                    // MessageToast.show(msgError);
+                    sShowMessage = `Operation failed Supplier ${oSupplier.supplierID} \nError catched`;
                 }
+                if (sMessage === "message") {
+                    MessageToast.show(sShowMessage);
+                }
+                return vReturnCode;
             },
             _updateSupplierB1: async function (sMessage) {
                 let sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken");
@@ -823,6 +853,10 @@ sap.ui.define([
 
                     for (let i = 0; i <= (vShareholderCount - 1); i++) {
                         let oShareholder = this.getView().getModel("ShareholderModel").getProperty("/item/" + i);
+                        let vDateOfBirth = oShareholder.dateOfBirth.toISOString().split("T")[0];
+                        let vIssuingDate = oShareholder.issuingDate.toISOString().split("T")[0];
+                        let vExpireDate = oShareholder.expiryDate.toISOString().split("T")[0];
+
                         if (oShareholder) {
                             aShareholder.push({
                                 "name": oShareholder.name,
@@ -833,9 +867,9 @@ sap.ui.define([
                                     "documentNumber": oShareholder.docNum,
                                     "fileName": oShareholder.fileName,
                                     "encodedContent": oShareholder.fileData,
-                                    "dateOfBirth": this.toVisaDateFormat(oShareholder.dateOfBirth),
-                                    "issuingDate": this.toVisaDateFormat(oShareholder.issueingDate),
-                                    "expiryDate": this.toVisaDateFormat(oShareholder.expiryDate)
+                                    "dateOfBirth": this.toVisaDateFormat(vDateOfBirth),
+                                    "issuingDate": this.toVisaDateFormat(vIssuingDate),
+                                    "expiryDate": this.toVisaDateFormat(vExpireDate)
                                 },
                                 "documentProof": {
                                     "documentName": "COPY_OF_BUSINESS_REGISTRATION",

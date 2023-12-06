@@ -133,7 +133,7 @@
                                                             </VBox>
                                                             <VBox id="idDocUploaded2.VBox">
                                                                 <!-- @ui5ignore-patterns -->
-                                                                <Text id="idDocUploadedValue.Text" class="customText" text="{ShareholderModel>filename}"/>
+                                                                <Text id="idDocUploadedValue.Text" class="customText" text="{ShareholderModel>fileName}"/>
                                                             </VBox>
                                                         </HBox>
                                                     </VBox>

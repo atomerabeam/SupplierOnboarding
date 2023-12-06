@@ -42,11 +42,32 @@
                         <Label id="idNameOnDoc.Label" text="{i18n>nameOnDocument}" class="customLabel"/>
                         <Input id="idNameOnDoc.Input" value="{ShareholderPopupModel>/popup/nameOnDoc}"/>
                         <Label id="idDateOfBirth.Label" text="{i18n>dateOfBirth}" class="customLabel"/>
-                        <DatePicker id="idDateOfBirth.DatePicker" value="{ShareholderPopupModel>/popup/dateOfBirth}"/>
+                        <DatePicker id="idDateOfBirth.DatePicker"
+                                    value="{
+                                                'path':'ShareholderPopupModel>/popup/dateOfBirth',
+                                                'type':'sap.ui.model.type.Date',
+                                                'formatOptions': {
+                                                    'pattern': 'yyyy-MM-dd'
+                                                    }
+                                            }"/>
                         <Label id="idDateOfIssue.Label" text="{i18n>dateOfIssue}" class="customLabel"/>
-                        <DatePicker id="idDateOfIssue.DatePicker" value="{ShareholderPopupModel>/popup/issueingDate}"/>
+                        <DatePicker id="idDateOfIssue.DatePicker" 
+                                    value="{
+                                                'path':'ShareholderPopupModel>/popup/issueingDate',
+                                                'type':'sap.ui.model.type.Date',
+                                                'formatOptions': {
+                                                    'pattern': 'yyyy-MM-dd'
+                                                    }
+                                            }"/>
                         <Label id="idDateOfExpiry.Label" text="{i18n>dateOfExpiry}" class="customLabel"/>
-                        <DatePicker id="idDateOfExpiry.DatePicker" value="{ShareholderPopupModel>/popup/expiryDate}"/>
+                        <DatePicker id="idDateOfExpiry.DatePicker" 
+                                    value="{
+                                                'path':'ShareholderPopupModel>/popup/expiryDate',
+                                                'type':'sap.ui.model.type.Date',
+                                                'formatOptions': {
+                                                    'pattern': 'yyyy-MM-dd'
+                                                    }
+                                            }"/>
 
                         <HBox id="idUploadSH.HBox" class="customUploadBox"
                               visible="{ShareholderPopupModel>/popup/uploadVisible}">
