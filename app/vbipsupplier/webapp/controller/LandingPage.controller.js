@@ -35,9 +35,11 @@ sap.ui.define([
                     "pID": this._GUID,
                     "smtpDestination": oVBIP.smtpDestination,
                     "mailTo": vEmail,
-                    "mailSubject": "VBIP Supplier OTP",
-                    "mailContent": `<strong>Dear Supplier</strong><br/><br/>
-                                    <p>Your OTP code is [OTP]</p><br/><p>Thanks</p>`
+                    "mailSubject": "OTP for your Action | Visa B2B Integrated Payments",
+                    "mailContent": `<p>Dear Sir/Madam,</p>
+                                    <p>Your OTP code is [OTP].</p>
+                                    <p>Please key in OTP within 2 minutes.</p>
+                                    <p>Congratulations on taking ${oSupplier.supplierName}'s first step towards receiving faster and more efficient invoice payments powered by Visa B2B Integrated Payments.</p>`
                 };
 
                 let oResult = await Models.sendMailOTP(oMail, sAuthToken);
@@ -81,36 +83,6 @@ sap.ui.define([
 
                     }
                 }
-                // let oResult = await Models.checkOTP(oParameter, sAuthToken);
-                // if (Object.keys(oResult.catchError).length === 0 &&
-                //     oResult.catchError.constructor === Object) {
-                //     if (oResult.response.error) {
-                //         // Error
-                //         let msgError = `Failed to process \nError code ${oResult.response.error.code}`;
-                //         MessageToast.show(msgError);
-
-                //     } else {
-                //         // Success
-                //         let vResult = oResult.response.value;
-                //         let vMessage;
-                //         if (vResult === "Invalid") {
-                //             vMessage = "Invalid OTP";
-                //             MessageToast.show(vMessage);
-                //         } else if (vResult === "Expired") {
-                //             vMessage = "Your OTP is expired";
-                //             MessageToast.show(vMessage);
-                //         } else if (vResult === "OK") {
-                //             // vMessage = "Correct OTP !!!";
-                //             // MessageToast.show(vMessage);
-                //             let oRouter = this.getOwnerComponent().getRouter();
-                //             oRouter.navTo("SupplierInfo");
-                //         }
-                //     }
-                // } else {
-                //     // Catch error
-                //     let msgError = `Failed to process \nError catched`;
-                //     MessageToast.show(msgError);
-                // }
             },
             _onObjectMatched: function (oEvent) {
                 this._GUID = oEvent.getParameter("arguments").GUID;
@@ -177,8 +149,8 @@ sap.ui.define([
                     //For production
 
                     // For local test
-                    // this.getOwnerComponent().getModel("AuthModel").setProperty("/authToken", "")
-                    // sAuthToken = ""
+                    this.getOwnerComponent().getModel("AuthModel").setProperty("/authToken", "")
+                    sAuthToken = ""
                     //For local test
 
                     let oDecrypt = await Models.decryptID(oParameter1, sAuthToken);

@@ -5,12 +5,12 @@ sap.ui.define([
     "sap/m/MessageToast",
     "../model/formatter",
     "sap/m/MessageBox",
-	"sap/ui/model/odata/v4/ODataUtils"
+    "sap/ui/core/BusyIndicator"
 ],
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller, JSONModel, Models, MessageToast, formatter, MessageBox, ODataUtils) {
+    function (Controller, JSONModel, Models, MessageToast, formatter, MessageBox, BusyIndicator) {
         "use strict";
 
         return Controller.extend("vbipsupplier.controller.SupplierInfo", {
@@ -257,6 +257,7 @@ sap.ui.define([
                 this.getView().getModel("ShareholderModel").setProperty("/item", aShareholder);
             },
             onUploadFileButton: async function (oEvent) {
+                
                 let sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken")
                 let strID = oEvent.getParameter("id");
                 let docID = strID.split("idUploadFile")[1].split(".Button")[0];
@@ -267,6 +268,7 @@ sap.ui.define([
                 input.accept = "image/*" // Only accept image file
                 let fileInfo;
                 input.onchange = async function () {
+                    await sap.ui.core.BusyIndicator.show();
                     let file = input.files; // get the file
                     fileInfo = file;
                     for (let i = 0; i < file.length; i++) {
@@ -300,10 +302,11 @@ sap.ui.define([
                             this.showErrorMessageBox('Error', 'Invalid file type. Please select a PNG, PDF, or JPEG file.', null);
                         }
                     }
-
+                    await sap.ui.core.BusyIndicator.hide();
                 }.bind(this)
 
                 input.click();
+                
             },
             onDeleteFileButton: async function (oEvent) {
                 //File Number
@@ -336,7 +339,8 @@ sap.ui.define([
                 // Trigger the download
                 downloadLink.click();
             },
-            onUploadFileSH: async function (oEvent) {
+            onUploadFileSH: async function () {
+                BusyIndicator.show();
                 let sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken")
                 let oShareholderPopup = this.getView().getModel("ShareholderPopupModel").getProperty("/popup");
                 let allowedTypes = ['image/png', 'application/pdf', 'image/jpeg', 'image/gif'];
@@ -381,6 +385,7 @@ sap.ui.define([
                 }.bind(this)
 
                 input.click();
+                BusyIndicator.hide();
             },
             onDeleteFileSH: async function (oEvent) {
                 let oShareholderPopup = this.getView().getModel("ShareholderPopupModel").getProperty("/popup");

@@ -278,6 +278,18 @@ module.exports = cds.service.impl(async (service) => {
         return result;
     });
 
+    service.on("encryptString", async (req) => {
+        let sValue = req.data.sValue;
+        let result = await vbipService.encryptString(sValue);
+        return result;
+    });
+
+    service.on("decryptString", async (req) => {
+        let sValue = req.data.sValue;
+        let result = await vbipService.decryptString(sValue);
+        return result;
+    });
+
     service.on("encryptFile", async (req) => {
         try {
             let vID = req.data.ID;

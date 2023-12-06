@@ -75,7 +75,23 @@ headers:
       "pID" : "U2FsdGVkX1%252BehtzW2biajjm7mt8M95ROZrKzlV0D1LM%253D"
 }
 
+####################################################
+POST {{server}}/odata/v4/supplier/encryptString
+headers: 
+      Content-Type: application/json
 
+{
+      "sValue" : "2023-12-29"
+}
+
+####################################################
+POST {{server}}/odata/v4/supplier/decryptString
+headers: 
+      Content-Type: application/json
+
+{
+      "sValue" : "U2FsdGVkX19pdjA+qeFDqpbXQvX2M+tAY4rK+wxxKjY="
+}
 ####################################################
 POST {{server}}/odata/v4/supplier/encryptFile
 headers: 
