@@ -77,10 +77,10 @@
 								<VBox id="idSpaceP3S28.VBox" height="12px"/>
 								<Label id="idBusinessNature.Label" text="{i18n>businessNature}"/>
                                 <!-- @ui5ignore-patterns -->
-                                <Select id="idBusinessNature.Select" items="{path:'F4>/businessNature'}"
+                                <ComboBox id="idBusinessNature.Select" items="{path:'F4>/businessNature'}"
                                         change="onChangeBusinessNature" selectedKey="{SupplierInfo>/supplier/businessNature_selectKey}">
                                     <core:Item id="idBusinessNature.Item" key="{F4>selectKey}" text="{F4>businessNature}"/>
-                                </Select>
+                                </ComboBox>
                                 <Label id="idShareholderCount.Label" text="{i18n>shareholderCount}"/>
                                 <HBox id="idShareholderCount.HBox">
                                     <!-- @ui5ignore-patterns -->

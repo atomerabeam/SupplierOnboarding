@@ -820,7 +820,7 @@ sap.ui.define([
 
                     let vShareholderCount = parseInt(this.getView().byId("idShareholderCount.Select").getSelectedKey());
                     let aShareholder = [];
-
+                    
                     for (let i = 0; i <= (vShareholderCount - 1); i++) {
                         let oShareholder = this.getView().getModel("ShareholderModel").getProperty("/item/" + i);
                         if (oShareholder) {
