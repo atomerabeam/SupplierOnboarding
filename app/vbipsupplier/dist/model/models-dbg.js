@@ -305,6 +305,44 @@ sap.ui.define([
                 }
                 return oResult;
             },
+            
+            encryptString: async function (oParameter, sAuthToken) {
+                let oResult = {};
+                try {
+                    const response = await fetch("/odata/v4/supplier/encryptString", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": sAuthToken
+                        },
+                        body: JSON.stringify(oParameter),
+                    });
+
+                    oResult.response = await response.json();
+                } catch (error) {
+                    oResult.catchError = error;
+                }
+                return oResult;
+            },
+            
+            decryptString: async function (oParameter, sAuthToken) {
+                let oResult = {};
+                try {
+                    const response = await fetch("/odata/v4/supplier/decryptString", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": sAuthToken
+                        },
+                        body: JSON.stringify(oParameter),
+                    });
+
+                    oResult.response = await response.json();
+                } catch (error) {
+                    oResult.catchError = error;
+                }
+                return oResult;
+            },
 
             submitSupplier: async function (oParameter, sAuthToken) {
                 let oResult = { "response": {}, "catchError": {} };

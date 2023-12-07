@@ -205,30 +205,54 @@ sap.ui.define([
                 
                 this.getView().getModel("F4").setProperty("/docType", aDocType);
             },
-            onChangeShareCount: function () {
+            onInitShareCount: async function () {
                 let oShareholderModel = new JSONModel;
                 this.getView().setModel(oShareholderModel, "ShareholderModel");
                 
                 let oSupplier = this.getOwnerComponent().getModel("SupplierInfo").getProperty("/supplier");
+                let sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken");
 
                 // let vShareholderCount = this.getView().getModel("F4").getProperty("/shareholderCount");
                 let vShareholderCount = parseInt(this.getView().byId("idShareholderCount.Select").getSelectedKey());
                 if (vShareholderCount === null) {
                     vShareholderCount = 1;
                 }
-                let aShareholder = [];
-                for (let i = 0; i <= vShareholderCount - 1; i++) {
-                    let vDateOfBirth = oSupplier?.shareholderDetails[i]?.shareholderDocuments[0].dateOfBirth + `T00:00:00.000Z`;
-                    let oDateofBirth = new Date(vDateOfBirth);
-                    
-                    let vIssuingDate = oSupplier?.shareholderDetails[i]?.shareholderDocuments[0].issuingDate + `T00:00:00.000Z`;
-                    let oIssuingDate = new Date(vIssuingDate);
-                    
-                    let vExpireDate = oSupplier?.shareholderDetails[i]?.shareholderDocuments[0].expiryDate + `T00:00:00.000Z`;
-                    let oExpireDate = new Date(vExpireDate);
 
+                let aShareholder = [];
+                for (let i = 0; i <= (vShareholderCount - 1); i++) {
+                    let oDocNum = {
+                        "sValue": oSupplier?.shareholderDetails[i]?.shareholderDocuments[0]?.documentNumber,
+                    };
+                    let oDocNumDecrypt = await Models.decryptString(oDocNum, sAuthToken); 
+
+                    let oDateofBirth, oIssuingDate, oExpireDate;
+                    let vDateOfBirth = oSupplier?.shareholderDetails[i]?.shareholderDocuments[0].dateOfBirth;
+
+                    if (vDateOfBirth !== null && vDateOfBirth !== undefined) {
+                        let oDOB = {
+                            "sValue": vDateOfBirth,
+                        };
+                        let oDOBDecrypt = await Models.decryptString(oDOB, sAuthToken); 
+                        vDateOfBirth = oDOBDecrypt?.response?.value;
+                        vDateOfBirth = vDateOfBirth + `T00:00:00.000Z`;
+                        oDateofBirth = new Date(vDateOfBirth);
+                    }
+                    
+                    let vIssuingDate = oSupplier?.shareholderDetails[i]?.shareholderDocuments[0].issuingDate;
+                    if (vIssuingDate !== null) {
+                        vIssuingDate = vIssuingDate + `T00:00:00.000Z`;
+                        oIssuingDate = new Date(vIssuingDate);
+                    }
+                    
+                    let vExpiryDate = oSupplier?.shareholderDetails[i]?.shareholderDocuments[0].expiryDate;
+                    if (vExpiryDate !== null) {
+                        vExpiryDate = vExpiryDate + `T00:00:00.000Z`;
+                        oExpireDate = new Date(vExpiryDate);
+                    }
+                    
                     let vEnterInfo, vCompleted;
-                    if (oSupplier?.shareholderDetails[i]) {
+                    if (oSupplier?.shareholderDetails[i]?.shareholderName &&
+                        oSupplier?.shareholderDetails[i]?.sharePercentage ) {
                         vEnterInfo = false;
                         vCompleted = true;
                     } else {
@@ -242,7 +266,7 @@ sap.ui.define([
                         "sharePercentage": oSupplier?.shareholderDetails[i]?.sharePercentage,
                         "address": "",
                         "docType": oSupplier?.shareholderDetails[i]?.shareholderDocuments[0]?.documentType,
-                        "docNum": oSupplier?.shareholderDetails[i]?.shareholderDocuments[0]?.documentNumber,
+                        "docNum": oDocNumDecrypt?.response?.value,
                         "nameOnDoc": oSupplier?.shareholderDetails[i]?.shareholderDocuments[0]?.nameOnDocument,
                         "dateOfBirth": oDateofBirth,
                         "issuingDate": oIssuingDate,
@@ -253,6 +277,42 @@ sap.ui.define([
                         "uploadVisible": true,
                         "fileVisible": false,
                     });
+                }
+                this.getView().getModel("ShareholderModel").setProperty("/item", aShareholder);
+            },
+            onChangeShareCount: async function () {
+                let aShareholder = this.getView().getModel("ShareholderModel").getProperty("/item");
+                let vShareholderCount = parseInt(this.getView().byId("idShareholderCount.Select").getSelectedKey());
+                if (vShareholderCount === null) {
+                    vShareholderCount = 1;
+                }
+
+                if (vShareholderCount < aShareholder.length) {
+                    while (vShareholderCount < aShareholder.length) {
+                        aShareholder.pop();
+                    }
+                } else if (vShareholderCount > aShareholder.length) {
+                    while (aShareholder.length < vShareholderCount) {
+                        // let oDateofBirth, oIssuingDate, oExpireDate;
+                        aShareholder.push({
+                            "enterInfo": true,
+                            "completed": false,
+                            "name": "",
+                            "sharePercentage": "",
+                            "address": "",
+                            "docType": "",
+                            "docNum": "",
+                            "nameOnDoc": "",
+                            "dateOfBirth": undefined,
+                            "issuingDate": undefined,
+                            "expiryDate": undefined,
+                            "fileName": "",
+                            "fileType": "",
+                            "fileData": "",
+                            "uploadVisible": true,
+                            "fileVisible": false,
+                        });
+                    }
                 }
                 this.getView().getModel("ShareholderModel").setProperty("/item", aShareholder);
             },
@@ -427,6 +487,16 @@ sap.ui.define([
             },
             onSave: function () {
                 let oShareholderPopup = this.getView().getModel("ShareholderPopupModel").getProperty("/popup");
+                let vEnterInfo, vCompleted;
+                if (oShareholderPopup.name.trim().length > 0 && 
+                    oShareholderPopup.sharePercentage.trim().length > 0 ) {
+                    vEnterInfo = false;
+                    vCompleted = true;
+                } else {
+                    vEnterInfo = true;
+                    vCompleted = false;
+                }
+
                 let vUpload, vFile;
                 if (oShareholderPopup.fileName) {
                     vUpload = false;
@@ -437,8 +507,8 @@ sap.ui.define([
                 }
                 let oShareholder = {
                     "path": oShareholderPopup.path,
-                    "enterInfo": false,
-                    "completed": true,
+                    "enterInfo": vEnterInfo,
+                    "completed": vCompleted,
                     "name": oShareholderPopup.name,
                     "sharePercentage": oShareholderPopup.sharePercentage,
                     "address": oShareholderPopup.address,
@@ -541,7 +611,7 @@ sap.ui.define([
 
                 let vSAPCustomer, vAcceptCard, vInfoBoxVisible;
                 if (oSupplier !== undefined) {
-                    sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken")
+                    sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken");
                     let oBusinessNatureRead = await Models.getBusinessNature(sAuthToken);
                     let aBusinessNature;
                     if (oBusinessNatureRead.response.value) {
@@ -589,6 +659,11 @@ sap.ui.define([
                             "fileContent": aDocument[i].encodedContent
                         };
                         let oFileDecrypt = await Models.decryptFile(oFile, sAuthToken);
+                        
+                        let oDocNum = {
+                            "sValue": aDocument[i].documentNumber,
+                        };
+                        let oDocNumDecrypt = await Models.decryptString(oDocNum, sAuthToken);
 
                         let vUploadVisible, vFileVisible;
                         if (aDocument[i].fileName) {
@@ -602,7 +677,7 @@ sap.ui.define([
                         let oDocumentItem = {
                             "visible": true,
                             "nameOnDocument": aDocument[i].nameOnDocument,
-                            "documentNumber": aDocument[i].documentNumber,
+                            "documentNumber": oDocNumDecrypt.response.value,
                             "fileName": aDocument[i].fileName,
                             "fileType": aDocument[i].fileType,
                             "fileData": oFileDecrypt.response.value,
@@ -622,7 +697,7 @@ sap.ui.define([
                 }
 
                 await this.onChangeBusinessNature();
-                await this.onChangeShareCount();
+                await this.onInitShareCount();
             },
             _setDefaultF4: async function () {
                 let oSupplier = this.getOwnerComponent().getModel("SupplierInfo").getProperty("/supplier");
@@ -664,13 +739,18 @@ sap.ui.define([
                             "fileContent": oDocumentItem.fileData
                         };
                         let oFileEncrypt = await Models.encryptFile(oFile, sAuthToken);
+                        
+                        let oDocNum = {
+                            "sValue": oDocumentItem.documentNumber,
+                        };
+                        let oDocNumEncrypt = await Models.encryptString(oDocNum, sAuthToken);
 
                         aSupplierDocument.push({
                             "documentName": "doc" + aDocumentKey[i],
                             "documentType": aDocumentKey[i].toString(),
                             "documentKey": aDocumentKey[i].toString(),
                             "nameOnDocument": oDocumentItem.nameOnDocument,
-                            "documentNumber": oDocumentItem.documentNumber,
+                            "documentNumber": oDocNumEncrypt.response.value,
                             "fileName": oDocumentItem.fileName,
                             "fileType": oDocumentItem.fileType,
                             "encodedContent": oFileEncrypt.response.value
@@ -690,6 +770,38 @@ sap.ui.define([
                                 "fileContent": oShareholder.fileData
                             };
                             let oFileEncrypt = await Models.encryptFile(oFile, sAuthToken);
+
+                            let vDateOfBirth, vIssuingDate, vExpiryDate;
+                            vDateOfBirth = oShareholder?.dateOfBirth?.toISOString()?.split("T")[0];
+                            vIssuingDate = oShareholder?.issuingDate?.toISOString()?.split("T")[0];
+                            vExpiryDate = oShareholder?.expiryDate?.toISOString()?.split("T")[0];
+
+                            let oDOBEncrypt;
+                            if (vDateOfBirth !== undefined) {
+                                let oDOB = {
+                                    "sValue": vDateOfBirth,
+                                };
+                                oDOBEncrypt = await Models.encryptString(oDOB, sAuthToken);
+                                vDateOfBirth = oDOBEncrypt.response.value;
+                            }
+                            // if (oShareholder.dateOfBirth !== null) {
+                            //     if (!isNaN(oShareholder.dateOfBirth.getDate())) {
+                            //         vDateOfBirth = oShareholder?.dateOfBirth?.toISOString()?.split("T")[0];
+                            //     }
+                            // }
+                            
+                            // if (!isNaN(oShareholder.issuingDate.getDate())) {
+                            //     vIssuingDate = oShareholder?.issuingDate?.toISOString()?.split("T")[0];
+                            // }
+                            
+                            // if (!isNaN(oShareholder.expiryDate.getDate())) {
+                            //     vExpiryDate = oShareholder?.expiryDate?.toISOString()?.split("T")[0];
+                            // }
+                            let oDocNum = {
+                                "sValue": oShareholder.docNum,
+                            };
+                            let oDocNumEncrypt = await Models.encryptString(oDocNum, sAuthToken);
+
                             aShareholder.push({
                                 "shareholderName": oShareholder.name,
                                 "sharePercentage": parseInt(oShareholder.sharePercentage),
@@ -699,13 +811,13 @@ sap.ui.define([
                                             "documentType": oShareholder.docType,
                                             "documentKey": i.toString(),
                                             "nameOnDocument": oShareholder.nameOnDoc,
-                                            "documentNumber": oShareholder.docNum,
+                                            "documentNumber": oDocNumEncrypt.response.value,
                                             "fileName": oShareholder.fileName,
                                             "fileType": oShareholder.fileType,
                                             "encodedContent": oFileEncrypt.response.value,
-                                            "dateOfBirth": oShareholder?.dateOfBirth?.toISOString()?.split("T")[0],
-                                            "issuingDate": oShareholder?.issuingDate?.toISOString()?.split("T")[0],
-                                            "expiryDate": oShareholder?.expiryDate?.toISOString()?.split("T")[0],
+                                            "dateOfBirth": vDateOfBirth,
+                                            "issuingDate": vIssuingDate,
+                                            "expiryDate": vExpiryDate,
                                         }
                                     ]
                             });
@@ -870,9 +982,25 @@ sap.ui.define([
 
                     for (let i = 0; i <= (vShareholderCount - 1); i++) {
                         let oShareholder = this.getView().getModel("ShareholderModel").getProperty("/item/" + i);
-                        let vDateOfBirth = oShareholder?.dateOfBirth?.toISOString()?.split("T")[0];
-                        let vIssuingDate = oShareholder?.issuingDate?.toISOString()?.split("T")[0];
-                        let vExpireDate = oShareholder?.expiryDate?.toISOString()?.split("T")[0];
+                        
+                        let vDateOfBirth, vIssuingDate, vExpiryDate;
+                        vDateOfBirth = oShareholder?.dateOfBirth?.toISOString()?.split("T")[0];
+                        vIssuingDate = oShareholder?.issuingDate?.toISOString()?.split("T")[0];
+                        vExpiryDate = oShareholder?.expiryDate?.toISOString()?.split("T")[0];
+                        
+                        // if (oShareholder.dateOfBirth !== null) {
+                        //     if (!isNaN(oShareholder.dateOfBirth.getDate())) {
+                        //         vDateOfBirth = oShareholder?.dateOfBirth?.toISOString()?.split("T")[0];
+                        //     }
+                        // }
+                        
+                        // if (!isNaN(oShareholder.issuingDate.getDate())) {
+                        //     vIssuingDate = oShareholder?.issuingDate?.toISOString()?.split("T")[0];
+                        // }
+                        
+                        // if (!isNaN(oShareholder.expiryDate.getDate())) {
+                        //     vExpiryDate = oShareholder?.expiryDate?.toISOString()?.split("T")[0];
+                        // }
 
                         if (oShareholder) {
                             aShareholder.push({
@@ -886,7 +1014,7 @@ sap.ui.define([
                                     "encodedContent": oShareholder.fileData,
                                     "dateOfBirth": this.toVisaDateFormat(vDateOfBirth),
                                     "issuingDate": this.toVisaDateFormat(vIssuingDate),
-                                    "expiryDate": this.toVisaDateFormat(vExpireDate)
+                                    "expiryDate": this.toVisaDateFormat(vExpiryDate)
                                 },
                                 "documentProof": {
                                     "documentName": "COPY_OF_BUSINESS_REGISTRATION",

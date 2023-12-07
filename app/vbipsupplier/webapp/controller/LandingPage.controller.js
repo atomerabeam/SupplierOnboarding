@@ -68,6 +68,7 @@ sap.ui.define([
                     if (oResult) {
                         let oRouter = this.getOwnerComponent().getRouter();
                         oRouter.navTo("SupplierInfo");
+                        this.getView().byId("idOTP.Input").setValue("");
                     }
                 } catch (error) {
                     debugger

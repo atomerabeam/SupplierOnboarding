@@ -60,9 +60,13 @@ async function decryptString(sValue) {
     const oBinding = getBinding();
     const oCredential = await readCredential(oBinding, "VISA-Credentials", "password", "URL_Key");
     const secretKey = oCredential?.value;
-
+    let data;
     // Decrypt
-    let data = CryptoJS.AES.decrypt(sValue, secretKey).toString(CryptoJS.enc.Utf8);
+    if (sValue !== null) {
+        data = CryptoJS.AES.decrypt(sValue, secretKey).toString(CryptoJS.enc.Utf8);
+    } else {
+        data = "";
+    }
     return data;
 }
 /**

@@ -34,7 +34,8 @@
                                                class="sapUiSmallMarginBottom" visible="{ShareholderModel>completed}">
                                             <headerToolbar>
                                                 <OverflowToolbar id="idComplete.OverflowToolbar">
-                                                    <Text id="idShareholder.Text" text="{i18n>shareholder}"/>
+                                                    <Text id="idShareholder.Text" 
+                                                          text="{= ${ShareholderModel>name}.trim().length !== 0 ? ${ShareholderModel>name} : ${i18n>shareholder} }"/>
                                                     <ToolbarSpacer id="idSpace2.ToolbarSpacer"/>
                                                     
                                                     <HBox id="idStatus.HBox" class="customBoxStatus">
@@ -123,7 +124,9 @@
                                                             </VBox>
                                                             <VBox id="idDateOfIssue2.VBox">
                                                                 <!-- @ui5ignore-patterns -->
-                                                                <Text id="idDateOfIssueValue.Text" class="customText" text="{ShareholderModel>dateOfIssue}"/>
+                                                                <Text id="idDateOfIssueValue.Text" class="customText" 
+                                                                      text="{path: 'ShareholderModel>issuingDate',
+						                                                     formatter: '.formatter.dateFormatter'}"/>
                                                             </VBox>
                                                         </HBox>  
                                                         <HBox id="idDocUploaded.HBox" class="customPanelItem1">

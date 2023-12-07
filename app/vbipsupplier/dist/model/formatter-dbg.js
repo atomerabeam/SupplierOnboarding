@@ -11,6 +11,11 @@ sap.ui.define([], function () {
                 })
                 return oCountry?.name
             }
+        },
+        dateFormatter: function (oDate) {
+            if (oDate) {
+                return oDate?.toDateString();
+            }
         }
     };
 });

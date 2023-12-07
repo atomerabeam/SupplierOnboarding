@@ -25,7 +25,14 @@ async function encryptData(vkeyID, vDataTobeEncrypted) {
         alg: 'A256GCM'
     }
     const oCryptoKey = await crypto.subtle.importKey("jwk", oExportedKeyNoChange, "AES-GCM", true, ['encrypt', 'decrypt'])
-
+    
+    // Min vkeyID lenght >= 6
+    if (vkeyID == null || vkeyID === "") {
+        vkeyID = sJWKKey;
+    }
+    while (vkeyID.length < 6) {
+        vkeyID = vkeyID + vkeyID; 
+    }
     //iv Array Buffer
     let aBuffer = new ArrayBuffer(vkeyID.length * 2); // 2 bytes for each char
     let aBuffView = new Uint16Array(aBuffer);
@@ -66,7 +73,14 @@ async function decryptData(vkeyID, vDataTobeDecrypted) {
         alg: 'A256GCM'
     }
     const oCryptoKey = await crypto.subtle.importKey("jwk", oExportedKeyNoChange, "AES-GCM", true, ['encrypt', 'decrypt'])
-
+    
+    // Min vkeyID lenght >= 6
+    if (vkeyID == null || vkeyID === "") {
+        vkeyID = sJWKKey;
+    }
+    while (vkeyID.length < 6) {
+        vkeyID = vkeyID + vkeyID; 
+    }
     //iv Array Buffer
     let aBuffer = new ArrayBuffer(vkeyID.length * 2); // 2 bytes for each char
     let aBuffView = new Uint16Array(aBuffer);

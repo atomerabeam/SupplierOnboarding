@@ -19,11 +19,11 @@ type typeSupplierDocument {
     documentType   : String(100);
     documentKey    : String(100);
     nameOnDocument : String(100);
-    documentNumber : String(20);
+    documentNumber : String;
     fileName       : String(100);
     fileType       : String(50);
     encodedContent : LargeString;
-    dateOfBirth    : Date;
+    dateOfBirth    : String;
     issuingDate    : Date;
     expiryDate     : Date;
 }
