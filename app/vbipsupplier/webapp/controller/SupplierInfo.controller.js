@@ -924,7 +924,7 @@ sap.ui.define([
                 }
                 
                 let sTime = Math.round(new Date().getTime() / 1000);
-                vbipRequestId = oSupplier.buyerID + oSupplier.supplierID + "_" + sTime;
+                vbipRequestId = oSupplier.buyerID + oSupplier.supplierID + sTime;
                 let oCountry = await Models.get3DigitCountry(oSupplier.countryCode_code, sAuthToken)
                 let oSupplierOnboarding = {
                     "vbipRequestId": vbipRequestId,
