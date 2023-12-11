@@ -18,7 +18,7 @@ async function getToken(sDestionation) {
 
 async function decryptID(pID) {
     const oBinding = getBinding()
-    console.log(oBinding)
+    // console.log(oBinding)
     const oCredential = await readCredential(oBinding, "VISA-Credentials", "password", "URL_Key")
     const secretKey = oCredential?.value
     // const secretKey = "visaproject";
@@ -26,11 +26,11 @@ async function decryptID(pID) {
 
     // Encrypt
     let encryptedData = await CryptoJS.AES.encrypt(data, secretKey).toString();
-    console.log(encryptedData)
+    // console.log(encryptedData)
     // const encoded = encodeURIComponent(encryptedData);
     const encoded = encodeURIComponent(encodeURIComponent(encryptedData));
     // ...index.html#/Supplier/encoded 
-    console.log("encodedURI 2", encoded);
+    // console.log("encodedURI 2", encoded);
 
     // Decrypt
     let decodeURI = decodeURIComponent(pID);
@@ -39,7 +39,7 @@ async function decryptID(pID) {
     let decodeURI2 = decodeURIComponent(decodeURIComponent(pID));
     let decrypt2 = await CryptoJS.AES.decrypt(decodeURI2, secretKey);
     let decryptedData2 = decrypt2.toString(CryptoJS.enc.Utf8); 
-    console.log("decodedURI 2", decryptedData2);
+    // console.log("decodedURI 2", decryptedData2);
     return decryptedData;
 }
 

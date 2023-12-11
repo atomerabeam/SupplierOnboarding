@@ -4,6 +4,7 @@ using { Country } from '@sap/cds/common';
 type typeSupplier {
     buyerID                  : String(10);
     supplierID               : String(15);
+    requestID                : String(36);
     supplierName             : String(100);
     status                   : String(20);
     SAPCustomer              : Boolean;
@@ -46,7 +47,7 @@ type typeSupplierOnboarding {
 }
 
 type typeSupplierInfo {
-    supplierId                    : String(15);
+    supplierId                    : String(25);
     firstName                     : String(100);
     lastName                      : String(100);
     legalName                     : String(100);

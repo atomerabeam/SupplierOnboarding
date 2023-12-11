@@ -211,7 +211,7 @@ sap.ui.define([
                 let oBuyerOnRead = await Models.getBuyerOnboarding(oBuyerParameter, sAuthToken);
                 if (oBuyerOnRead.response.value.buyerOnboarding.value[0]) {
                     // Set Model Buyer Onboarding
-                    // this.getOwnerComponent().getModel("SupplierInfo").setProperty("/buyerOnboarding", oBuyerOnRead.response.value.buyerOnboarding.value[0]);
+                    this.getOwnerComponent().getModel("SupplierInfo").setProperty("/buyerOnboarding", oBuyerOnRead.response.value.buyerOnboarding.value[0]);
 
                     // Get VBIP
                     let oVBIPParameter = {

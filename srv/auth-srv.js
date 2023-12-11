@@ -9,11 +9,11 @@ module.exports = cds.service.impl(async (service) => {
             }
             let sRequestID = await vbipService.decryptID(sEncryptedUrl)
             const [sBuyerID, sSupplierID, sInviteDate] = sRequestID.split("_")
-            console.log("Test buyer ", sBuyerID)
-            console.log("Test supplier ", sSupplierID)
+            // console.log("Test buyer ", sBuyerID)
+            // console.log("Test supplier ", sSupplierID)
             if (sBuyerID && sSupplierID) {
                 let oBuyerService = await vbipService.getToken("VBIP-API");
-                console.log("Test des ", oBuyerService.token, " @@ ", oBuyerService.url)
+                // console.log("Test des ", oBuyerService.token, " @@ ", oBuyerService.url)
                 const response = await fetch(`${oBuyerService.url}/odata/v4/supplier-onboarding/SupplierInfo(buyerID='${sBuyerID}',supplierID='${sSupplierID}')`, {
                     method: "GET",
                     headers: {
@@ -22,15 +22,15 @@ module.exports = cds.service.impl(async (service) => {
                     }
                 });
                 const oSupplierInfo = await response.json()
-                console.log(oSupplierInfo)
+                // console.log(oSupplierInfo)
                 if (oSupplierInfo.error) {
                     req.error(oSupplierInfo.error)
                 } else {
                     // console.log(oSupplierInfo)
                     // Get unix time of inviteDate in database
                     const sSupplierInviteDate = new Date(oSupplierInfo.inviteDate).getTime()
-                    console.log(sSupplierInviteDate)
-                    console.log(sInviteDate)
+                    // console.log(sSupplierInviteDate)
+                    // console.log(sInviteDate)
                     if (sInviteDate == sSupplierInviteDate && 
                         (oSupplierInfo.status === "INV" || oSupplierInfo.status === "SAV" ) ) {
                         

@@ -194,8 +194,8 @@ module.exports = cds.service.impl(async (service) => {
             ]
 
         };
-        console.log(b1Info.dbName);
-        console.log(oAuthTokenCPI);
+        console.log(oSupplier);
+        // console.log(oAuthTokenCPI);
         let oResult = {};
         try {
             const response = await fetch(`${oAuthTokenCPI.url}/if3001/router/b1s/v1/BusinessPartners`, {
@@ -374,7 +374,7 @@ module.exports = cds.service.impl(async (service) => {
             });
             let oJsonResponse = await response.json()
             let oCardInfo = oJsonResponse.value[0]
-            console.log(oCardInfo)
+            // console.log(oCardInfo)
             if (oCardInfo) {
                 oCardInfo.cardNumber = await vbipService.decryptData(sVbipRequestID, oCardInfo.cardNumber)
                 oCardInfo.cvv2 = await vbipService.decryptData(sVbipRequestID, oCardInfo.cvv2)
@@ -450,7 +450,7 @@ module.exports = cds.service.impl(async (service) => {
                 }
             });
             let oJsonResponse = await response.json()
-            console.log(oJsonResponse)
+            // console.log(oJsonResponse)
             return oJsonResponse.value
         } catch (error) {
             req.error(error)

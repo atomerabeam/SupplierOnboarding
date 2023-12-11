@@ -11,7 +11,7 @@ sap.ui.define([
      */
     function (Controller, JSONModel, Models, MessageToast, formatter, MessageBox) {
         "use strict";
-
+        var vbipRequestId;
         return Controller.extend("vbipsupplier.controller.SupplierInfo", {
             formatter: formatter,
             onInit: function () {
@@ -51,8 +51,8 @@ sap.ui.define([
                 if (vAcceptCard === "true") {
                     let vReturnCode = await this._submitSupplier("message");
                     if (vReturnCode === "Success") {
-                        this._updateSupplier("noMessage", "CAC", false, false);
-                        this._updateSupplierB1("noMessage");
+                        await this._updateSupplier("noMessage", "CAC", false, false);
+                        await this._updateSupplierB1("noMessage");
                     }
                     // this.getView().getModel("PageModel").setProperty("/pageFlow/complete", true);
                     // this.getView().getModel("PageModel").setProperty("/pageFlow/infoRequest", false);
@@ -828,6 +828,7 @@ sap.ui.define([
                 }
 
                 let oSupplierData = {
+                    "requestID": vbipRequestId,
                     "status": vStatus,
                     "SAPCustomer": (this.getView().byId("idSAPCustomer.Select").getSelectedKey().toLowerCase() === 'true'),
                     "businessRegNum": oSupplier.businessRegNum,
@@ -872,12 +873,13 @@ sap.ui.define([
             _updateSupplierB1: async function (sMessage) {
                 let sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken");
                 let oSupplier = this.getOwnerComponent().getModel("SupplierInfo").getProperty("/supplier");
+                let oBuyerOnboarding = this.getOwnerComponent().getModel("SupplierInfo").getProperty("/buyerOnboarding");
                 let oVBIP = this.getOwnerComponent().getModel("SupplierInfo").getProperty("/VBIP");
 
                 let oParameter = {
                     "supplierID": oSupplier.supplierID,
                     "vbipID": oVBIP.vbipID,
-                    "companyCode": oVBIP.companyCode
+                    "companyCode": oBuyerOnboarding.companyCode
                 };
 
                 let oSupplierUpdate = await Models.updateSupplierB1(oParameter, sAuthToken);
@@ -921,15 +923,17 @@ sap.ui.define([
                     iAddressDoc = 9;
                 }
                 
+                let sTime = Math.round(new Date().getTime() / 1000);
+                vbipRequestId = oSupplier.buyerID + oSupplier.supplierID + "_" + sTime;
                 let oCountry = await Models.get3DigitCountry(oSupplier.countryCode_code, sAuthToken)
                 let oSupplierOnboarding = {
-                    "vbipRequestId": oSupplier.buyerID + oSupplier.supplierID,
+                    "vbipRequestId": vbipRequestId,
                     "businessNature": vBusinessNature,
-                    "shareHolderCount": parseInt(oSupplier.shareholderCount),
+                    "shareHolderCount": oSupplier.businessNature_selectKey == 3 ? 0 : parseInt(oSupplier.shareholderCount),
                     "isCardAcceptor": vAcceptCard,
                     "buyerId": oSupplier.buyerID,
                     "supplierInfo": {
-                        "supplierId": oSupplier.supplierID,
+                        "supplierId": oSupplier.buyerID + oSupplier.supplierID,
                         "firstName": oSupplier.firstName,
                         "lastName": oSupplier.lastName,
                         "legalName": oSupplier.supplierName,
@@ -1027,7 +1031,15 @@ sap.ui.define([
                             });
                         }
                     }
+                    
+                    let oIdentityProof = {};
+                    if (vBusinessNature !== "INDIVIDUAL") {
+                        oIdentityProof =  aShareholder[0].identityProof;
+                        aShareholder = [];
+                    }
+
                     oSupplierOnboarding.kycDetails = {
+                        "identifyProof": oIdentityProof,
                         "addressProof": {
                             "documentName": "COPY_OF_BUSINESS_REGISTRATION",
                             "nameOnDocument": oAddressProof.nameOnDocument,

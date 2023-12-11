@@ -62,9 +62,9 @@ headers:
       Content-Type: application/json
 
 {
-      "supplierID": "1000018989",
-      "vbipID": "100001",
-      "companyCode": "1000"
+      "supplierID": "VPPL",
+      "vbipID": "500051",
+      "companyCode": "1001"
 }
 ####################################################
 POST {{server}}/odata/v4/supplier/decryptID

@@ -86,9 +86,9 @@ async function genOTPNew(bCardInfoOTP, pID) {
     } else {
         aOTP = aSupplierOTP
     }
-    console.log("pID: " + pID);
+    // console.log("pID: " + pID);
     let oOTP = aOTP.find(item => item.uID === pID);
-    console.log(aOTP);
+    // console.log(aOTP);
     // Set OTP Limit
     if (oOTP) {
         oOTP.OTP = vOTP
@@ -102,7 +102,7 @@ async function genOTPNew(bCardInfoOTP, pID) {
             "OTPRemain": nOTPLimit
         });
     }
-    console.log(aOTP);
+    // console.log(aOTP);
     return vOTP;
 }
 
