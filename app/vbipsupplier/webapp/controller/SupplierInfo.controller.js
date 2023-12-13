@@ -877,7 +877,7 @@ sap.ui.define([
                 let oVBIP = this.getOwnerComponent().getModel("SupplierInfo").getProperty("/VBIP");
 
                 let oParameter = {
-                    "supplierID": oSupplier.supplierID,
+                    "supplierID": oSupplier.visaSupplierID,
                     "vbipID": oVBIP.vbipID,
                     "companyCode": oBuyerOnboarding.companyCode
                 };
@@ -933,7 +933,7 @@ sap.ui.define([
                     "isCardAcceptor": vAcceptCard,
                     "buyerId": oSupplier.buyerID,
                     "supplierInfo": {
-                        "supplierId": oSupplier.buyerID + oSupplier.supplierID,
+                        "supplierId": oSupplier.visaSupplierID,
                         "firstName": oSupplier.firstName,
                         "lastName": oSupplier.lastName,
                         "legalName": oSupplier.supplierName,
@@ -1033,13 +1033,13 @@ sap.ui.define([
                     }
                     
                     let oIdentityProof = {};
-                    if (vBusinessNature !== "INDIVIDUAL") {
+                    if (vBusinessNature === "INDIVIDUAL") {
                         oIdentityProof =  aShareholder[0].identityProof;
                         aShareholder = [];
                     }
 
                     oSupplierOnboarding.kycDetails = {
-                        "identifyProof": oIdentityProof,
+                        "identityProof": oIdentityProof,
                         "addressProof": {
                             "documentName": "COPY_OF_BUSINESS_REGISTRATION",
                             "nameOnDocument": oAddressProof.nameOnDocument,
@@ -1067,6 +1067,10 @@ sap.ui.define([
                         "branchCity": "",
                         "bankCode": oSupplier.bankCode
                     };
+                }
+                
+                if (vBusinessNature === "INDIVIDUAL") {
+                    delete oSupplierOnboarding.kycDetails.shareHolderProof;
                 }
 
                 let oParameter = {
