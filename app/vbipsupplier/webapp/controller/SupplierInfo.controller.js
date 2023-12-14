@@ -951,6 +951,7 @@ sap.ui.define([
                     }
                 }
 
+                let aShareholder = [];
                 if (vAcceptCard === false) {
 
                     // Document
@@ -982,7 +983,6 @@ sap.ui.define([
                     let oAddressProof = this.getView().getModel("DocumentModel").getProperty("/doc" + iAddressDoc);
 
                     let vShareholderCount = parseInt(this.getView().byId("idShareholderCount.Select").getSelectedKey());
-                    let aShareholder = [];
 
                     for (let i = 0; i <= (vShareholderCount - 1); i++) {
                         let oShareholder = this.getView().getModel("ShareholderModel").getProperty("/item/" + i);
@@ -1032,14 +1032,7 @@ sap.ui.define([
                         }
                     }
                     
-                    let oIdentityProof = {};
-                    if (vBusinessNature === "INDIVIDUAL") {
-                        oIdentityProof =  aShareholder[0].identityProof;
-                        aShareholder = [];
-                    }
-
                     oSupplierOnboarding.kycDetails = {
-                        "identityProof": oIdentityProof,
                         "addressProof": {
                             "documentName": "COPY_OF_BUSINESS_REGISTRATION",
                             "nameOnDocument": oAddressProof.nameOnDocument,
@@ -1048,16 +1041,6 @@ sap.ui.define([
                             "encodedContent": oAddressProof.fileData
                         },
                         "businessProof": aSupplierDocument,
-                        // "identityProof": {
-                        //     "documentName": "Passport",
-                        //     "nameOnDocument": "Xavier",
-                        //     "documentNumber": "HN789T",
-                        //     "dateofBirth": "22-01-1987",
-                        //     "issuingDate": "22-01-1987",
-                        //     "expiryDate": "22-01-1987",
-                        //     "fileName": "passport.jpg",
-                        //     "encodedContent": "HKYT67"
-                        // },
                         "shareHolderProof": aShareholder
                     };
 
@@ -1071,6 +1054,17 @@ sap.ui.define([
                 
                 if (vBusinessNature === "INDIVIDUAL") {
                     delete oSupplierOnboarding.kycDetails.shareHolderProof;
+                    
+                    oSupplierOnboarding.kycDetails.identityProof = aShareholder[0].identityProof;
+                    oSupplierOnboarding.kycDetails.businessProof = [{
+                        "documentName": "COPY_OF_BUSINESS_REGISTRATION",
+                        "nameOnDocument": oAddressProof.nameOnDocument,
+                        "documentNumber": oAddressProof.documentNumber,
+                        "fileName": oAddressProof.fileName,
+                        "encodedContent": oAddressProof.fileData,
+                        "registrationDate" : "1970-01-01",
+                        "expiryDate" : "9999-12-31"
+                    }]
                 }
 
                 let oParameter = {
