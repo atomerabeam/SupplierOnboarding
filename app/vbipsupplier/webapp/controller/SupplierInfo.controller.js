@@ -952,6 +952,7 @@ sap.ui.define([
                 }
 
                 let aShareholder = [];
+                let oAddressProof = this.getView().getModel("DocumentModel").getProperty("/doc" + iAddressDoc);
                 if (vAcceptCard === false) {
 
                     // Document
@@ -980,7 +981,6 @@ sap.ui.define([
                         });
                     }
 
-                    let oAddressProof = this.getView().getModel("DocumentModel").getProperty("/doc" + iAddressDoc);
 
                     let vShareholderCount = parseInt(this.getView().byId("idShareholderCount.Select").getSelectedKey());
 

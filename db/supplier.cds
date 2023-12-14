@@ -1,5 +1,6 @@
 namespace my.visaModels;
-using { Country } from '@sap/cds/common';
+
+using {Country} from '@sap/cds/common';
 
 type typeSupplier {
     buyerID                  : String(10);
@@ -97,12 +98,13 @@ type typeAddressProof {
 }
 
 type typeBusinessProof {
-    documentName   : String(100);
-    nameOnDocument : String(100);
-    documentNumber : String(20);
-    expiryDate     : String(10);
-    fileName       : String(100);
-    encodedContent : String;
+    documentName     : String(100);
+    nameOnDocument   : String(100);
+    documentNumber   : String(20);
+    expiryDate       : String(10);
+    fileName         : String(100);
+    encodedContent   : String;
+    registrationDate : String(10);
 }
 
 type typeShareholderProof {
