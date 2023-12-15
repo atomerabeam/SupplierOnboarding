@@ -18,6 +18,7 @@ sap.ui.define([
                 oModel.setDefaultBindingMode("OneWay");
                 return oModel;
             },
+
             authorize: async function (oParameter) {
                 try {
                     const response = await fetch("/odata/v4/auth/Authorize", {
@@ -32,6 +33,22 @@ sap.ui.define([
                     return error
                 }
             },
+
+            authorizeCode: async function (oParameter) {
+                try {
+                    const response = await fetch("/odata/v4/auth/AuthorizeCode", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(oParameter),
+                    });
+                    return await response.json()
+                } catch (error) {
+                    return error
+                }
+            },
+            
             getSupplier: async function (oParameter, sAuthToken) {
                 let oResult = {};
                 try {

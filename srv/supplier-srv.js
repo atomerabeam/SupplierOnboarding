@@ -374,13 +374,14 @@ module.exports = cds.service.impl(async (service) => {
             });
             let oJsonResponse = await response.json()
             let oCardInfo = oJsonResponse.value[0]
-            // console.log(oCardInfo)
+            console.log(oCardInfo)
             if (oCardInfo) {
                 oCardInfo.cardNumber = await vbipService.decryptData(sVbipRequestID, oCardInfo.cardNumber)
                 oCardInfo.cvv2 = await vbipService.decryptData(sVbipRequestID, oCardInfo.cvv2)
                 oCardInfo.expiredate = await vbipService.decryptData(sVbipRequestID, oCardInfo.expiredate)
                 delete oCardInfo["vbipRequestId"]
 
+                console.log(oCardInfo)
                 //Update Payment Status
                 await fetch(`${oAuthToken.url}/odata/v4/catalog/cardInfoCallback`, {
                     method: "POST",

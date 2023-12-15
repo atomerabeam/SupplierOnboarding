@@ -241,4 +241,12 @@ GET {{server}}/odata/v4/supplier/get3DigitCountry(code2='VN')
 headers: 
       Content-Type: application/json
 
+####################################################
+POST {{server}}/odata/v4/supplier/getCardInfo
+headers: 
+      Content-Type: application/json
+
+{
+      "vbipRequestID": "20236247491702633792749"
+}
 

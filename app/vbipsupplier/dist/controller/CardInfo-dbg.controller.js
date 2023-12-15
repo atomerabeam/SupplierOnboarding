@@ -26,7 +26,8 @@ sap.ui.define([
 
 			if (oSupplier !== undefined) {
 				sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken")
-				let oParameter = { "vbipRequestID": oSupplier.buyerID.concat(oSupplier.supplierID) }
+				let sToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/token")
+				let oParameter = { "vbipRequestID": sToken }
 				console.log(oParameter)
 				let oCardInfo = await Models.getCardInfo(oParameter, sAuthToken)
 				if (oCardInfo.response) {

@@ -30,6 +30,11 @@ sap.ui.define([
                     "expire": false
                 }
             };
+            
+            this.getOwnerComponent().getModel("LandingText").setProperty("/expire", false);
+            this.getOwnerComponent().getModel("LandingText").setProperty("/invalid", false);
+            this.getOwnerComponent().getModel("LandingText").setProperty("/report", false);
+
             oPageModel.setProperty("/pageFlow", oPageFlow);
             this.getView().setModel(oPageModel, "PageModel");
 
@@ -40,8 +45,15 @@ sap.ui.define([
                 "pID": this._GUID
             };
 
+            if (this._GUID === "CardInfo") {
+                this.getOwnerComponent().getModel("LandingText").setProperty("/invalid", false);
+                this.getOwnerComponent().getModel("LandingText").setProperty("/report", true);
+                this.getView().getModel("PageModel").setProperty("/pageFlow/landing", true);
+                return;
+            }
+            
             //Authorize
-            let oToken = await Models.authorize({
+            let oToken = await Models.authorizeCode({
                 "encryptedUrl": this._GUID
             })
             if (oToken.error && oToken.error.code != "900") {
@@ -60,6 +72,7 @@ sap.ui.define([
                     "buyerID": oDecrypt.response.value.split("_")[0],
                     "supplierID": oDecrypt.response.value.split("_")[1]
                 };
+                this.getOwnerComponent().getModel("AuthModel").setProperty("/token", oDecrypt.response.value.split("_")[2])
 
                 let oSupplierRead = await Models.getSupplier(oParameter, sAuthToken);
                 // if (Object.keys(oSupplierRead.catchError).length === 0 &&
@@ -70,10 +83,12 @@ sap.ui.define([
                         let msgError = `Failed to get Supplier information \nError code ${oSupplierRead.response.error.code}`;
                         // MessageToast.show(msgError);
                         this.getView().getModel("PageModel").setProperty("/pageFlow/landing", true);
+                        this.getOwnerComponent().getModel("LandingText").setProperty("/report", true);
 
                     } else {
                         if (oSupplierRead.response.supplier.error) {
                             this.getView().getModel("PageModel").setProperty("/pageFlow/landing", true);
+                            this.getOwnerComponent().getModel("LandingText").setProperty("/invalid", true);      
 
                         } else if (oSupplierRead.response.supplier) {
                             // Success
@@ -90,6 +105,8 @@ sap.ui.define([
                     let msgError = `Failed to get Supplier information \nError catched`;
                     // MessageToast.show(msgError);
                     this.getView().getModel("PageModel").setProperty("/pageFlow/landing", true);
+                    this.getOwnerComponent().getModel("LandingText").setProperty("/invalid", true);      
+
                 }
             }
 
@@ -110,10 +127,12 @@ sap.ui.define([
                 "pID": this._GUID,
                 "smtpDestination": oVBIP.smtpDestination,
                 "mailTo": vEmail,
-                "mailSubject": "VBIP Supplier OTP",
-                "mailContent": `<strong>Dear Supplier</strong><br/><br/>
-                                <p>Your OTP code is [OTP]</p><br/><p>Thanks</p>`
-            };
+                "mailSubject": "OTP for your Action | Visa B2B Integrated Payments",
+                "mailContent": `<p>Dear Sir/Madam,</p>
+                                <p>Your OTP code is [OTP].</p>
+                                <p>Please key in OTP within 2 minutes.</p>
+                                <p>Congratulations on taking ${oSupplier.supplierName}'s first step towards receiving faster and more efficient invoice payments powered by Visa B2B Integrated Payments.</p>`
+            };          
 
             let oResult = await Models.sendMailOTP(oMail, sAuthToken);
             if (oResult.response.ok === true) {
