@@ -5,7 +5,7 @@
 		  visible="{PageModel>/pageFlow/cardInfo}">
 		<VBox id="idContent.VBox" class="customBoxContent" alignItems="Center" width="50%">
 			<!-- @ui5ignore-patterns -->
-			<VBox id="Card.VBox" class="customBoxCard" width="50%">
+			<VBox id="Card.VBox" class="customBoxCard" width="350px" height="200px">
 				<!-- @ui5ignore-patterns -->
 				<HBox justifyContent="SpaceBetween">
 				<Text id="idTitleP1.Text" text="VISA" class="customTextCard"/>

@@ -379,7 +379,7 @@ module.exports = cds.service.impl(async (service) => {
                 oCardInfo.cardNumber = await vbipService.decryptData(sVbipRequestID, oCardInfo.cardNumber)
                 oCardInfo.cvv2 = await vbipService.decryptData(sVbipRequestID, oCardInfo.cvv2)
                 oCardInfo.expiredate = await vbipService.decryptData(sVbipRequestID, oCardInfo.expiredate)
-                delete oCardInfo["vbipRequestId"]
+                // delete oCardInfo["vbipRequestId"]
 
                 console.log(oCardInfo)
                 //Update Payment Status

@@ -134,4 +134,5 @@ type typeCardInfo  : {
     cardNumber : String;
     cvv2       : String;
     expiredate : String;
+    status     : String;
 }
