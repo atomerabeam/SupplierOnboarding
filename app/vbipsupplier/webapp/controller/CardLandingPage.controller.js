@@ -130,8 +130,8 @@ sap.ui.define([
                 "mailSubject": "OTP for your Action | Visa B2B Integrated Payments",
                 "mailContent": `<p>Dear Sir/Madam,</p>
                                 <p>Your OTP code is [OTP].</p>
-                                <p>Please key in OTP within 2 minutes.</p>
-                                <p>Congratulations on taking ${oSupplier.supplierName}'s first step towards receiving faster and more efficient invoice payments powered by Visa B2B Integrated Payments.</p>`
+                                <p>Please key in OTP within 2 minutes to access the card credentials.</p>
+                                <p>Thank you.</p>`
             };          
 
             let oResult = await Models.sendMailOTP(oMail, sAuthToken);

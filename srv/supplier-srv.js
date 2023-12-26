@@ -457,4 +457,40 @@ module.exports = cds.service.impl(async (service) => {
             req.error(error)
         }
     });
+    
+    service.on('getEmailTemplate', async (req) => {
+        let oAuthToken = await vbipService.getToken("VBIP-API");
+        try {
+            const response = await fetch(`${oAuthToken.url}/odata/v4/catalog/EmailTemplate?$filter=type eq '${req.data.type}'`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": oAuthToken.token
+                }
+            });
+            let oJsonResponse = await response.json()
+            // console.log(oJsonResponse)
+            return oJsonResponse.value
+        } catch (error) {
+            req.error(error)
+        }
+    });
+
+    service.on('getCountryDocument', async (req) => {
+        let oAuthToken = await vbipService.getToken("VBIP-API");
+        try {
+            const response = await fetch(`${oAuthToken.url}/odata/v4/catalog/CountryDocumentConfig?$filter=country eq '${req.data.country}'and businessNature eq '${req.data.businessNature}' `, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": oAuthToken.token
+                }
+            });
+            let oJsonResponse = await response.json()
+            // console.log(oJsonResponse)
+            return oJsonResponse.value
+        } catch (error) {
+            req.error(error)
+        }
+    });
 })
