@@ -457,5 +457,39 @@ sap.ui.define([
                     return error
                 }
             },
+
+            getEmailTemplate: async function (oParameter, sAuthToken) {
+
+                try {
+                    const response = await fetch(`/odata/v4/supplier/getEmailTemplate(country='${oParameter.country}')`, {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": sAuthToken
+                        }
+                    });
+                    let oJsonResponse = await response.json()
+                    return oJsonResponse.value
+                } catch (error) {
+                    return error
+                }
+            },
+
+            getCountryDocument: async function (oParameter, sAuthToken) {
+
+                try {
+                    const response = await fetch(`/odata/v4/supplier/getCountryDocument(type='${oParameter}',businessNature='${oParameter.businessNature}')`, {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": sAuthToken
+                        }
+                    });
+                    let oJsonResponse = await response.json()
+                    return oJsonResponse.value
+                } catch (error) {
+                    return error
+                }
+            },
         };
     });

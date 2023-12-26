@@ -149,9 +149,30 @@ sap.ui.define([
             },
 
             onChangeBusinessNature: async function () {
+                let oSupplier = this.getOwnerComponent().getModel("SupplierInfo").getProperty("/supplier");
+                let sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken");
                 let vBusinessNature = parseInt(this.getView().byId("idBusinessNature.Select").getSelectedKey());
                 if (isNaN(vBusinessNature)) {
                     vBusinessNature = 1;
+                }
+
+                let oParam1 = {
+                    "country": oSupplier.countryCode_code,
+                    "businessNature": vBusinessNature.toString()
+                }
+                let oCountryDoc = await Models.getCountryDocument(oParam1, sAuthToken);
+                let aCountryDoc;
+                if (oCountryDoc.response.value) {
+                    aCountryDoc = oCountryDoc.response.value;
+                }
+                for (let i = 0; i < aCountryDoc.length; i++) {
+                    let documentKey = parseInt(aCountryDoc[i].documentKey);
+                    if (vBusinessNature === 2 && documentKey > 2) {
+                        documentKey = documentKey + 5;
+                    } else if (vBusinessNature === 3) {
+                        documentKey = documentKey + 6;
+                    }
+                    aDocument.push(documentKey);
                 }
 
                 let vCount;
@@ -191,17 +212,15 @@ sap.ui.define([
                 this.getView().getModel("F4").setProperty("/shareholderItem", aShareholderCount);
 
                 
-                let oSupplier = this.getOwnerComponent().getModel("SupplierInfo").getProperty("/supplier");
-                let sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken");
                 let oParam = {
                     "pCountry": oSupplier.countryCode_code,
                     "pBusinessNature": vBusinessNature.toString()
                 }
                 let oDocType = await Models.getDocumentType(oParam, sAuthToken);
-                    let aDocType;
-                    if (oDocType.response.value) {
-                        aDocType = oDocType.response.value.documentType.value;
-                    }
+                let aDocType;
+                if (oDocType.response.value) {
+                    aDocType = oDocType.response.value.documentType.value;
+                }
                 
                 this.getView().getModel("F4").setProperty("/docType", aDocType);
             },
