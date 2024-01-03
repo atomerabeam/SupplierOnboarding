@@ -951,6 +951,7 @@ sap.ui.define([
                     "businessNature": vBusinessNature,
                     "shareHolderCount": oSupplier.businessNature_selectKey == 3 ? 0 : parseInt(oSupplier.shareholderCount),
                     "isCardAcceptor": vAcceptCard,
+                    "kycIdentificationNumber": vAcceptCard == false ? oSupplier.businessRegNum : '',
                     "buyerId": oSupplier.buyerID,
                     "supplierInfo": {
                         "supplierId": oSupplier.visaSupplierID,
