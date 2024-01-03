@@ -256,3 +256,9 @@ headers:
       Content-Type: application/json
 
 ####################################################
+
+GET {{server}}/odata/v4/supplier/getCountryDocument(country='IN',businessNature='1')
+headers: 
+      Content-Type: application/json
+
+####################################################

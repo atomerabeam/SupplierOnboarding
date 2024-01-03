@@ -1,1 +1,1 @@
-sap.ui.define([],function(){"use strict";return{countryFormatter:function(t){let e=this.getOwnerComponent().getModel("Countries");if(e){let n=e.getData();let r=n.find(e=>e.code===t);return r?.name}},dateFormatter:function(t){if(t){return t?.toDateString()}}}});
+sap.ui.define([],function(){"use strict";return{countryFormatter:function(t){let e=this.getOwnerComponent().getModel("Countries");if(e){let n=e.getData();let r=n.find(e=>e.Code2===t);return r?.Desc}},dateFormatter:function(t){if(t){return t?.toDateString()}}}});

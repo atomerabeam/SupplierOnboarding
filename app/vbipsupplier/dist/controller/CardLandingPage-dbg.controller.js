@@ -121,7 +121,7 @@ sap.ui.define([
 
             let vEmail = oSupplier.emailID;
             // let oResult = await Models.getSupplier(oParameter);
-            let oEmailTemplate = await Models.getEmailTemplate("OPT1", sAuthToken);
+            let oEmailTemplate = await Models.getEmailTemplate("OPT2", sAuthToken);
             let sEmailSubject = oEmailTemplate?.emailSubject;
             let sEmailBody = oEmailTemplate?.emailBody;
 

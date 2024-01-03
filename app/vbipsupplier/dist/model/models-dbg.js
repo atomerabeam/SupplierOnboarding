@@ -427,7 +427,7 @@ sap.ui.define([
             },
             getCountries: async function (oModel, sAuthToken) {
                 try {
-                    const response = await fetch("/odata/v4/supplier/getCountries()", {
+                    const response = await fetch("/odata/v4/supplier/get3DigitCountry()", {
                         method: "GET",
                         headers: {
                             "Content-Type": "application/json",
@@ -442,7 +442,6 @@ sap.ui.define([
             },
             
             get3DigitCountry: async function (oParameter, sAuthToken) {
-
                 try {
                     const response = await fetch(`/odata/v4/supplier/get3DigitCountry(code2='${oParameter}')`, {
                         method: "GET",
