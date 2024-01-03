@@ -30,19 +30,16 @@ sap.ui.define([
                 let vEmail = oSupplier.emailID;
                 // let oResult = await Models.getSupplier(oParameter);
                 let oEmailTemplate = await Models.getEmailTemplate("OPT1", sAuthToken);
-                let sEmailSubject = oEmailTemplate.emailSubject;
-                let sEmailBody = oEmailTemplate.emailBody.replace("[SUPPLIER NAME]", oSupplier.supplierName);
+                let sEmailSubject = oEmailTemplate?.emailSubject;
+                let sEmailBody = oEmailTemplate?.emailBody.replace("[SUPPLIER NAME]", oSupplier.supplierName);
 
                 let oMail = {
                     "bCardInfoOTP": false,
                     "pID": this._GUID,
                     "smtpDestination": oVBIP.smtpDestination,
                     "mailTo": vEmail,
-                    "mailSubject": "OTP for your Action | Visa B2B Integrated Payments",
-                    "mailContent": `<p>Dear Sir/Madam,</p>
-                                    <p>Your OTP code is [OTP].</p>
-                                    <p>Please key in OTP within 2 minutes.</p>
-                                    <p>Congratulations on taking ${oSupplier.supplierName}'s first step towards receiving faster and more efficient invoice payments powered by Visa B2B Integrated Payments.</p>`
+                    "mailSubject": sEmailSubject,
+                    "mailContent": sEmailBody
                 };
 
                 let oResult = await Models.sendMailOTP(oMail, sAuthToken);

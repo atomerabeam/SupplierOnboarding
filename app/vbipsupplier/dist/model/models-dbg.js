@@ -461,7 +461,7 @@ sap.ui.define([
             getEmailTemplate: async function (oParameter, sAuthToken) {
 
                 try {
-                    const response = await fetch(`/odata/v4/supplier/getEmailTemplate(country='${oParameter.country}')`, {
+                    const response = await fetch(`/odata/v4/supplier/getEmailTemplate(type='${oParameter}')`, {
                         method: "GET",
                         headers: {
                             "Content-Type": "application/json",
@@ -478,7 +478,7 @@ sap.ui.define([
             getCountryDocument: async function (oParameter, sAuthToken) {
 
                 try {
-                    const response = await fetch(`/odata/v4/supplier/getCountryDocument(type='${oParameter}',businessNature='${oParameter.businessNature}')`, {
+                    const response = await fetch(`/odata/v4/supplier/getCountryDocument(country='${oParameter.country}',businessNature='${oParameter.businessNature}')`, {
                         method: "GET",
                         headers: {
                             "Content-Type": "application/json",

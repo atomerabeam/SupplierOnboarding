@@ -27,6 +27,6 @@ service Supplier {
     function reportInfo(buyerID : String, supplierID : String)                                                                                        returns Boolean;
     action   updateSupplierB1(supplierID : String, vbipID : String, companyCode : String)                                                             returns String;
     function get3DigitCountry(code2 : String)                                                                                                         returns String;
-    function getEnailTemplate(type : String)                                                                                                          returns String;
+    function getEmailTemplate(type : String)                                                                                                          returns String;
     function getCountryDocument(country : String, businessNature : String)                                                                            returns String;
 }

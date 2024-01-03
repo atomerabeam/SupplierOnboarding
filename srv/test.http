@@ -72,7 +72,7 @@ headers:
       Content-Type: application/json
 
 {
-      "pID" : "U2FsdGVkX1%252BehtzW2biajjm7mt8M95ROZrKzlV0D1LM%253D"
+      "pID" : "U2FsdGVkX1%2BGAzRoMPGJaaPHTXOuzkEkZrssCtuWOvl151EA9%2Buy9dLPEaq1x2VoA2cQExiaXzo8ixSsklQFcg%3D%3D"
 }
 
 ####################################################
@@ -250,3 +250,9 @@ headers:
       "vbipRequestID": "20236247491702633792749"
 }
 
+####################################################
+GET {{server}}/odata/v4/supplier/getEmailTemplate(type='OTP1')
+headers: 
+      Content-Type: application/json
+
+####################################################

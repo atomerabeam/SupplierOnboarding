@@ -22,7 +22,7 @@ async function decryptID(pID) {
     const oCredential = await readCredential(oBinding, "VISA-Credentials", "password", "URL_Key")
     const secretKey = oCredential?.value
     // const secretKey = "visaproject";
-    let data = "1000010004_1000012345_1697374238175";
+    let data = "2000260001_1000000042_1703844331267";
 
     // Encrypt
     let encryptedData = await CryptoJS.AES.encrypt(data, secretKey).toString();
@@ -30,7 +30,7 @@ async function decryptID(pID) {
     // const encoded = encodeURIComponent(encryptedData);
     const encoded = encodeURIComponent(encodeURIComponent(encryptedData));
     // ...index.html#/Supplier/encoded 
-    // console.log("encodedURI 2", encoded);
+    console.log("encodedURI 2", encoded);
 
     // Decrypt
     let decodeURI = decodeURIComponent(pID);
