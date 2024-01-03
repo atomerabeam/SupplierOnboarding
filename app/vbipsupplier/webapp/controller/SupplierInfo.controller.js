@@ -162,6 +162,8 @@ sap.ui.define([
                 }
                 let oCountryDoc = await Models.getCountryDocument(oParam1, sAuthToken);
                 let aCountryDoc;
+                let aDocument = this.getView().getModel("DocumentModel").getProperty("/docKeys");
+                
                 if (oCountryDoc.value) {
                     aCountryDoc = oCountryDoc.value;
                 }
@@ -176,7 +178,6 @@ sap.ui.define([
                 }
 
                 let vCount;
-                let aDocument = this.getView().getModel("DocumentModel").getProperty("/docKeys");
                 if (vBusinessNature === 1) {
                     vCount = 4;
                     aDocument = [1, 2, 3];
