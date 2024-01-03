@@ -125,9 +125,9 @@ type typeDocumentProof {
 
 
 type typeCountries : array of {
-    name  : String(255);
-    descr : String;
-    code  : String(3);
+    Code2 : String(2);
+    Code3 : String(3);
+    Desc  : String(100);
 }
 
 type typeCardInfo  : {

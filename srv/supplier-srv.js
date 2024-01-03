@@ -424,7 +424,7 @@ module.exports = cds.service.impl(async (service) => {
     service.on('getCountries', async (req) => {
         let oAuthToken = await vbipService.getToken("VBIP-API");
         try {
-            const response = await fetch(`${oAuthToken.url}/odata/v4/catalog/Countries`, {
+            const response = await fetch(`${oAuthToken.url}/odata/v4/catalog/CountryMapping`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",

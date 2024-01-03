@@ -162,8 +162,8 @@ sap.ui.define([
                 }
                 let oCountryDoc = await Models.getCountryDocument(oParam1, sAuthToken);
                 let aCountryDoc;
-                if (oCountryDoc.response.value) {
-                    aCountryDoc = oCountryDoc.response.value;
+                if (oCountryDoc.value) {
+                    aCountryDoc = oCountryDoc.value;
                 }
                 for (let i = 0; i < aCountryDoc.length; i++) {
                     let documentKey = parseInt(aCountryDoc[i].documentKey);
