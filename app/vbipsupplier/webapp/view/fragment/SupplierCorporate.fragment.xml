@@ -655,7 +655,7 @@
 
                         <HBox id="idButton1.HBox" width="100%">
                             <!-- @ui5ignore-patterns -->
-                            <Button id="idContinueStep2.Button" text="{i18n>submit}" class="sapUiSmallMarginEnd" 
+                            <Button id="idContinueStep3.Button" text="{i18n>submit}" class="sapUiSmallMarginEnd" 
                                     type="Emphasized" press="onSubmit" visible="{PageModel>/pageFlow/vDocReq}"/>
                             <Button id="idStep1.Button" text="{i18n>continue}" class="sapUiSmallMarginEnd" 
                                     type="Emphasized" press="onContinueStep1" visible="{PageModel>/pageFlow/vDocReq}"/>

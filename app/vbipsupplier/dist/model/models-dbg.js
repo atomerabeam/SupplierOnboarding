@@ -493,7 +493,7 @@ sap.ui.define([
             getDocRequired: async function (oParameter, sAuthToken) {
 
                 try {
-                    const response = await fetch(`/odata/v4/catalog/DocumentRequired?$filter=countryCode_code eq ${oParameter} )`, {
+                    const response = await fetch(`/odata/v4/supplier/getDocRequired?$filter=country eq ${oParameter} )`, {
                         method: "GET",
                         headers: {
                             "Content-Type": "application/json",

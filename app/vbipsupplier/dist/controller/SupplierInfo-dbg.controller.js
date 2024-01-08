@@ -39,7 +39,8 @@ sap.ui.define([
                 this.getView().setModel(oPageModel, "PageModel");
 
                 let oSupplier = this.getOwnerComponent().getModel("SupplierInfo").getProperty("/supplier");
-                var docRequired = await Models.getDocRequired(oSupplier.countryCode_code);
+                let sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken");
+                var docRequired = await Models.getDocRequired(oSupplier.countryCode_code,sAuthToken);
                 if (docRequired.value[0].isSupplierDocRequired == false) {
                     this.getView().getModel("PageModel").setProperty("/vDocReq", false);
                 }
