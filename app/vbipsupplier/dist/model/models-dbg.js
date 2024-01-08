@@ -490,5 +490,21 @@ sap.ui.define([
                     return error
                 }
             },
+            getDocRequired: async function (oParameter, sAuthToken) {
+
+                try {
+                    const response = await fetch(`/odata/v4/catalog/DocumentRequired?$filter=countryCode_code eq ${oParameter} )`, {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": sAuthToken
+                        }
+                    });
+                    let oJsonResponse = await response.json()
+                    return oJsonResponse.value
+                } catch (error) {
+                    return error
+                }
+            },
         };
     });

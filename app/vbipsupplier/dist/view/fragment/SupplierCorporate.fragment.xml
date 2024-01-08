@@ -75,6 +75,7 @@
 								<Input id="idPostalCodeP3.Input"  editable="false" 
                                        value="{SupplierInfo>/supplier/zipCode}"/>
 								<VBox id="idSpaceP3S28.VBox" height="12px"/>
+                                <VBox visible="{PageModel>/pageFlow/vDocReq}">
 								<Label id="idBusinessNature.Label" text="{i18n>businessNature}"/>
                                 <!-- @ui5ignore-patterns -->
                                 <ComboBox id="idBusinessNature.Select" items="{path:'F4>/businessNature'}"
@@ -93,11 +94,12 @@
                                                color="#1434CB" size="16px"/>
                                 </HBox>
                             </VBox>
+                            </VBox>
                         </HBox>
 						<HBox id="idSpaceP3S2.HBox" height="40px"/>
 
                         <!-- Document upload -->
-                        <HBox id="idDocumentUpload.HBox">
+                        <HBox id="idDocumentUpload.HBox" visible="{PageModel>/pageFlow/vDocReq}">
                             <VBox id="idDocumentText.VBox" width="30%">
                                 <Text id="idDocumentUpload.Text" class="customSubtitle1" text="{i18n>documentUpload}"/>
 								<!-- @ui5ignore-patterns -->
@@ -653,8 +655,10 @@
 
                         <HBox id="idButton1.HBox" width="100%">
                             <!-- @ui5ignore-patterns -->
+                            <Button id="idContinueStep2.Button" text="{i18n>submit}" class="sapUiSmallMarginEnd" 
+                                    type="Emphasized" press="onSubmit" visible="{PageModel>/pageFlow/vDocReq}"/>
                             <Button id="idStep1.Button" text="{i18n>continue}" class="sapUiSmallMarginEnd" 
-                                    type="Emphasized" press="onContinueStep1"/>
+                                    type="Emphasized" press="onContinueStep1" visible="{PageModel>/pageFlow/vDocReq}"/>
                             <!-- @ui5ignore-patterns -->
                             <Button id="idSaveAndExit1.Button" text="{i18n>saveAndExit}" class="sapUiSmallMarginEnd" 
                                     type="Transparent" press="onSaveAndExit"/>

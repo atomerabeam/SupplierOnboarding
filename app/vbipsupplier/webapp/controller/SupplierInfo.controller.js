@@ -24,7 +24,7 @@ sap.ui.define([
                 }, this);
             },
 
-            onBeforeShow: function () {
+            onBeforeShow: async function () {
                 // Page flow
                 let oPageModel = new JSONModel();
                 let oPageFlow = {
@@ -32,12 +32,17 @@ sap.ui.define([
                     "infoConfirm": false,
                     "corporate": false,
                     "shareholder": false,
-                    "complete": false
+                    "complete": false,
+                    "vDocReq": true
                 };
                 oPageModel.setProperty("/pageFlow", oPageFlow);
                 this.getView().setModel(oPageModel, "PageModel");
 
                 let oSupplier = this.getOwnerComponent().getModel("SupplierInfo").getProperty("/supplier");
+                var docRequired = await Models.getDocRequired(oSupplier.countryCode_code);
+                if (docRequired.value[0].isSupplierDocRequired == false) {
+                    this.getView().getModel("PageModel").setProperty("/vDocReq", false);
+                }
                 if (!oSupplier) {
                     let oRouter = this.getOwnerComponent().getRouter();
                     oRouter.navTo("Supplier", {
@@ -92,7 +97,7 @@ sap.ui.define([
                 if (vReturnCode === "Success") {
                     await this._updateSupplier("noMessage", "SUB", true, true);
                 }
-                
+
             },
             onReportInfo: function () {
                 const sMessageTitle = this.getOwnerComponent().getModel("i18n").getProperty("reportInfoMessageTitle")
@@ -128,7 +133,7 @@ sap.ui.define([
                     this.getView().getModel("PageModel").setProperty("/pageFlow/shareholder", false);
                     this.getView().getModel("PageModel").setProperty("/pageFlow/infoRequest", true);
                 }
-                
+
             },
 
             showErrorMessageBox: function (title, errorMessage, callback) {
@@ -180,16 +185,16 @@ sap.ui.define([
                 let vCount;
                 if (vBusinessNature === 1) {
                     vCount = 4;
-                    aDocument = [1, 2, 3];
+                    // aDocument = [1, 2, 3];
                 } else if (vBusinessNature === 2) {
                     vCount = 6;
-                    aDocument = [1, 6];
+                    // aDocument = [1, 6];
                 } else if (vBusinessNature === 3) {
                     vCount = 1;
-                    aDocument = [7, 8, 9];
+                    // aDocument = [7, 8, 9];
                 } else {
                     vCount = 4;
-                    aDocument = [1, 2, 3];
+                    // aDocument = [1, 2, 3];
                 }
 
                 let aShareholderCount = [];
@@ -212,7 +217,7 @@ sap.ui.define([
                 this.getView().getModel("DocumentModel").setProperty("/docKeys", aDocument);
                 this.getView().getModel("F4").setProperty("/shareholderItem", aShareholderCount);
 
-                
+
                 let oParam = {
                     "pCountry": oSupplier.countryCode_code,
                     "pBusinessNature": vBusinessNature.toString()
@@ -222,13 +227,13 @@ sap.ui.define([
                 if (oDocType.response.value) {
                     aDocType = oDocType.response.value.documentType.value;
                 }
-                
+
                 this.getView().getModel("F4").setProperty("/docType", aDocType);
             },
             onInitShareCount: async function () {
                 let oShareholderModel = new JSONModel;
                 this.getView().setModel(oShareholderModel, "ShareholderModel");
-                
+
                 let oSupplier = this.getOwnerComponent().getModel("SupplierInfo").getProperty("/supplier");
                 let sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken");
 
@@ -243,7 +248,7 @@ sap.ui.define([
                     let oDocNum = {
                         "sValue": oSupplier?.shareholderDetails[i]?.shareholderDocuments[0]?.documentNumber,
                     };
-                    let oDocNumDecrypt = await Models.decryptString(oDocNum, sAuthToken); 
+                    let oDocNumDecrypt = await Models.decryptString(oDocNum, sAuthToken);
 
                     let oDateofBirth, oIssuingDate, oExpireDate;
                     let vDateOfBirth = oSupplier?.shareholderDetails[i]?.shareholderDocuments[0].dateOfBirth;
@@ -252,27 +257,27 @@ sap.ui.define([
                         let oDOB = {
                             "sValue": vDateOfBirth,
                         };
-                        let oDOBDecrypt = await Models.decryptString(oDOB, sAuthToken); 
+                        let oDOBDecrypt = await Models.decryptString(oDOB, sAuthToken);
                         vDateOfBirth = oDOBDecrypt?.response?.value;
                         vDateOfBirth = vDateOfBirth + `T00:00:00.000Z`;
                         oDateofBirth = new Date(vDateOfBirth);
                     }
-                    
+
                     let vIssuingDate = oSupplier?.shareholderDetails[i]?.shareholderDocuments[0].issuingDate;
                     if (vIssuingDate !== null) {
                         vIssuingDate = vIssuingDate + `T00:00:00.000Z`;
                         oIssuingDate = new Date(vIssuingDate);
                     }
-                    
+
                     let vExpiryDate = oSupplier?.shareholderDetails[i]?.shareholderDocuments[0].expiryDate;
                     if (vExpiryDate !== null) {
                         vExpiryDate = vExpiryDate + `T00:00:00.000Z`;
                         oExpireDate = new Date(vExpiryDate);
                     }
-                    
+
                     let vEnterInfo, vCompleted;
                     if (oSupplier?.shareholderDetails[i]?.shareholderName &&
-                        oSupplier?.shareholderDetails[i]?.sharePercentage ) {
+                        oSupplier?.shareholderDetails[i]?.sharePercentage) {
                         vEnterInfo = false;
                         vCompleted = true;
                     } else {
@@ -337,7 +342,7 @@ sap.ui.define([
                 this.getView().getModel("ShareholderModel").setProperty("/item", aShareholder);
             },
             onUploadFileButton: async function (oEvent) {
-                
+
                 let sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken")
                 let strID = oEvent.getParameter("id");
                 let docID = strID.split("idUploadFile")[1].split(".Button")[0];
@@ -386,7 +391,7 @@ sap.ui.define([
                 }.bind(this)
 
                 input.click();
-                
+
             },
             onDeleteFileButton: async function (oEvent) {
                 //File Number
@@ -461,7 +466,7 @@ sap.ui.define([
                             this.showErrorMessageBox('Error', 'Invalid file type. Please select a PNG, PDF, or JPEG file.', null);
                         }
                     }
-                    
+
                     await sap.ui.core.BusyIndicator.hide();
                 }.bind(this)
 
@@ -508,8 +513,8 @@ sap.ui.define([
             onSave: function () {
                 let oShareholderPopup = this.getView().getModel("ShareholderPopupModel").getProperty("/popup");
                 let vEnterInfo, vCompleted;
-                if (oShareholderPopup.name.trim().length > 0 && 
-                    oShareholderPopup.sharePercentage.trim().length > 0 ) {
+                if (oShareholderPopup.name.trim().length > 0 &&
+                    oShareholderPopup.sharePercentage.trim().length > 0) {
                     vEnterInfo = false;
                     vCompleted = true;
                 } else {
@@ -679,7 +684,7 @@ sap.ui.define([
                             "fileContent": aDocument[i].encodedContent
                         };
                         let oFileDecrypt = await Models.decryptFile(oFile, sAuthToken);
-                        
+
                         let oDocNum = {
                             "sValue": aDocument[i].documentNumber,
                         };
@@ -759,7 +764,7 @@ sap.ui.define([
                             "fileContent": oDocumentItem.fileData
                         };
                         let oFileEncrypt = await Models.encryptFile(oFile, sAuthToken);
-                        
+
                         let oDocNum = {
                             "sValue": oDocumentItem.documentNumber,
                         };
@@ -809,11 +814,11 @@ sap.ui.define([
                             //         vDateOfBirth = oShareholder?.dateOfBirth?.toISOString()?.split("T")[0];
                             //     }
                             // }
-                            
+
                             // if (!isNaN(oShareholder.issuingDate.getDate())) {
                             //     vIssuingDate = oShareholder?.issuingDate?.toISOString()?.split("T")[0];
                             // }
-                            
+
                             // if (!isNaN(oShareholder.expiryDate.getDate())) {
                             //     vExpiryDate = oShareholder?.expiryDate?.toISOString()?.split("T")[0];
                             // }
@@ -872,7 +877,7 @@ sap.ui.define([
                     if (oSupplierUpdate.response.error) {
                         // Error
                         sShowMessage = `Operation failed Supplier ${oSupplier.supplierID} \nError code ${oSupplierUpdate.response.error.code}`;
-                        
+
                     } else {
                         // Success
                         sShowMessage = `Supplier ${oSupplier.supplierID} information is update`;
@@ -886,7 +891,7 @@ sap.ui.define([
                 if (sMessage === "message") {
                     MessageToast.show(sShowMessage);
                 }
-                
+
                 await sap.ui.core.BusyIndicator.hide();
                 return vReturnCode;
             },
@@ -942,7 +947,7 @@ sap.ui.define([
                     vBusinessNature = "INDIVIDUAL";
                     iAddressDoc = 9;
                 }
-                
+
                 let sTime = Math.round(new Date().getTime() / 1000);
                 vbipRequestId = oSupplier.buyerID + oSupplier.supplierID + sTime;
                 let oCountry = await Models.get3DigitCountry(oSupplier.countryCode_code, sAuthToken)
@@ -975,96 +980,97 @@ sap.ui.define([
                 let aShareholder = [];
                 let oAddressProof = this.getView().getModel("DocumentModel").getProperty("/doc" + iAddressDoc);
                 if (vAcceptCard === false) {
+                    if (this.getView().getModel("PageModel").getProperty("/vDocReq") == true) {
+                        ;
+                        // Document
+                        let aDocument = this.getView().getModel("DocumentModel").getProperty("/docKeys");
+                        let aSupplierDocument = [];
+                        let oShareholderDocument = {}; // Document proof for shareholder
 
-                    // Document
-                    let aDocument = this.getView().getModel("DocumentModel").getProperty("/docKeys");
-                    let aSupplierDocument = [];
-                    let oShareholderDocument = {}; // Document proof for shareholder
+                        for (let i = 0; i <= (aDocument.length - 1); i++) {
+                            let oDocumentItem = this.getView().getModel("DocumentModel").getProperty("/doc" + aDocument[i]);
+                            if (i == 0) {
+                                oShareholderDocument = oDocumentItem;
+                            }
+                            // let oFile = {
+                            //     "ID": oSupplier.supplierID,
+                            //     "fileContent": oDocumentItem.fileData
+                            // };
+                            // let oFileEncrypt = await Models.decryptFile(oFile, sAuthToken);
 
-                    for (let i = 0; i <= (aDocument.length - 1); i++) {
-                        let oDocumentItem = this.getView().getModel("DocumentModel").getProperty("/doc" + aDocument[i]);
-                        if (i == 0) {
-                            oShareholderDocument = oDocumentItem;
-                        }
-                        // let oFile = {
-                        //     "ID": oSupplier.supplierID,
-                        //     "fileContent": oDocumentItem.fileData
-                        // };
-                        // let oFileEncrypt = await Models.decryptFile(oFile, sAuthToken);
-
-                        let sDocumentName = this.getOwnerComponent().getModel("i18n").getProperty("documentName" + aDocument[i]);
-                        aSupplierDocument.push({
-                            "documentName": sDocumentName,
-                            "nameOnDocument": oDocumentItem.nameOnDocument,
-                            "documentNumber": oDocumentItem.documentNumber,
-                            "fileName": oDocumentItem.fileName,
-                            "encodedContent": oDocumentItem.fileData
-                        });
-                    }
-
-
-                    let vShareholderCount = parseInt(this.getView().byId("idShareholderCount.Select").getSelectedKey());
-
-                    for (let i = 0; i <= (vShareholderCount - 1); i++) {
-                        let oShareholder = this.getView().getModel("ShareholderModel").getProperty("/item/" + i);
-                        
-                        let vDateOfBirth, vIssuingDate, vExpiryDate;
-                        vDateOfBirth = oShareholder?.dateOfBirth?.toISOString()?.split("T")[0];
-                        vIssuingDate = oShareholder?.issuingDate?.toISOString()?.split("T")[0];
-                        vExpiryDate = oShareholder?.expiryDate?.toISOString()?.split("T")[0];
-                        
-                        // if (oShareholder.dateOfBirth !== null) {
-                        //     if (!isNaN(oShareholder.dateOfBirth.getDate())) {
-                        //         vDateOfBirth = oShareholder?.dateOfBirth?.toISOString()?.split("T")[0];
-                        //     }
-                        // }
-                        
-                        // if (!isNaN(oShareholder.issuingDate.getDate())) {
-                        //     vIssuingDate = oShareholder?.issuingDate?.toISOString()?.split("T")[0];
-                        // }
-                        
-                        // if (!isNaN(oShareholder.expiryDate.getDate())) {
-                        //     vExpiryDate = oShareholder?.expiryDate?.toISOString()?.split("T")[0];
-                        // }
-
-                        if (oShareholder) {
-                            aShareholder.push({
-                                "name": oShareholder.name,
-                                "sharePercentage": parseInt(oShareholder.sharePercentage),
-                                "identityProof": {
-                                    "documentName": oShareholder.docType,
-                                    "nameOnDocument": oShareholder.nameOnDoc,
-                                    "documentNumber": oShareholder.docNum,
-                                    "fileName": oShareholder.fileName,
-                                    "encodedContent": oShareholder.fileData,
-                                    "dateOfBirth": this.toVisaDateFormat(vDateOfBirth),
-                                    "issuingDate": this.toVisaDateFormat(vIssuingDate),
-                                    "expiryDate": this.toVisaDateFormat(vExpiryDate)
-                                },
-                                "documentProof": {
-                                    "documentName": "COPY_OF_BUSINESS_REGISTRATION",
-                                    "nameOnDocument": oShareholderDocument.nameOnDocument,
-                                    "documentNumber": oShareholderDocument.documentNumber,
-                                    "fileName": oShareholderDocument.fileName,
-                                    "encodedContent": oShareholderDocument.fileData
-                                }
-
+                            let sDocumentName = this.getOwnerComponent().getModel("i18n").getProperty("documentName" + aDocument[i]);
+                            aSupplierDocument.push({
+                                "documentName": sDocumentName,
+                                "nameOnDocument": oDocumentItem.nameOnDocument,
+                                "documentNumber": oDocumentItem.documentNumber,
+                                "fileName": oDocumentItem.fileName,
+                                "encodedContent": oDocumentItem.fileData
                             });
                         }
-                    }
-                    
-                    oSupplierOnboarding.kycDetails = {
-                        "addressProof": {
-                            "documentName": "COPY_OF_BUSINESS_REGISTRATION",
-                            "nameOnDocument": oAddressProof.nameOnDocument,
-                            "documentNumber": oAddressProof.documentNumber,
-                            "fileName": oAddressProof.fileName,
-                            "encodedContent": oAddressProof.fileData
-                        },
-                        "businessProof": aSupplierDocument,
-                        "shareHolderProof": aShareholder
-                    };
 
+
+                        let vShareholderCount = parseInt(this.getView().byId("idShareholderCount.Select").getSelectedKey());
+
+                        for (let i = 0; i <= (vShareholderCount - 1); i++) {
+                            let oShareholder = this.getView().getModel("ShareholderModel").getProperty("/item/" + i);
+
+                            let vDateOfBirth, vIssuingDate, vExpiryDate;
+                            vDateOfBirth = oShareholder?.dateOfBirth?.toISOString()?.split("T")[0];
+                            vIssuingDate = oShareholder?.issuingDate?.toISOString()?.split("T")[0];
+                            vExpiryDate = oShareholder?.expiryDate?.toISOString()?.split("T")[0];
+
+                            // if (oShareholder.dateOfBirth !== null) {
+                            //     if (!isNaN(oShareholder.dateOfBirth.getDate())) {
+                            //         vDateOfBirth = oShareholder?.dateOfBirth?.toISOString()?.split("T")[0];
+                            //     }
+                            // }
+
+                            // if (!isNaN(oShareholder.issuingDate.getDate())) {
+                            //     vIssuingDate = oShareholder?.issuingDate?.toISOString()?.split("T")[0];
+                            // }
+
+                            // if (!isNaN(oShareholder.expiryDate.getDate())) {
+                            //     vExpiryDate = oShareholder?.expiryDate?.toISOString()?.split("T")[0];
+                            // }
+
+                            if (oShareholder) {
+                                aShareholder.push({
+                                    "name": oShareholder.name,
+                                    "sharePercentage": parseInt(oShareholder.sharePercentage),
+                                    "identityProof": {
+                                        "documentName": oShareholder.docType,
+                                        "nameOnDocument": oShareholder.nameOnDoc,
+                                        "documentNumber": oShareholder.docNum,
+                                        "fileName": oShareholder.fileName,
+                                        "encodedContent": oShareholder.fileData,
+                                        "dateOfBirth": this.toVisaDateFormat(vDateOfBirth),
+                                        "issuingDate": this.toVisaDateFormat(vIssuingDate),
+                                        "expiryDate": this.toVisaDateFormat(vExpiryDate)
+                                    },
+                                    "documentProof": {
+                                        "documentName": "COPY_OF_BUSINESS_REGISTRATION",
+                                        "nameOnDocument": oShareholderDocument.nameOnDocument,
+                                        "documentNumber": oShareholderDocument.documentNumber,
+                                        "fileName": oShareholderDocument.fileName,
+                                        "encodedContent": oShareholderDocument.fileData
+                                    }
+
+                                });
+                            }
+                        }
+
+                        oSupplierOnboarding.kycDetails = {
+                            "addressProof": {
+                                "documentName": "COPY_OF_BUSINESS_REGISTRATION",
+                                "nameOnDocument": oAddressProof.nameOnDocument,
+                                "documentNumber": oAddressProof.documentNumber,
+                                "fileName": oAddressProof.fileName,
+                                "encodedContent": oAddressProof.fileData
+                            },
+                            "businessProof": aSupplierDocument,
+                            "shareHolderProof": aShareholder
+                        };
+                    }
                     oSupplierOnboarding.supplierBankingInfo = {
                         "accountHolderName": oSupplier.supplierName,
                         "accountNumber": oSupplier.accountNumber,
@@ -1072,10 +1078,10 @@ sap.ui.define([
                         "bankCode": oSupplier.bankCode
                     };
                 }
-                
+                if (this.getView().getModel("PageModel").getProperty("/vDocReq") == true) {
                 if (vBusinessNature === "INDIVIDUAL") {
                     delete oSupplierOnboarding.kycDetails.shareHolderProof;
-                    
+
                     oSupplierOnboarding.kycDetails.identityProof = aShareholder[0].identityProof;
                     oSupplierOnboarding.kycDetails.businessProof = [{
                         "documentName": "COPY_OF_BUSINESS_REGISTRATION",
@@ -1083,16 +1089,20 @@ sap.ui.define([
                         "documentNumber": oAddressProof.documentNumber,
                         "fileName": oAddressProof.fileName,
                         "encodedContent": oAddressProof.fileData,
-                        "registrationDate" : "1970-01-01",
-                        "expiryDate" : "9999-12-31"
+                        "registrationDate": "1970-01-01",
+                        "expiryDate": "9999-12-31"
                     }]
                 }
-
+            }else{
+                delete oSupplierOnboarding.kycDetails;
+                oSupplierOnboarding.businessNature = 'INDIVIDUAL';
+                oSupplierOnboarding.shareHolderCount = 0;
+            }
                 let oParameter = {
                     "oSupplier": oSupplierOnboarding
                 };
                 let vReturnCode;
-                
+
                 await sap.ui.core.BusyIndicator.show();
                 let oSupplierSubmit = await Models.submitSupplier(oParameter, sAuthToken);
                 if (Object.keys(oSupplierSubmit.catchError).length === 0 &&
@@ -1115,7 +1125,7 @@ sap.ui.define([
                                     errorMessage = errorPayload.errorMessage;
                                 }
                             })
-                            
+
                             // MessageBox.error(errorMessage);
                             this.showErrorMessageBox("Response from VISA", errorMessage, null);
                         } else {
@@ -1137,7 +1147,7 @@ sap.ui.define([
                     let msgError = `Operation failed Supplier ${oSupplier.supplierID} \nError catched`;
                     MessageToast.show(msgError);
                 }
-                
+
                 await sap.ui.core.BusyIndicator.hide();
                 return vReturnCode;
             },

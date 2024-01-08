@@ -494,4 +494,23 @@ module.exports = cds.service.impl(async (service) => {
             req.error(error)
         }
     });
+    service.on('getDocRequired', async (req) => {
+        let oAuthToken = await vbipService.getToken("VBIP-API");
+        try {
+            const response = await fetch(`${oAuthToken.url}/odata/v4/catalog/DocumentRequired?$filter=countryCode_code eq '${req.data.country}' `, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": oAuthToken.token
+                }
+            });
+            
+            let oJsonResponse = await response.json()
+            // console.log(oJsonResponse)
+            return oJsonResponse.value
+        } catch (error) {
+            req.error(error)
+        }
+    });
+    
 })

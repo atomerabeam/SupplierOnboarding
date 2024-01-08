@@ -29,4 +29,5 @@ service Supplier {
     function get3DigitCountry(code2 : String)                                                                                                         returns String;
     function getEmailTemplate(type : String)                                                                                                          returns String;
     function getCountryDocument(country : String, businessNature : String)                                                                            returns String;
+    function getDocRequired(country : String, businessNature : String)                                                                            returns String;
 }
