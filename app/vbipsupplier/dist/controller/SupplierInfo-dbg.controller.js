@@ -41,8 +41,8 @@ sap.ui.define([
                 let oSupplier = this.getOwnerComponent().getModel("SupplierInfo").getProperty("/supplier");
                 let sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken");
                 var docRequired = await Models.getDocRequired(oSupplier.countryCode_code,sAuthToken);
-                if (docRequired.value[0].isSupplierDocRequired == false) {
-                    this.getView().getModel("PageModel").setProperty("/vDocReq", false);
+                if (docRequired.isSupplierDocRequired == false) {
+                    this.getView().getModel("PageModel").setProperty("/pageFlow/vDocReq", false);
                 }
                 if (!oSupplier) {
                     let oRouter = this.getOwnerComponent().getRouter();

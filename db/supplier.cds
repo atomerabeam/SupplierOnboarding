@@ -44,7 +44,8 @@ type typeSupplierOnboarding {
     shareHolderCount    : Integer;
     supplierInfo        : typeSupplierInfo;
     kycDetails          : typeKycDetails;
-    supplierBankingInfo : typeSupplierBankingInfo
+    supplierBankingInfo : typeSupplierBankingInfo;
+    kycIdentificationNumber : String;
 }
 
 type typeSupplierInfo {

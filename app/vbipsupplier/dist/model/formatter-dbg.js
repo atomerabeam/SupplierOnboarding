@@ -1,6 +1,6 @@
 sap.ui.define([], function () {
     "use strict";
-
+    //
     return {
         countryFormatter: function (sCountryCode) {
             let oCountriesModel = this.getOwnerComponent().getModel("Countries")
