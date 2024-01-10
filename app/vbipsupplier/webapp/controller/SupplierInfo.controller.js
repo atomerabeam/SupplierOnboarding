@@ -43,6 +43,8 @@ sap.ui.define([
                 var docRequired = await Models.getDocRequired(oSupplier.countryCode_code,sAuthToken);
                 if (docRequired.isSupplierDocRequired == false) {
                     this.getView().getModel("PageModel").setProperty("/pageFlow/vDocReq", false);
+                } else{
+                    this.getView().getModel("PageModel").setProperty("/pageFlow/vDocReq", true);
                 }
                 if (!oSupplier) {
                     let oRouter = this.getOwnerComponent().getRouter();
@@ -981,7 +983,7 @@ sap.ui.define([
                 let aShareholder = [];
                 let oAddressProof = this.getView().getModel("DocumentModel").getProperty("/doc" + iAddressDoc);
                 if (vAcceptCard === false) {
-                    if (this.getView().getModel("PageModel").getProperty("/vDocReq") == true) {
+                    if (this.getView().getModel("PageModel").getProperty("/pageFlow/vDocReq") == true) {
                         ;
                         // Document
                         let aDocument = this.getView().getModel("DocumentModel").getProperty("/docKeys");
@@ -1068,7 +1070,7 @@ sap.ui.define([
                                 "fileName": oAddressProof.fileName,
                                 "encodedContent": oAddressProof.fileData
                             },
-                            "businessProof": aSupplierDocument,
+                            "businessProof": [aSupplierDocument[1]],
                             "shareHolderProof": aShareholder
                         };
                     }
@@ -1079,7 +1081,7 @@ sap.ui.define([
                         "bankCode": oSupplier.bankCode
                     };
                 }
-                if (this.getView().getModel("PageModel").getProperty("/vDocReq") == true) {
+                if (this.getView().getModel("PageModel").getProperty("/pageFlow/vDocReq") == true) {
                 if (vBusinessNature === "INDIVIDUAL") {
                     delete oSupplierOnboarding.kycDetails.shareHolderProof;
 
