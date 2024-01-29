@@ -14,7 +14,7 @@
 								<!-- @ui5ignore-patterns -->
                                 <Text id="idBankInfo.Text" text="{i18n>bankInfo}" class="customSubtitle1"/>
                                 <!-- @ui5ignore-patterns -->
-								<Text id="idReview1.Text" text="{i18n>reviewDetails}" class="customText"/>
+								<!-- <Text id="idReview1.Text" text="{i18n>reviewDetails}" class="customText"/> -->
                             </VBox>
 
                             <VBox id="idSpaceP3S1.VBox" width="24px"/>
@@ -33,7 +33,7 @@
                             <VBox id="idCorporationText.VBox" width="30%">
                                 <Text id="idCorporationDetails.Text" text="{i18n>corporationDetails}" class="customSubtitle1"/>
                                 <!-- @ui5ignore-patterns -->
-								<Text id="idReview2.Text" text="{i18n>reviewDetails}" class="customText"/>
+								<!-- <Text id="idReview2.Text" text="{i18n>reviewDetails}" class="customText"/> -->
                             </VBox>
                             <VBox id="idSpaceP3S2.VBox" width="24px"/>
                             <VBox id="idCorporationInput.VBox" width="70%">
@@ -103,7 +103,7 @@
                             <VBox id="idDocumentText.VBox" width="30%">
                                 <Text id="idDocumentUpload.Text" class="customSubtitle1" text="{i18n>documentUpload}"/>
 								<!-- @ui5ignore-patterns -->
-                                <Text id="idReview3.Text" text="{i18n>reviewDetails}" class="customText"/>
+                                <!-- <Text id="idReview3.Text" text="{i18n>reviewDetails}" class="customText"/> -->
 								<!-- @ui5ignore-patterns -->
                                 <CheckBox id="idDocument1.CheckBox" text="{i18n>copyOfBusinessReg}" 
                                           visible="{DocumentModel>/doc1/visible}" editable="false"
