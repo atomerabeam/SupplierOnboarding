@@ -67,12 +67,14 @@ headers:
       "companyCode": "1001"
 }
 ####################################################
+
 POST {{server}}/odata/v4/supplier/decryptID
 headers: 
       Content-Type: application/json
-
+	 
 {
-      "pID" : "U2FsdGVkX1%2BGAzRoMPGJaaPHTXOuzkEkZrssCtuWOvl151EA9%2Buy9dLPEaq1x2VoA2cQExiaXzo8ixSsklQFcg%3D%3D"
+      "pID" : "U2FsdGVkX1%2FG%2Fhiz6qeQh2L1cJHv%2FzskRK%2Bz7id%2Fa8O%2FRMF1C4AwlO9RiAp%2BS0sLUpETyNufgnAVNyvC18G7ZA%3D%3D"
+	  
 }
 
 ####################################################
@@ -228,7 +230,7 @@ headers:
       Content-Type: application/json
 
 {
-      "encryptedUrl": "U2FsdGVkX18LQCxuEE%2F7Jcuio2t0T3KlfS9a8vMXZZT86z7g9Ndz8ARluymb7vzs"
+      "encryptedUrl": "U2FsdGVkX1%2FG%2Fhiz6qeQh2L1cJHv%2FzskRK%2Bz7id%2Fa8O%2FRMF1C4AwlO9RiAp%2BS0sLUpETyNufgnAVNyvC18G7ZA%3D%3D"
 }
 
 ####################################################
