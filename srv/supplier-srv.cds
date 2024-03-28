@@ -14,6 +14,7 @@ service Supplier {
     action   checkService()                                                                                                                           returns String;
     action   sendMail(smtpDestination : String, mailTo : String, mailSubject : String, mailContent : String)                                          returns String;
     action   sendMailOTP(bCardInfoOTP : Boolean, pID : String, smtpDestination : String, mailTo : String, mailSubject : String, mailContent : String) returns String;
+    action   sendEmailOTP(bCardInfoOTP : Boolean, pID : String, smtpDestination : String ) returns String;
     action   checkOTP(bCardInfoOTP : Boolean, pID : String, pOTP : String)                                                                            returns String;
     action   decryptID(pID : String)                                                                                                                  returns String;
     action   encryptString(sValue : String)                                                                                                           returns String;

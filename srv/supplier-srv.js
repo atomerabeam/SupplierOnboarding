@@ -259,6 +259,80 @@ module.exports = cds.service.impl(async (service) => {
         }
     });
 
+    service.on("sendEmailOTP", async (req) => {
+        const bCardInfoOTP = req.data.bCardInfoOTP
+        const pID = await vbipService.decryptID(req.data.pID);
+        const [sBuyerID, sSupplierID, sInviteDate] = pID.split("_")
+        const smtpDestination = req.data.smtpDestination;
+        // const mailTo = req.data.mailTo;
+        // const mailSubject = req.data.mailSubject;
+        // const mailContent = req.data.mailContent;
+       
+        // send mail
+
+        let oAuthToken = await vbipService.getToken("VBIP-API");
+
+        try {
+            const response = await fetch(`${oAuthToken.url}/odata/v4/catalog/SupplierInfo(buyerID='${sBuyerID}',supplierID='${sSupplierID}')`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": oAuthToken.token
+                }
+            });
+            var oSupplierInfo = await response.json();
+            // 
+            if(oSupplierInfo?.emailID){
+                var mailTo = oSupplierInfo?.emailID;
+            }else if(oSupplierInfo?.error){
+                oSupplierInfo.error.message = 'SupplierInfo/Email not found'
+              return  req.error(oSupplierInfo.error);
+            }
+
+            try {
+                const response = await fetch(`${oAuthToken.url}/odata/v4/catalog/EmailTemplate?$filter=type eq 'OTP1'`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": oAuthToken.token
+                    }
+                });
+                var oJsonResponse = await response.json()
+
+                if(oJsonResponse?.value[0]){                    
+                var mailSubject = oJsonResponse?.value[0]?.emailSubject;
+                var mailContent = oJsonResponse?.value[0]?.emailBody.replace("[SUPPLIER NAME]", oSupplierInfo?.supplierName);
+                }else {
+                  const  error ={
+                        "code" : '404',
+                        "message" : 'Email Template OTP1 not found'
+                    }
+                   
+                  return  req.error(error);
+                }
+
+                
+                // console.log(oJsonResponse)
+                if (! await OTPService.isOTPAvailable(bCardInfoOTP, pID)) {
+
+                    req.error(900, "Reach OTP generation limit")
+                } else {
+        
+                    let oResult = OTPService.sendEmailOTP(bCardInfoOTP, pID, smtpDestination, mailTo, mailSubject, mailContent);
+                    return oResult;
+                }
+                 
+            } catch (error) {
+                req.error(error)
+            }
+            
+        } catch (error) {
+            req.error(error)
+        }
+       
+        
+    });
+
     service.on("checkOTP", async (req) => {
         const bCardInfoOTP = req.data.bCardInfoOTP
         const pID = req.data.pID;

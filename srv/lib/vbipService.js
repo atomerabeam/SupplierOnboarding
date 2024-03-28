@@ -1,5 +1,5 @@
 // const cds = require("@sap/cds");
-const oConnect = require('@sap-cloud-sdk/connectivity');
+    const oConnect = require('@sap-cloud-sdk/connectivity');
 const CryptoJS = require('crypto-js');
 const { getBinding, readCredential } = require('./credentialStore')
 

@@ -224,6 +224,24 @@ sap.ui.define([
                 }
                 return oResult;
             },
+            sendEmailOTP: async function (oParameter, sAuthToken) {
+                let oResult = { "response": {}, "catchError": {} };
+                try {
+                    const response = await fetch("/odata/v4/supplier/sendEmailOTP", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": sAuthToken
+                        },
+                        body: JSON.stringify(oParameter),
+                    });
+
+                    oResult.response = response;
+                } catch (error) {
+                    oResult.catchError = error;
+                }
+                return oResult;
+            },
 
             checkOTP: async function (oParameter, sAuthToken) {
                 let oResult = { "response": {}, "catchError": {} };
