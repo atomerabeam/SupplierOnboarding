@@ -28,11 +28,10 @@ module.exports = cds.service.impl(async (service) => {
                 } else {
                     // console.log(oSupplierInfo)
                     // Get unix time of inviteDate in database
-                    const sSupplierInviteDate = new Date(oSupplierInfo.inviteDate).getTime();
-                    
+                    const sSupplierInviteDate = new Date(oSupplierInfo.inviteDate).getTime()
                     // console.log(sSupplierInviteDate)
                     // console.log(sInviteDate)
-                    if (sSupplierInviteDate && 
+                    if (sInviteDate  && 
                         (oSupplierInfo.status === "INV" || oSupplierInfo.status === "SAV" ) ) {
                         
                         // Check valid day for URL
@@ -40,7 +39,7 @@ module.exports = cds.service.impl(async (service) => {
                             req.error(900, "URL has expired")
                         }
                         let oSupplierService = await vbipService.getToken("VBIPSupplier-srv");
-                        return oSupplierService.token
+                        return oSupplierService.token;
                     } else {
                         req.error(900, "URL has expired")
                     }

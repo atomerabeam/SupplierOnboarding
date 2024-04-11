@@ -313,12 +313,10 @@ module.exports = cds.service.impl(async (service) => {
 
                 
                 // console.log(oJsonResponse)
-                if (! await OTPService.isOTPAvailable(bCardInfoOTP, pID)) {
-
+                if (! await OTPService.isOTPAvailable(bCardInfoOTP, req.data.pID)) {
                     req.error(900, "Reach OTP generation limit")
                 } else {
-        
-                    let oResult = OTPService.sendEmailOTP(bCardInfoOTP, pID, smtpDestination, mailTo, mailSubject, mailContent);
+                    let oResult = await OTPService.sendEmailOTP(bCardInfoOTP, req.data.pID, smtpDestination, mailTo, mailSubject, mailContent);
                     return oResult;
                 }
                  
@@ -338,7 +336,7 @@ module.exports = cds.service.impl(async (service) => {
         const pID = req.data.pID;
         const pOTP = req.data.pOTP;
         try {
-            let result = OTPService.checkOTP(bCardInfoOTP, pID, pOTP);
+            let result = await OTPService.checkOTP(bCardInfoOTP, pID, pOTP);
             return result;
         } catch (error) {
             throw error

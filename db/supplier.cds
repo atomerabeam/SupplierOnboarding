@@ -50,8 +50,8 @@ type typeSupplierOnboarding {
 
 type typeSupplierInfo {
     supplierId                    : String(25);
-    firstName                     : String(100);
-    lastName                      : String(100);
+    firstName                     : String(30);
+    lastName                      : String(30);
     legalName                     : String(100);
     emailAddress                  : String(240);
     mobileNumberCountryCode       : String(15);
@@ -61,8 +61,8 @@ type typeSupplierInfo {
     completeAddress               : String(40);
     zipCode                       : String(9);
     countryCode                   : String(3);
-    city                          : String(20);
-    state                         : String(27);
+    city                          : String(50);
+    state                         : String(50);
 }
 
 type typeKycDetails {

@@ -5,7 +5,7 @@ const xsenv = require("@sap/xsenv");
 
 function getBinding(){
     xsenv.loadEnv
-    const binding = xsenv.getServices({ credstore: { tag: 'credstore' } }).credstore
+    const binding = xsenv.getServices({ credstore: { tag: 'credstore' } }).credstore;
     return binding
 }
 function checkStatus(response) {

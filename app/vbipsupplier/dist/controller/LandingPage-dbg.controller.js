@@ -37,12 +37,12 @@ sap.ui.define([
                     "bCardInfoOTP": false,
                     "pID": this._GUID,
                     "smtpDestination": oVBIP.smtpDestination,
-                    "mailTo": vEmail,
-                    "mailSubject": sEmailSubject,
-                    "mailContent": sEmailBody
+                    "token" : sAuthToken
+                    // "mailTo": vEmail,
+                    // "supplierName": oSupplier.supplierName
                 };
 
-                let oResult = await Models.sendMailOTP(oMail, sAuthToken);
+                let oResult = await Models.sendEmailOTP(oMail, sAuthToken);
                 if (oResult.response.ok === true) {
                     MessageToast.show("Sent OTP");
                 } else {
