@@ -40,10 +40,10 @@ sap.ui.define([
 
                 let oSupplier = this.getOwnerComponent().getModel("SupplierInfo").getProperty("/supplier");
                 let sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken");
-                var docRequired = await Models.getDocRequired(oSupplier.countryCode_code,sAuthToken);
+                var docRequired = await Models.getDocRequired(oSupplier.countryCode_code, sAuthToken);
                 if (docRequired.isSupplierDocRequired == false) {
                     this.getView().getModel("PageModel").setProperty("/pageFlow/vDocReq", false);
-                } else{
+                } else {
                     this.getView().getModel("PageModel").setProperty("/pageFlow/vDocReq", true);
                 }
                 if (!oSupplier) {
@@ -171,7 +171,7 @@ sap.ui.define([
                 let oCountryDoc = await Models.getCountryDocument(oParam1, sAuthToken);
                 let aCountryDoc;
                 let aDocument = this.getView().getModel("DocumentModel").getProperty("/docKeys");
-                
+
                 if (oCountryDoc.value) {
                     aCountryDoc = oCountryDoc.value;
                 }
@@ -504,10 +504,18 @@ sap.ui.define([
                 this.getView().setModel(oShareholderPopupModel, "ShareholderPopupModel");
 
                 if (!this._oDialog) {
-                    this._oDialog = new sap.ui.xmlfragment("vbipsupplier.view.fragment.ShareholderPopup", this);
-                    this.getView().addDependent(this._oDialog);
+                    // this._oDialog = new sap.ui.xmlfragment("vbipsupplier.view.fragment.ShareholderPopup", this);
+                    sap.ui.core.Fragment.load({
+                        name: "vbipsupplier.view.fragment.ShareholderPopup",
+                        controller: this
+                    }).then(function (oFragment) {
+                        this._oDialog = oFragment;
+                        this.getView().addDependent(this._oDialog);
+                        this._oDialog.open();
+                    }.bind(this));
+                } else {
+                    this._oDialog.open();
                 }
-                this._oDialog.open();
             },
             onDialogAfterClose: function () {
                 this._oDialog.destroy();
@@ -1082,25 +1090,25 @@ sap.ui.define([
                     };
                 }
                 if (this.getView().getModel("PageModel").getProperty("/pageFlow/vDocReq") == true) {
-                if (vBusinessNature === "INDIVIDUAL") {
-                    delete oSupplierOnboarding.kycDetails.shareHolderProof;
+                    if (vBusinessNature === "INDIVIDUAL") {
+                        delete oSupplierOnboarding.kycDetails.shareHolderProof;
 
-                    oSupplierOnboarding.kycDetails.identityProof = aShareholder[0].identityProof;
-                    oSupplierOnboarding.kycDetails.businessProof = [{
-                        "documentName": "COPY_OF_BUSINESS_REGISTRATION",
-                        "nameOnDocument": oAddressProof.nameOnDocument,
-                        "documentNumber": oAddressProof.documentNumber,
-                        "fileName": oAddressProof.fileName,
-                        "encodedContent": oAddressProof.fileData,
-                        "registrationDate": "1970-01-01",
-                        "expiryDate": "9999-12-31"
-                    }]
+                        oSupplierOnboarding.kycDetails.identityProof = aShareholder[0].identityProof;
+                        oSupplierOnboarding.kycDetails.businessProof = [{
+                            "documentName": "COPY_OF_BUSINESS_REGISTRATION",
+                            "nameOnDocument": oAddressProof.nameOnDocument,
+                            "documentNumber": oAddressProof.documentNumber,
+                            "fileName": oAddressProof.fileName,
+                            "encodedContent": oAddressProof.fileData,
+                            "registrationDate": "1970-01-01",
+                            "expiryDate": "9999-12-31"
+                        }]
+                    }
+                } else {
+                    delete oSupplierOnboarding.kycDetails;
+                    oSupplierOnboarding.businessNature = 'INDIVIDUAL';
+                    oSupplierOnboarding.shareHolderCount = 0;
                 }
-            }else{
-                delete oSupplierOnboarding.kycDetails;
-                oSupplierOnboarding.businessNature = 'INDIVIDUAL';
-                oSupplierOnboarding.shareHolderCount = 0;
-            }
                 let oParameter = {
                     "oSupplier": oSupplierOnboarding
                 };

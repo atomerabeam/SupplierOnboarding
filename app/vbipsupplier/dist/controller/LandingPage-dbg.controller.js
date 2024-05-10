@@ -36,8 +36,7 @@ sap.ui.define([
                 let oMail = {
                     "bCardInfoOTP": false,
                     "pID": this._GUID,
-                    "smtpDestination": oVBIP.smtpDestination,
-                    "token" : sAuthToken
+                    "smtpDestination": oVBIP.smtpDestination
                     // "mailTo": vEmail,
                     // "supplierName": oSupplier.supplierName
                 };
