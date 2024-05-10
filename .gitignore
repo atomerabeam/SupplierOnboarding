@@ -29,5 +29,5 @@ mta_archives/
 # IDEs
 # .vscode
 # .idea
-.env
+*.env
 default-services.json
