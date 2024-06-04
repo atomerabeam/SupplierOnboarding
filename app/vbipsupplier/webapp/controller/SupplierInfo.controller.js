@@ -605,7 +605,7 @@ sap.ui.define([
             },
 
             _onInit: async function () {
-                let sAuthToken = ""
+                // let sAuthToken = ""
                 // Page flow
                 let oPageModel = new JSONModel();
                 let oPageFlow = {
@@ -647,7 +647,7 @@ sap.ui.define([
 
                 let vSAPCustomer, vAcceptCard, vInfoBoxVisible;
                 if (oSupplier !== undefined) {
-                    sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken");
+                const sAuthToken = this.getOwnerComponent().getModel("AuthModel").getProperty("/authToken");
                     let oBusinessNatureRead = await Models.getBusinessNature(sAuthToken);
                     let aBusinessNature;
                     if (oBusinessNatureRead.response.value) {

@@ -30,13 +30,14 @@ async function decryptID(pID) {
     let data = "2000260001_1000000042_1703844331267";
 
     // Encrypt
+    /*
     let encryptedData = await CryptoJS.AES.encrypt(data, secretKey).toString();
     // console.log(encryptedData)
     // const encoded = encodeURIComponent(encryptedData);
     const encoded = encodeURIComponent(encodeURIComponent(encryptedData));
     // ...index.html#/Supplier/encoded 
     console.log("encodedURI 2", encoded);
-
+*/
     // Decrypt
     let decodeURI = decodeURIComponent(pID);
     let decrypt = await CryptoJS.AES.decrypt(decodeURI, secretKey);

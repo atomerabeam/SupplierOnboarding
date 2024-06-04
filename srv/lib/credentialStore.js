@@ -3,7 +3,7 @@ const fetch = require('node-fetch-h2');
 const xsenv = require("@sap/xsenv");
 
 
-function getBinding(){
+function getBinding() {
     xsenv.loadEnv
     const binding = xsenv.getServices({ credstore: { tag: 'credstore' } }).credstore;
     return binding
@@ -36,11 +36,29 @@ async function encryptPayload(publicKey, payload) {
     return jose.JWE.createEncrypt(options, key).update(Buffer.from(payload, "utf8")).final();
 }
 
-function headers(binding, namespace, init) {
+/*function headers(binding, namespace, init) {
     const headers = new fetch.Headers(init);
     headers.set("Authorization", `Basic ${Buffer.from(`${binding.username}:${binding.password}`).toString("base64")}`);
     headers.set("sapcp-credstore-namespace", namespace);
     return headers;
+}*/
+
+// Comments by Achin => Use a encryption algorithm in this case the decryprtion also should be handled => This needs a new service
+function headers(binding, namespace, init) {
+    const headers = new fetch.Headers(init);
+    // Encrypt the username and password
+    const encryptedCredentials = encryptCredentials(binding.username, binding.password);
+    headers.set("Authorization", `Basic ${encryptedCredentials}`);
+    headers.set("sapcp-credstore-namespace", namespace);
+    return headers;
+}
+
+// Function to encrypt the credentials
+function encryptCredentials(username, password) {
+    // Example encryption (use a strong encryption method in real applications)
+    const credentials = `${username}:${password}`;
+    const buffer = Buffer.from(credentials);
+    return buffer.toString("base64");
 }
 
 async function fetchAndDecrypt(privateKey, url, method, headers, body) {
@@ -52,6 +70,7 @@ async function fetchAndDecrypt(privateKey, url, method, headers, body) {
 }
 
 async function readCredential(binding, namespace, type, name) {
+    // Comments by Achin => Use oAuth token => This needs a new service
     return fetchAndDecrypt(
         binding.encryption.client_private_key,
         `${binding.url}/${type}?name=${encodeURIComponent(name)}`,
@@ -71,6 +90,7 @@ async function writeCredential(binding, namespace, type, credential) {
 }
 
 async function deleteCredential(binding, namespace, type, name) {
+    // Comments by Achin => Use oAuth token => This needs a new service
     await fetch(
         `${binding.url}/${type}?name=${encodeURIComponent(name)}`,
         {
@@ -80,5 +100,5 @@ async function deleteCredential(binding, namespace, type, name) {
     ).then(checkStatus);
 }
 
-module.exports = {getBinding, readCredential, writeCredential, deleteCredential, encryptPayload, decryptPayload}
+module.exports = { getBinding, readCredential, writeCredential, deleteCredential, encryptPayload, decryptPayload }
 
