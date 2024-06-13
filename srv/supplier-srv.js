@@ -177,11 +177,37 @@ module.exports = cds.service.impl(async (service) => {
 
         }
 
+        try {
+            const response = await fetch(`${oAuthToken.url}/odata/v4/btponboarding/BTPOnboarding(vbipID='${vbipID}')`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": oAuthToken.token
+                }
+            });
+
+            BTPInfo = await response.json();
+        } catch (error) {
+
+        }
+
+        try {
+            const response = await fetch(`${oAuthToken.url}/odata/v4/btponboarding/BuyerOnboarding(vbipID='${vbipID}',companyCode='${companyCode}')`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": oAuthToken.token
+                }
+            });
+
+            buyerInfo = await response.json();
+        } catch (error) {
+
+        }
+
         let oAuthTokenCPI = await vbipService.getToken("VBIP-CPI");
-        let oSupplier = {
-            "SystemName": b1Info.dbName,
-            "Method": "PATCH",
-            "Payload": [
+        if (BTPInfo.httpDestination == 'B1'){
+            var payload = [
                 {
                     "U_PMETH": "Y",
                     "supplierId": supplierID,
@@ -191,7 +217,23 @@ module.exports = cds.service.impl(async (service) => {
                         }
                     ]
                 }
-            ]
+            ];
+        } else if (BTPInfo.httpDestination == 'S4'){
+            var payload = [
+                {
+                    "buyerID": buyerInfo.buyerID,
+                    "supplierId": supplierID,
+                    "status": 'CA'
+                    
+                }
+            ];
+        }
+        
+        let oSupplier = {
+            "SystemType": BTPInfo.httpDestination,
+            "SystemName": b1Info.dbName,
+            "Method": "PATCH",
+            "Payload": payload
 
         };
         console.log(oSupplier);
