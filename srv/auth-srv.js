@@ -66,7 +66,7 @@ module.exports = cds.service.impl(async (service) => {
             console.log("Test supplier ", sSupplierID)
             if (sBuyerID && sSupplierID) {
                 let oBuyerService = await vbipService.getToken("VBIP-API");
-                // console.log("Test des ", oBuyerService.token, " @@ ", oBuyerService.url)
+                // consoleer.log("Test des ", oBuyerService.token, " @@ ", oBuyerService.url)
                 const response = await fetch(`${oBuyerService.url}/odata/v4/supplier-onboarding/SupplierInfo(buyerID='${sBuyerID}',supplierID='${sSupplierID}')`, {
                     method: "GET",
                     headers: {

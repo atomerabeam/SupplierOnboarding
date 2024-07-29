@@ -15,7 +15,7 @@ module.exports = cds.service.impl(async (service) => {
         try {
             // console.log(await vbipSrv.read('SupplierInfo'))
             // console.log(await vbipSrv.get())
-            let sParam1 = `(buyerID='${buyerID}',supplierID='${supplierID}')`; 
+            let sParam1 = `(buyerID='${buyerID}',supplierID='${supplierID}')`;
             let sParam2 = `?$expand=supplierDocuments,shareholderDetails($expand=shareholderDocuments)`;
             const response = await fetch(`${oAuthToken.url}/odata/v4/supplier-onboarding/SupplierInfo${sParam1}${sParam2}`, {
                 method: "GET",
@@ -118,7 +118,7 @@ module.exports = cds.service.impl(async (service) => {
         let oResult = { "documentType": {}, "catchError": {} };
         try {
             const response = await fetch(`${oAuthToken.url}/odata/v4/catalog/ValidIDProof?$filter=countryCode_code eq '${country}' and businessNature eq '${businessNature}'`, {
-                
+
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -206,7 +206,7 @@ module.exports = cds.service.impl(async (service) => {
         }
 
         let oAuthTokenCPI = await vbipService.getToken("VBIP-CPI");
-        if (BTPInfo.httpDestination == 'B1'){
+        if (BTPInfo.httpDestination == 'B1') {
             var payload = [
                 {
                     "U_PMETH": "Y",
@@ -218,17 +218,17 @@ module.exports = cds.service.impl(async (service) => {
                     ]
                 }
             ];
-        } else if (BTPInfo.httpDestination == 'S4'){
+        } else if (BTPInfo.httpDestination == 'S4') {
             var payload = [
                 {
                     "buyerID": buyerInfo.buyerID,
                     "supplierId": supplierID,
                     "status": 'CA'
-                    
+
                 }
             ];
         }
-        
+
         let oSupplier = {
             "SystemType": BTPInfo.httpDestination,
             "SystemName": b1Info.dbName,
@@ -250,7 +250,7 @@ module.exports = cds.service.impl(async (service) => {
             });
 
             oResult.supplier = response;
-            
+
         } catch (error) {
             oResult.error = error;
         }
@@ -309,7 +309,7 @@ module.exports = cds.service.impl(async (service) => {
         // const mailTo = req.data.mailTo;
         // const mailSubject = req.data.mailSubject;
         // const mailContent = req.data.mailContent;
-       
+
         // send mail
 
         let oAuthToken = await vbipService.getToken("VBIP-API");
@@ -324,11 +324,11 @@ module.exports = cds.service.impl(async (service) => {
             });
             var oSupplierInfo = await response.json();
             // 
-            if(oSupplierInfo?.emailID){
+            if (oSupplierInfo?.emailID) {
                 var mailTo = oSupplierInfo?.emailID;
-            }else if(oSupplierInfo?.error){
+            } else if (oSupplierInfo?.error) {
                 oSupplierInfo.error.message = 'SupplierInfo/Email not found'
-              return  req.error(oSupplierInfo.error);
+                return req.error(oSupplierInfo.error);
             }
 
             try {
@@ -341,19 +341,19 @@ module.exports = cds.service.impl(async (service) => {
                 });
                 var oJsonResponse = await response.json()
 
-                if(oJsonResponse?.value[0]){                    
-                var mailSubject = oJsonResponse?.value[0]?.emailSubject;
-                var mailContent = oJsonResponse?.value[0]?.emailBody.replace("[SUPPLIER NAME]", oSupplierInfo?.supplierName);
-                }else {
-                  const  error ={
-                        "code" : '404',
-                        "message" : 'Email Template OTP1 not found'
+                if (oJsonResponse?.value[0]) {
+                    var mailSubject = oJsonResponse?.value[0]?.emailSubject;
+                    var mailContent = oJsonResponse?.value[0]?.emailBody.replace("[SUPPLIER NAME]", oSupplierInfo?.supplierName);
+                } else {
+                    const error = {
+                        "code": '404',
+                        "message": 'Email Template OTP1 not found'
                     }
-                   
-                  return  req.error(error);
+
+                    return req.error(error);
                 }
 
-                
+
                 // console.log(oJsonResponse)
                 if (! await OTPService.isOTPAvailable(bCardInfoOTP, req.data.pID)) {
                     req.error(900, "Reach OTP generation limit")
@@ -361,16 +361,16 @@ module.exports = cds.service.impl(async (service) => {
                     let oResult = await OTPService.sendEmailOTP(bCardInfoOTP, req.data.pID, smtpDestination, mailTo, mailSubject, mailContent);
                     return oResult;
                 }
-                 
+
             } catch (error) {
                 req.error(error)
             }
-            
+
         } catch (error) {
             req.error(error)
         }
-       
-        
+
+
     });
 
     service.on("checkOTP", async (req) => {
@@ -478,21 +478,48 @@ module.exports = cds.service.impl(async (service) => {
         // let sVbipRequestID = await vbipService.decryptID(encodedRequestID)
         let sVbipRequestID = req.data.vbipRequestID
         let oAuthToken = await vbipService.getToken("VBIP-API");
+        let CPIoAuthToken = await vbipService.getToken("VBIP-CPI");
         try {
-            const response = await fetch(`${oAuthToken.url}/odata/v4/catalog/CASupplierPaymentDetails?$filter=vbipRequestId eq '${sVbipRequestID}'`, {
+            var response = await fetch(`${oAuthToken.url}/odata/v4/catalog/CASupplierPaymentDetails?$filter=vbipRequestId eq '${sVbipRequestID}'`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": oAuthToken.token
                 }
             });
-            let oJsonResponse = await response.json()
-            let oCardInfo = oJsonResponse.value[0]
+        } catch (error) {
+            req.error(400, error)
+        }
+        let oJsonResponse = await response.json()
+        var oCardInfo = oJsonResponse.value[0];
+
+        var oBody = {
+            "vbipRequestId": sVbipRequestID,
+            "paymentReferenceId": '123456789'
+        }
+        try {
+            response = await fetch(`${CPIoAuthToken.url}/if1012/iflow/GetCredentials'`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": CPIoAuthToken.token
+                },
+                body: JSON.stringify(oBody)
+            });
+            let oJsonResponse;
+            if (response.ok) {
+                oJsonResponse = await response.json();
+            } else {
+                oJsonResponse = await response;
+            }
+
+            let oCardInfo = oJsonResponse.value[0];
             console.log(oCardInfo)
             if (oCardInfo) {
-                oCardInfo.cardNumber = await vbipService.decryptData(sVbipRequestID, oCardInfo.cardNumber)
-                oCardInfo.cvv2 = await vbipService.decryptData(sVbipRequestID, oCardInfo.cvv2)
-                oCardInfo.expiredate = await vbipService.decryptData(sVbipRequestID, oCardInfo.expiredate)
+
+                // oCardInfo.cardNumber = await vbipService.decryptData(sVbipRequestID, oCardInfo.cardNumber)
+                // oCardInfo.cvv2 = await vbipService.decryptData(sVbipRequestID, oCardInfo.cvv2)
+                // oCardInfo.expiredate = await vbipService.decryptData(sVbipRequestID, oCardInfo.expiredate)
                 // delete oCardInfo["vbipRequestId"]
 
                 console.log(oCardInfo)
@@ -571,7 +598,7 @@ module.exports = cds.service.impl(async (service) => {
             req.error(error)
         }
     });
-    
+
     service.on('getEmailTemplate', async (req) => {
         let oAuthToken = await vbipService.getToken("VBIP-API");
         try {
@@ -600,7 +627,7 @@ module.exports = cds.service.impl(async (service) => {
                     "Authorization": oAuthToken.token
                 }
             });
-           
+
             let oJsonResponse = await response.json()
             // console.log(oJsonResponse)
             return oJsonResponse
@@ -618,7 +645,7 @@ module.exports = cds.service.impl(async (service) => {
                     "Authorization": oAuthToken.token
                 }
             });
-            
+
             let oJsonResponse = await response.json()
             // console.log(oJsonResponse)
             return oJsonResponse.value
@@ -626,5 +653,5 @@ module.exports = cds.service.impl(async (service) => {
             req.error(error)
         }
     });
-    
+
 })
