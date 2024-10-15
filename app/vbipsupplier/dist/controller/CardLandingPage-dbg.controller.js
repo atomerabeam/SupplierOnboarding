@@ -60,8 +60,8 @@ sap.ui.define([
                 this.getView().getModel("PageModel").setProperty("/pageFlow/landing", true);
             } else {
                 //For production
-                this.getOwnerComponent().getModel("AuthModel").setProperty("/authToken", oToken.value)
-                sAuthToken = oToken.value
+                this.getOwnerComponent().getModel("AuthModel").setProperty("/authToken", oToken.value);
+                sAuthToken = oToken.value;
                 //For production
                 //For local test
                 // this.getOwnerComponent().getModel("AuthModel").setProperty("/authToken", "")

@@ -144,7 +144,7 @@ sap.ui.define([
                 } else {
                     //Authorize Success
                     // For production
-                    this.getOwnerComponent().getModel("AuthModel").setProperty("/authToken", oToken.value)
+                    this.getOwnerComponent().getModel("AuthModel").setProperty("/authToken", oToken.value);
                     sAuthToken = oToken.value
                     //For production
 

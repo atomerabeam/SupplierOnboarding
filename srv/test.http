@@ -196,7 +196,6 @@ headers:
 
 ####################################################
 
-
 POST {{server}}/odata/v4/supplier/getCardInfo
 headers: 
       Content-Type: application/json
@@ -236,7 +235,7 @@ POST {{server}}/odata/v4/auth/Authorize
 headers: 
       Content-Type: application/json
 
-{"encryptedUrl":"U2FsdGVkX1%2FeRDJwhyi%2BryBkzffNbM%2Bx5x76116ZceUsTdYZkdhf%2Fq6PF%2FPxA6b4EEP%2Fny95zdGxgRUzk9j24g%3D%3D"}
+{"encryptedUrl":"U2FsdGVkX1%252FTmI4eG%252BFyjAA85%252BTgvvlCKayfJBd93xGLdbm6fEJeqjr%252F42soEDGfCce7wXO2APlV%252BbNvi48J7w%253D%253D"}
 
 
 
@@ -275,7 +274,7 @@ headers:
       Content-Type: application/json
 
 {
-      "vbipRequestID": "20236247491702633792749"
+      "vbipRequestID": "202451291704963676129"
 }
 
 ####################################################
@@ -302,3 +301,9 @@ headers:
 
 {"encryptedUrl":"U2FsdGVkX1%2FeRDJwhyi%2BryBkzffNbM%2Bx5x76116ZceUsTdYZkdhf%2Fq6PF%2FPxA6b4EEP%2Fny95zdGxgRUzk9j24g%3D%3D"}
 
+
+###
+
+GET {{server}}/odata/v4/supplier/getCountries()
+headers: 
+      Content-Type: application/json

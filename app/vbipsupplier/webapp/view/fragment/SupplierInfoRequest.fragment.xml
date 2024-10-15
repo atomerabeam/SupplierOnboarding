@@ -31,29 +31,19 @@
 
 			<!-- @ui5ignore-patterns -->
 			<Label id="idAcceptCard.Label" class="customLabel" 
-				   text="{i18n>acceptCard}  {SupplierInfo>/buyer/legalName}{i18n>acceptCardP2}"/>
+				   text="{i18n>acceptCard}"/>
 			<Select id="idAcceptCard.Select" forceSelection="false" change="onChangeAcceptCard"
 					selectedKey="{RequestInfo>/requestInfo/acceptCard}" width="60%">
-				<core:Item id="idYesCard.Item" key="true" text="Yes"/>
-				<core:Item id="idNoCard.Item" key="false" text="No"/>
+				<core:Item id="idYesCard.Item" key="true" text="Bank Transfer"/>
+				<core:Item id="idNoCard.Item" key="false" text="Point of Sale Terminal/Payment Gateway"/>
 			</Select>
 			<VBox id="idSpaceP1S5.VBox" height="16px"/>
-
-			<HBox id="idInformation.HBox" width="60%" class="customInfoBox"
-				  visible="{RequestInfo>/requestInfo/infoBoxVisible}">
-				<core:Icon id="idInfo.Icon" src="sap-icon://hint" size="22px" color="#1434CB">
-				</core:Icon>
-				<VBox id="idSpaceP1S6.VBox" width="12px"/>
-				<!-- @ui5ignore-patterns -->
-				<Text id="idRequestOnboard.Text" 
-					  text="{i18n>requestOnboard} {SupplierInfo>/buyer/legalName} {i18n>requestOnboardP2}" 
-					  class="customText"/>
-			</HBox>
+			
 			<VBox id="idSpaceP1S7.VBox" height="32px"/>
 
 			<HBox id="idButtonP1.HBox">
 				<!-- @ui5ignore-patterns -->
-				<Button id="idContinue.Button" class="classButtonRow" type="Emphasized" 
+				<Button id="idContinue.Button4" class="classButtonRow" type="Emphasized" 
 						text="Continue" press="onContinue"/>
 			</HBox>
 		</VBox>

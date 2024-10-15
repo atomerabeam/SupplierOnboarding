@@ -3,6 +3,9 @@
     xmlns:core="sap.ui.core" displayBlock="true"
     xmlns="sap.m">
     <Page id="id.Page" class="sapUiContentPadding">
+        <VBox id="vboxBI" alignItems="Center" justifyContent="Center" height="100%" width="100%">
+            <BusyIndicator id="BI" text="It might take up to a minute, please don't refresh" visible="false"/>
+        </VBox>
         <customHeader>
             <core:Fragment fragmentName="vbipsupplier.view.fragment.HeaderContent" type="XML"/>
         </customHeader>

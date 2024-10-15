@@ -2,7 +2,7 @@ const cds = require("@sap/cds");
 const vbipService = require("./lib/vbipService");
 const OTPService = require("./lib/OTPService");
 const cryptoService = require("./lib/webCrypto");
-const malwareScanner = require("./lib/malwareScan")
+const malwareScanner = require("./lib/malwareScan");
 
 module.exports = cds.service.impl(async (service) => {
     service.on("getSupplier", async (req) => {
@@ -476,11 +476,26 @@ module.exports = cds.service.impl(async (service) => {
         // console.log(req.data.errorPayload)
         //Decode URL to VBIPRequestID
         // let sVbipRequestID = await vbipService.decryptID(encodedRequestID)
-        let sVbipRequestID = req.data.vbipRequestID
+        let sVbipRequestID = req.data.vbipRequestID;
+
         let oAuthToken = await vbipService.getToken("VBIP-API");
         let CPIoAuthToken = await vbipService.getToken("VBIP-CPI");
+
         try {
             var response = await fetch(`${oAuthToken.url}/odata/v4/catalog/CASupplierPaymentDetails?$filter=vbipRequestId eq '${sVbipRequestID}'`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": oAuthToken.token
+                }
+            });
+        } catch (error) {
+            req.error(400, error)
+        }
+
+        // var oCardInfo = oJsonResponse.value[0];
+        try {
+            var response = await fetch(`${oAuthToken.url}/odata/v4/catalog/Payment?$filter=vbipRequestId eq '${sVbipRequestID}'`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -490,15 +505,20 @@ module.exports = cds.service.impl(async (service) => {
         } catch (error) {
             req.error(400, error)
         }
-        let oJsonResponse = await response.json()
-        var oCardInfo = oJsonResponse.value[0];
 
+        if (response.ok) {
+            oJsonResponse = await response.json();
+        } else {
+            throw new Error(`Error ${response.status}: ${errorMessage}`);
+        }
+        var dt = new Date();
+        let oReqId = dt.getFullYear().toString() + oJsonResponse?.value[oJsonResponse.value.length - 1].clearingDoc + dt.getMilliseconds().toString() + dt.getTime().toString();
         var oBody = {
-            "vbipRequestId": sVbipRequestID,
-            "paymentReferenceId": '123456789'
+            "vbipRequestId": oReqId,
+            "paymentReferenceId": sVbipRequestID //"200998875465898770"
         }
         try {
-            response = await fetch(`${CPIoAuthToken.url}/if1012/iflow/GetCredentials'`, {
+            response = await fetch(`${CPIoAuthToken.url}/if1012/iflow/GetCredentials`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -510,30 +530,80 @@ module.exports = cds.service.impl(async (service) => {
             if (response.ok) {
                 oJsonResponse = await response.json();
             } else {
-                oJsonResponse = await response;
+                oJsonResponse = response;
             }
 
-            let oCardInfo = oJsonResponse.value[0];
-            console.log(oCardInfo)
-            if (oCardInfo) {
+            const maxTimeout = 30000; // Max wait time of 30 seconds
+            const pollInterval = 500; // Check every 500ms
+            const startTime = Date.now();
 
-                // oCardInfo.cardNumber = await vbipService.decryptData(sVbipRequestID, oCardInfo.cardNumber)
-                // oCardInfo.cvv2 = await vbipService.decryptData(sVbipRequestID, oCardInfo.cvv2)
-                // oCardInfo.expiredate = await vbipService.decryptData(sVbipRequestID, oCardInfo.expiredate)
-                // delete oCardInfo["vbipRequestId"]
+            let result;
+            let found = false;
 
+            while (Date.now() - startTime < maxTimeout) {
+                try {
+                    var response = await fetch(`${oAuthToken.url}/odata/v4/catalog/CASupplierPaymentDetails?$filter=vbipRequestId eq '${oReqId}'`, {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": oAuthToken.token
+                        }
+                    });
+                } catch (error) {
+                    req.error(400, error)
+                }
+
+                if (response.ok) {
+                    oJsonResponse = await response.json();
+                    if (oJsonResponse && oJsonResponse.value.length > 0) {
+                        try {
+                            var response = await fetch(`${oAuthToken.url}/odata/v4/catalog/CASupplierPaymentDetails('${oJsonResponse.value[0].ID}')`, {
+                                method: "DELETE",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    "Authorization": oAuthToken.token
+                                }
+                                    
+                            });
+                        } catch (error) {
+                            req.error(400, error)
+                        }
+                        found = true;
+                        break; // Data found, exit the loop
+                    }
+                } else {
+                    oJsonResponse = response;
+                }
+
+                // Wait for a short period before polling again
+                await new Promise(resolve => setTimeout(resolve, pollInterval));
+            }
+            let oCardInfo;
+            if (found) {
+                oCardInfo = oJsonResponse.value[0];
                 console.log(oCardInfo)
-                //Update Payment Status
-                await fetch(`${oAuthToken.url}/odata/v4/catalog/cardInfoCallback`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": oAuthToken.token
-                    },
-                    body: JSON.stringify({ "vbipRequestId": oCardInfo.vbipRequestId })
-                })
+                if (oCardInfo) {
+
+                    oCardInfo.cardNumber = await vbipService.decryptData(oReqId, oCardInfo.cardNumber)
+                    oCardInfo.cvv2 = await vbipService.decryptData(oReqId, oCardInfo.cvv2)
+                    oCardInfo.expiredate = await vbipService.decryptData(oReqId, oCardInfo.expiredate)
+                    delete oCardInfo["vbipRequestId"]
+
+                    console.log(oCardInfo)
+                    //Update Payment Status
+                    await fetch(`${oAuthToken.url}/odata/v4/catalog/cardInfoCallback`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": oAuthToken.token
+                        },
+                        body: JSON.stringify({ "vbipRequestId": oCardInfo.vbipRequestId })
+                    })
+                } else {
+                    oCardInfo = {}
+                }
             } else {
-                oCardInfo = {}
+                throw new Error('Timeout');
             }
             return oCardInfo
         } catch (error) {
