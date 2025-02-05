@@ -8,10 +8,10 @@
   "dependencies": {
     "@sap/hdi-deploy": "^5.3.0",
     "@sap-cloud-sdk/connectivity": "^3.22.0",
-    "@sap-cloud-sdk/mail-client": "^3.22.0",
+    "@sap-cloud-sdk/mail-client": "^3.24.0",
     "@sap-cloud-sdk/openapi": "^3.22.0",
-    "@sap/cds": "^8.0.0",
-    "@sap/xssec": "^4",
+    "@sap/cds": "^8.7.0",
+    "@sap/xssec": "^4.2.8",
     "crypto-js": "^4.1.1",
     "express": "^4.21.2",
     "node-fetch-h2": "^2.3.1-0",
